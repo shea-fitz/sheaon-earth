@@ -1,0 +1,38 @@
+:root {
+  /* Color */
+  --color-bg: ;
+  --color-surface: ;
+  --color-text: ;
+  --color-text-muted: ;
+  --color-accent: ;
+  --color-border: ;
+
+  /* Type scale */
+  --font-family-sans: ;
+  --font-family-serif: ;
+  --font-family-mono: ;
+  --font-size-xs: ;
+  --font-size-sm: ;
+  --font-size-base: ;
+  --font-size-lg: ;
+  --font-size-xl: ;
+  --font-size-2xl: ;
+  --font-size-3xl: ;
+  --line-height-tight: ;
+  --line-height-normal: ;
+  --line-height-relaxed: ;
+
+  /* Spacing */
+  --space-1: ;
+  --space-2: ;
+  --space-3: ;
+  --space-4: ;
+  --space-5: ;
+  --space-6: ;
+  --space-8: ;
+  --space-10: ;
+  --space-12: ;
+  --space-16: ;
+  --content-max-width: ;
+  --page-padding: ;
+}

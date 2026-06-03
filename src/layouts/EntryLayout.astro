@@ -1,0 +1,23 @@
+---
+const { title, date, tags } = Astro.props;
+
+const formattedDate = date instanceof Date
+  ? date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  : date;
+---
+
+<header class="entry-header">
+  <h1>{title}</h1>
+  <p class="entry-date"><time datetime={date instanceof Date ? date.toISOString() : date}>{formattedDate}</time></p>
+  {tags?.length > 0 && (
+    <ul class="entry-tags">
+      {tags.map((tag) => (
+        <li>{tag}</li>
+      ))}
+    </ul>
+  )}
+</header>
+
+<article class="entry-content">
+  <slot />
+</article>

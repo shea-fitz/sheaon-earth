@@ -1,0 +1,35 @@
+---
+import '../styles/global.css';
+
+const { title = 'shea on air' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="shea on air — music and worldbuilding at sheaon.earth" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header>
+      <nav aria-label="Main">
+        <a href="/">Info</a>
+        <a href="/releases">Releases</a>
+        <a href="/writing">Writing</a>
+        <a href="/transmissions">Transmissions</a>
+        <a href="/process">Process</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <p>shea on air · sheaon.earth</p>
+    </footer>
+  </body>
+</html>

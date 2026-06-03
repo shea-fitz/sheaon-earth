@@ -1,0 +1,17 @@
+{
+  "name": "sheaon-earth",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=18.20.8"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.7.0"
+  }
+}
