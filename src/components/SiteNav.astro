@@ -100,7 +100,7 @@ function isLinkActive(href, hasChildren = false) {
 <style>
   .site-nav {
     position: relative;
-    z-index: 20;
+    z-index: 100;
   }
 
   .menu-trigger,
@@ -126,6 +126,7 @@ function isLinkActive(href, hasChildren = false) {
 
   .nav-drawer {
     overflow: hidden;
+    background: transparent;
   }
 
   .nav-close {
@@ -223,36 +224,62 @@ function isLinkActive(href, hasChildren = false) {
     color: var(--color-accent);
   }
 
-  /* Desktop: left strip + slide-open drawer */
+  /* Desktop: in-flow strip on the left; open drawer overlays from the left */
   @media (min-width: 48rem) {
     .site-nav {
-      min-height: 100%;
-      border-right: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+      box-sizing: border-box;
+      width: var(--nav-collapsed-width);
+      min-height: 100vh;
+    }
+
+    .site-nav::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 1px;
+      background: color-mix(in srgb, var(--color-text) 15%, transparent);
+      pointer-events: none;
+      transition: opacity var(--nav-transition);
+    }
+
+    :global(.site-shell[data-nav-open='true']) .site-nav::after {
+      opacity: 0;
     }
 
     .menu-trigger {
-      position: sticky;
-      top: 0;
       width: 100%;
       padding: 1rem 0.75rem;
-      writing-mode: horizontal-tb;
     }
 
     .nav-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--nav-open-width);
+      height: 100vh;
+      overflow-y: auto;
+      border-right: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+      transform: translateX(-100%);
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
       transition:
+        transform var(--nav-transition),
         opacity var(--nav-transition),
         visibility var(--nav-transition);
     }
 
     :global(.site-shell[data-nav-open='true']) .nav-drawer {
+      transform: translateX(0);
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
     }
 
     :global(.site-shell[data-nav-open='true']) .menu-trigger {
-      display: none;
+      visibility: hidden;
     }
 
     :global(.site-shell[data-nav-open='true']) .nav-close {
@@ -260,10 +287,13 @@ function isLinkActive(href, hasChildren = false) {
     }
   }
 
-  /* Mobile: top bar + dropdown */
+  /* Mobile: fixed bottom bar; open drawer overlays above */
   @media (max-width: 47.99rem) {
     .site-nav {
-      border-bottom: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
 
     .menu-trigger {
@@ -271,11 +301,19 @@ function isLinkActive(href, hasChildren = false) {
       min-height: var(--header-height);
       display: flex;
       align-items: center;
+      border-top: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
     }
 
     .nav-drawer {
+      position: fixed;
+      bottom: var(--header-height);
+      left: 0;
+      right: 0;
       max-height: 0;
+      overflow: hidden;
+      border-top: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
       visibility: hidden;
+      pointer-events: none;
       transition:
         max-height var(--nav-transition),
         visibility var(--nav-transition);
@@ -284,6 +322,7 @@ function isLinkActive(href, hasChildren = false) {
     :global(.site-shell[data-nav-open='true']) .nav-drawer {
       max-height: var(--nav-drawer-max);
       visibility: visible;
+      pointer-events: auto;
     }
 
     :global(.site-shell[data-nav-open='true']) .nav-close {
@@ -324,11 +363,13 @@ function isLinkActive(href, hasChildren = false) {
     }
   });
 
+  function closeNav() {
+    setOpen(false);
+  }
+
   drawer?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      if (window.matchMedia('(max-width: 47.99rem)').matches) {
-        setOpen(false);
-      }
-    });
+    link.addEventListener('click', closeNav);
   });
+
+  document.addEventListener('astro:before-preparation', closeNav);
 </script>

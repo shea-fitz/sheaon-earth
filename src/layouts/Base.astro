@@ -49,34 +49,33 @@ const { title = 'shea on air', background } = Astro.props;
 <style>
   .site-shell {
     display: grid;
-    min-height: calc(100vh - 4rem);
   }
 
   .site-main {
     min-width: 0;
+    margin: 2rem;
   }
 
   @media (min-width: 48rem) {
     .site-shell {
       grid-template-columns: var(--nav-collapsed-width) 1fr;
-      transition: grid-template-columns var(--nav-transition);
     }
 
-    .site-shell[data-nav-open='true'] {
-      grid-template-columns: var(--nav-open-width) 1fr;
+    :global(.site-nav) {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .site-main {
+      grid-column: 2;
+      grid-row: 1;
     }
   }
 
   @media (max-width: 47.99rem) {
-    .site-shell {
-      grid-template-columns: 1fr;
-      grid-template-rows: auto 1fr;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .site-shell {
-      transition: none;
+    .site-main {
+      padding-bottom: var(--header-height);
+      margin: 1rem;
     }
   }
 </style>

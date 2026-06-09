@@ -41,10 +41,6 @@ const { showReleases = false } = Astro.props;
 </div>
 
 <style>
-  .home-content {
-    position: absolute;
-    top: 1rem;
-  }
 
   .info {
     max-width: 25rem;
@@ -88,7 +84,7 @@ const { showReleases = false } = Astro.props;
   .releases-panel {
     display: none;
     margin-top: 2.5rem;
-    width: min(calc(100vw - 4rem), 72rem);
+    width: min(100%, 72rem);
   }
 
   .releases-panel.is-visible {

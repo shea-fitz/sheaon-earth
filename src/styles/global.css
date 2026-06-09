@@ -44,8 +44,11 @@
   --page-fade-out: 300ms;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
-  margin: 2rem;
   min-height: 100vh;
   font-family: var(--font-family-mono);
   color: var(--color-text);
