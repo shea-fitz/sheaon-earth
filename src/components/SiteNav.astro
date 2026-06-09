@@ -305,7 +305,8 @@ const isHomeActive = normalizedCurrent === '/';
       top: 0;
       left: 0;
       right: 0;
-      min-height: var(--header-height);
+      box-sizing: border-box;
+      height: var(--site-header-offset);
       padding: 0 2rem;
       border-bottom: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
     }

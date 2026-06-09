@@ -7,17 +7,74 @@ const entries = (await getCollection('notes')).sort(
 );
 ---
 
-<Base title="Notes — shea on air" background="bg3">
+<Base title="Notes — shea on air" background="bg3" flushTop>
   {entries.length === 0 ? (
     <p>No notes yet.</p>
   ) : (
-    <ul>
-      {entries.map((entry) => (
-        <li>
-          <a href={`/notes/${entry.slug}/`}>{entry.data.title}</a>
-          {entry.data.description && <p>{entry.data.description}</p>}
-        </li>
-      ))}
+    <ul class="notes-list">
+      {entries.map((entry) => {
+        const isoDate = entry.data.date.toISOString().slice(0, 10);
+        return (
+          <li>
+            <a href={`/notes/${entry.slug}/`} class="notes-list-item">
+              <time class="notes-list-date" datetime={isoDate}>{isoDate}</time>
+              <span class="notes-list-title">{entry.data.title}</span>
+            </a>
+          </li>
+        );
+      })}
     </ul>
   )}
 </Base>
+
+<style>
+  .notes-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
+  @media (min-width: 48rem) {
+    .notes-list {
+      margin-top: var(--site-header-offset);
+    }
+  }
+
+  .notes-list-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 2rem;
+    text-decoration: none;
+    color: inherit;
+    background: var(--color-surface);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+    transition: background 0.2s ease;
+  }
+
+  .notes-list-item:first-child {
+    border-top: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
+
+  .notes-list-item:hover,
+  .notes-list-item:focus-visible {
+    background: color-mix(in srgb, var(--color-accent) 20%, transparent);
+    backdrop-filter: blur(5px);
+    outline: none;
+  }
+
+  .notes-list-date {
+    font-family: var(--font-family-sans);
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .notes-list-title {
+    font-family: var(--font-family-batangche);
+    font-size: 2rem;
+  }
+</style>
