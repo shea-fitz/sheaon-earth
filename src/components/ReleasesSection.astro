@@ -9,6 +9,12 @@ function releaseYear(date) {
   return new Date(date).getFullYear();
 }
 
+function formatReleaseType(type) {
+  if (!type) return '';
+  if (type === type.toUpperCase()) return type;
+  return type.charAt(0).toUpperCase() + type.slice(1);
+}
+
 function parseBandcampEmbed(embed) {
   const value = embed?.trim();
   if (!value) return null;
@@ -43,12 +49,14 @@ function parseBandcampEmbed(embed) {
           </div>
         )}
         <div class="release-meta">
-          <div class="release-meta-header">
-            <div class="release-title">{release.title}</div>
-            <time class="release-year" datetime={release.date}>
-              [{releaseYear(release.date)}]
-            </time>
-          </div>
+          <p class="release-heading">
+            <span class="release-title">{release.title}</span>
+            <span aria-hidden="true"> – </span>
+            <span class="release-type">{formatReleaseType(release.type)}</span>
+          </p>
+          <time class="release-year" datetime={release.date}>
+            {releaseYear(release.date)}
+          </time>
           {release.themes?.trim() && (
             <p class="release-themes">themes: {release.themes}</p>
           )}
@@ -119,47 +127,40 @@ function parseBandcampEmbed(embed) {
   .release-meta {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
+    gap: .25rem;
     line-height: 1.4;
-    background-color: rgba(9, 13, 13, .25);
+    background-color: var(--color-surface);
+    border-bottom: .5px solid var(--color-border);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(15px);
-    padding: 4px 8px;
+    padding: .75rem;
   }
 
-  .release-meta-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.5rem;
+  .release-heading {
+    margin: 0;
+    font-size: 1.5rem;
   }
 
   .release-title {
-    margin: 0;
-    font-size: inherit;
-    font-weight: inherit;
-    font-style: italic;
-  }
-
-  .release-title > span {
-    font-style: normal;
+    font-family: BatangChe;
+    text-transform: uppercase;
   }
 
   .release-year {
     font-variant-numeric: tabular-nums;
-    font-size: .875rem;
+    font-size: 0.875rem;
   }
 
   .release-type {
-    margin: 0;
-    font-size: .75rem;
+    font-style: normal;
+    font-family: BatangChe;
+    text-transform: uppercase;
   }
 
   .release-themes {
-    margin: 0;
-    font-size: 0.75rem;
+    margin-top: 1rem;
+    font-size: .875rem;
+    font-style: italic;
     line-height: 1.5;
-    opacity: 0.85;
   }
 </style>
