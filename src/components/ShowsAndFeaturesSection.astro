@@ -30,11 +30,13 @@ const rows = sections.flatMap(({ label, items }, sectionIndex) =>
     {rows.map(({ item, sectionLabel, sectionGap }, index) => (
       <div class:list={['shows-row', { 'shows-row-last': index === rows.length - 1, 'shows-section-gap': sectionGap }]}>
         <span class="shows-label">{sectionLabel ?? ''}</span>
-        <div class="shows-data">
+        <div class:list={['shows-data', { 'shows-data-linked': item.link }]}>
           <time class="shows-date" datetime={item.date}>{item.date}</time>
           <span class="shows-title">
             {item.link ? (
-              <a href={item.link} target="_blank" rel="noopener noreferrer">{item.title}</a>
+              <a href={item.link} target="_blank" rel="noopener noreferrer">
+                {item.title}<span class="shows-link-arrow" aria-hidden="true"> ↝</span>
+              </a>
             ) : (
               item.title
             )}
@@ -91,6 +93,17 @@ const rows = sections.flatMap(({ label, items }, sectionIndex) =>
     background: var(--color-surface);
     backdrop-filter: blur(5px);
     border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+    transition: background 0.2s ease;
+  }
+
+  .shows-data-linked {
+    cursor: pointer;
+  }
+
+  .shows-data-linked:hover,
+  .shows-data-linked:focus-within {
+    background: color-mix(in srgb, var(--color-accent) 20%, transparent);
+    backdrop-filter: blur(5px);
   }
 
   .shows-row-last .shows-data {
@@ -108,6 +121,15 @@ const rows = sections.flatMap(({ label, items }, sectionIndex) =>
   .shows-title a {
     color: inherit;
     text-decoration: none;
+  }
+
+  .shows-link-arrow {
+    display: inline-block;
+    color: var(--color-accent);
+    font-size: 1.5em;
+    line-height: 0;
+    vertical-align: -0.15em;
+    margin-left: 0.1em;
   }
 
   .shows-title a:hover,
