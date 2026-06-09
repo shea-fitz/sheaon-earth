@@ -25,15 +25,15 @@
 :root {
   /* Color */
   --color-bg: #090D0D ;
-  --color-surface: ;
-  --color-text: #E3E2E2;
+  --color-surface: rgba(30, 30, 30, .1);
+  --color-text: #ffffff;
   --color-text-muted: ;
   --color-accent: #C3FF1E;
   --color-border: #C3FF1E;
 
   /* Type scale */
   --font-family-sans: 'GT Mechanik', system-ui, sans-serif;
-  --font-family-serif: 'DM Mono', ui-monospace, monospace;
+  --font-family-serif: 'BatangChe', ui-serif, serif;
   --font-family-mono: 'DM Mono', ui-monospace, monospace;
   --font-family-batangche: 'BatangChe', ui-serif, serif;
   --font-size-xs: .675rem;
@@ -59,7 +59,7 @@
   --space-12: ;
   --space-16: ;
   --content-max-width: 1280px;
-  --page-padding: ;
+  --page-padding: 2rem;
   --header-height: 2.5em;
   --nav-collapsed-width: 3.5rem;
   --nav-open-width: 16rem;

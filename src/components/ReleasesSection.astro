@@ -73,9 +73,6 @@ function parseBandcampEmbed(embed) {
   }
 
   .release-list {
-    --release-gap: clamp(0.75rem, 2vw, 1.5rem);
-    --release-cols: 1;
-
     list-style: none;
     margin: 0;
     padding: 0;
@@ -89,24 +86,6 @@ function parseBandcampEmbed(embed) {
     margin: 0;
     min-width: 0;
     flex: 0 0 calc((100% - (var(--release-cols) - 1) * var(--release-gap)) / var(--release-cols));
-  }
-
-  @media (min-width: 30rem) {
-    .release-list {
-      --release-cols: 2;
-    }
-  }
-
-  @media (min-width: 48rem) {
-    .release-list {
-      --release-cols: 3;
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .release-list {
-      --release-cols: 4;
-    }
   }
 
   .release-embed-wrapper {

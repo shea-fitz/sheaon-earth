@@ -1,15 +1,11 @@
 ---
 import ReleasesSection from './ReleasesSection.astro';
-
-interface Props {
-  showReleases?: boolean;
-}
-
-const { showReleases = false } = Astro.props;
+import ShowsAndFeaturesSection from './ShowsAndFeaturesSection.astro';
+import InfluencesSection from './InfluencesSection.astro';
 ---
 
 <div class="home-content">
-  <div class="info">
+  <section class="home-section info">
     <p>shea on air is the solo flute project of flutist, drummer, producer, and designer Shea Fitzpatrick.</p>
     <div class="stream-list">
       <a class="stream-link" href="https://sheaonair.bandcamp.com/" target="_blank">
@@ -33,17 +29,77 @@ const { showReleases = false } = Astro.props;
       <div class="contact-link"><a href="mailto:sheaonair@gmail.com">sheaonair@gmail.com</a></div>
       <div class="contact-link"><a href="https://www.are.na/shea/" target="_blank">are.na/shea</a></div>
     </div>
-  </div>
+  </section>
 
-  <div class:list={['releases-panel', showReleases && 'is-visible']} id="releases">
+  <section class="home-section releases-section" id="releases">
+    <h2 class="section-heading">Releases</h2>
     <ReleasesSection />
-  </div>
+  </section>
+
+  <section class="home-section shows-section">
+    <h2 class="section-heading">Shows and features</h2>
+    <ShowsAndFeaturesSection />
+  </section>
+
+  <section class="home-section influences-section">
+    <h2 class="section-heading">Influences</h2>
+    <InfluencesSection />
+  </section>
+
+  <div class="slogan">Boom Clap Tweet Tweet</div>
 </div>
 
 <style>
+  .home-content {
+    --release-gap: clamp(0.75rem, 2vw, 1.5rem);
+    --release-cols: 1;
+  }
+
+  @media (min-width: 30rem) {
+    .home-content {
+      --release-cols: 2;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .home-content {
+      --release-cols: 3;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .home-content {
+      --release-cols: 4;
+    }
+  }
+
+  .home-section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .home-section + .home-section {
+    margin-top: 2.5rem;
+  }
+
+  .shows-section {
+    width: min(100%, 72rem);
+  }
+
+  .section-heading {
+    margin: 0 0 1rem;
+    font-size: 2rem;
+    font-weight: inherit;
+    margin-top: 5rem;
+  }
 
   .info {
     max-width: 25rem;
+  }
+
+  .releases-section {
+    width: min(100%, 72rem);
+    padding-top: 20%;
   }
 
   .stream-list {
@@ -81,13 +137,31 @@ const { showReleases = false } = Astro.props;
     text-decoration: none;
   }
 
-  .releases-panel {
-    display: none;
-    margin-top: 2.5rem;
-    width: min(100%, 72rem);
-  }
-
-  .releases-panel.is-visible {
-    display: block;
+  .slogan {
+    font-family: BatangChe;
+    text-transform: uppercase;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom right,
+      #03122f 0%,
+      #1a4a7a 38%,
+      #9ebee0 72%,
+      #edf4fb 100%
+    );
+    opacity: 50%;
+    letter-spacing: .25rem;
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    mix-blend-mode: multiply;
+    filter: blur(.5px);
   }
 </style>

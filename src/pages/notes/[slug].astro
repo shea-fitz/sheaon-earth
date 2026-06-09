@@ -4,7 +4,7 @@ import Base from '../../layouts/Base.astro';
 import EntryLayout from '../../layouts/EntryLayout.astro';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('writing');
+  const entries = await getCollection('notes');
   return entries.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },

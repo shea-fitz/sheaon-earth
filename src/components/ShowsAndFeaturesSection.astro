@@ -1,0 +1,166 @@
+---
+import { showsAndFeatures } from '../data/shows-and-features.js';
+
+const upcoming = showsAndFeatures
+  .filter((item) => item.status === 'upcoming')
+  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+const past = showsAndFeatures
+  .filter((item) => item.status === 'past')
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const sections = [
+  { label: 'Upcoming', items: upcoming },
+  { label: 'Past', items: past },
+].filter((section) => section.items.length > 0);
+
+const rows = sections.flatMap(({ label, items }, sectionIndex) =>
+  items.map((item, i) => ({
+    item,
+    sectionLabel: i === 0 ? label : null,
+    sectionGap: sectionIndex > 0 && i === 0,
+  }))
+);
+---
+
+{rows.length === 0 ? (
+  <p class="shows-empty">No shows or features yet.</p>
+) : (
+  <div class="shows-table">
+    {rows.map(({ item, sectionLabel, sectionGap }, index) => (
+      <div class:list={['shows-row', { 'shows-row-last': index === rows.length - 1, 'shows-section-gap': sectionGap }]}>
+        <span class="shows-label">{sectionLabel ?? ''}</span>
+        <div class="shows-data">
+          <time class="shows-date" datetime={item.date}>{item.date}</time>
+          <span class="shows-title">
+            {item.link ? (
+              <a href={item.link} target="_blank" rel="noopener noreferrer">{item.title}</a>
+            ) : (
+              item.title
+            )}
+          </span>
+          <span class="shows-location">{item.location}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
+<style>
+  .shows-empty {
+    margin: 0;
+  }
+
+  .shows-table {
+    --release-col-width: calc(
+      (100% - (var(--release-cols) - 1) * var(--release-gap)) / var(--release-cols)
+    );
+    width: min(100%, calc(3 * var(--release-col-width) + 2 * var(--release-gap)));
+    display: grid;
+    grid-template-columns: 8ch max-content minmax(0, 1fr) max-content;
+    column-gap: var(--release-gap);
+  }
+
+  .shows-row {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    align-items: baseline;
+  }
+
+  .shows-section-gap {
+    margin-top: 1rem;
+  }
+
+  .shows-label {
+    font-size: 1rem;
+    font-family: BatangChe;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    padding-block: 0.5rem;
+  }
+
+  .shows-data {
+    grid-column: 2 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    column-gap: var(--release-gap);
+    align-items: baseline;
+    padding-block: 0.5rem;
+    padding: .75rem;
+    background: var(--color-surface);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
+
+  .shows-row-last .shows-data {
+    border-bottom: none;
+  }
+
+  .shows-date {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .shows-title {
+    min-width: 0;
+  }
+
+  .shows-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .shows-title a:hover,
+  .shows-title a:focus-visible {
+    color: var(--color-accent);
+    outline: none;
+  }
+
+  .shows-location {
+    text-align: right;
+    justify-self: stretch;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 30rem) {
+    .shows-table {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .shows-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+      padding-block: 0.75rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+    }
+
+    .shows-row-last {
+      border-bottom: none;
+    }
+
+    .shows-label {
+      padding-block: 0;
+    }
+
+    .shows-label:empty {
+      display: none;
+    }
+
+    .shows-data {
+      grid-column: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding-block: 0;
+      border-bottom: none;
+    }
+
+    .shows-location {
+      text-align: left;
+      justify-self: auto;
+    }
+  }
+</style>
