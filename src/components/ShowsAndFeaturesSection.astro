@@ -155,7 +155,6 @@ const rows = sections.flatMap(({ label, items }, sectionIndex) =>
       display: grid;
       grid-template-columns: 1fr;
       gap: 0.25rem;
-      padding-block: 0.75rem;
       border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
     }
 
@@ -174,15 +173,35 @@ const rows = sections.flatMap(({ label, items }, sectionIndex) =>
     .shows-data {
       grid-column: 1;
       display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      row-gap: 0.25rem;
       padding-block: 0;
+      padding: .5rem;
       border-bottom: none;
     }
 
+    .shows-date {
+      order: 1;
+      font-size: .75rem;
+    }
+
     .shows-location {
-      text-align: left;
+      order: 2;
+      text-align: right;
       justify-self: auto;
+      font-size: .75rem;
+
+    }
+
+    .shows-title {
+      order: 3;
+      flex: 0 0 100%;
+      width: 100%;
+      font-family: BatangChe;
+      text-transform: uppercase;
+      padding-top: .5rem;
     }
   }
 </style>

@@ -5,34 +5,41 @@ import InfluencesSection from './InfluencesSection.astro';
 ---
 
 <div class="home-content">
-  <section class="home-section info">
-    <p>shea on air is the solo flute project of flutist, drummer, producer, and designer Shea Fitzpatrick.</p>
-    <div class="stream-list">
-      <a class="stream-link" href="https://sheaonair.bandcamp.com/" target="_blank">
-        <img src="/images/icons/bandcamp.svg" alt="Bandcamp" />
-      </a>
-      <a class="stream-link" href="https://open.spotify.com/artist/26Ihw2k2n71sPltSmJiH5J?si=TEYJ8VQ5QbikWTFt7k7XQA" target="_blank">
-        <img src="/images/icons/spotify.svg" alt="Spotify" />
-      </a>
-      <a class="stream-link" href="https://music.apple.com/us/artist/shea-on-air/1828082723" target="_blank">
-        <img src="/images/icons/apple-music.svg" alt="Apple Music" />
-      </a>
-      <a class="stream-link" href="https://www.subvert.fm/shea-on-air" target="_blank">
-        <img src="/images/icons/subvert.svg" alt="Subvert" />
-      </a>
-      <a class="stream-link" href="https://www.youtube.com/@sheaonairr" target="_blank">
-        <img src="/images/icons/youtube.svg" alt="YouTube" />
-      </a>
-    </div>
-    <div class="contact-list">
-      <div class="contact-link"><a href="https://www.instagram.com/sheafitz/" target="_blank">@sheafitz</a></div>
-      <div class="contact-link"><a href="mailto:sheaonair@gmail.com">sheaonair@gmail.com</a></div>
-      <div class="contact-link"><a href="https://www.are.na/shea/" target="_blank">are.na/shea</a></div>
-    </div>
-  </section>
+  <div class="home-fold">
+    <section class="home-section info">
+      <p>shea on air is the solo musical project of flutist, drummer, producer, and designer Shea Fitzpatrick.</p>
+      <div class="stream-list">
+        <a class="stream-link" href="https://sheaonair.bandcamp.com/" target="_blank">
+          <img src="/images/icons/bandcamp.svg" alt="Bandcamp" />
+        </a>
+        <a class="stream-link" href="https://open.spotify.com/artist/26Ihw2k2n71sPltSmJiH5J?si=TEYJ8VQ5QbikWTFt7k7XQA" target="_blank">
+          <img src="/images/icons/spotify.svg" alt="Spotify" />
+        </a>
+        <a class="stream-link" href="https://music.apple.com/us/artist/shea-on-air/1828082723" target="_blank">
+          <img src="/images/icons/apple-music.svg" alt="Apple Music" />
+        </a>
+        <a class="stream-link" href="https://www.subvert.fm/shea-on-air" target="_blank">
+          <img src="/images/icons/subvert.svg" alt="Subvert" />
+        </a>
+        <a class="stream-link" href="https://www.youtube.com/@sheaonairr" target="_blank">
+          <img src="/images/icons/youtube.svg" alt="YouTube" />
+        </a>
+      </div>
+      <div class="contact-list">
+        <div class="contact-link"><a href="https://www.instagram.com/sheafitz/" target="_blank">@sheafitz</a></div>
+        <div class="contact-link"><a href="mailto:sheaonair@gmail.com">sheaonair@gmail.com</a></div>
+        <div class="contact-link"><a href="https://www.are.na/shea/" target="_blank">are.na/shea</a></div>
+      </div>
+    </section>
+  </div>
 
-  <section class="home-section releases-section" id="releases">
+  <div class="home-bg-gap" aria-hidden="true"></div>
+
+  <header class="releases-header" id="releases">
     <h2 class="section-heading">Releases</h2>
+  </header>
+
+  <section class="home-section releases-list">
     <ReleasesSection />
   </section>
 
@@ -43,6 +50,9 @@ import InfluencesSection from './InfluencesSection.astro';
 
   <section class="home-section influences-section">
     <h2 class="section-heading">Influences</h2>
+    <div class="playlist-embed">
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/7ImqtO0F0s524tzNZqn8ZR?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
     <InfluencesSection />
   </section>
 
@@ -86,6 +96,10 @@ import InfluencesSection from './InfluencesSection.astro';
     width: min(100%, 72rem);
   }
 
+  .influences-section {
+    margin-bottom: 5rem;
+  }
+
   .section-heading {
     margin: 0 0 1rem;
     font-size: 2rem;
@@ -93,20 +107,49 @@ import InfluencesSection from './InfluencesSection.astro';
     margin-top: 5rem;
   }
 
+  .home-fold {
+    min-height: auto;
+  }
+
+  .home-bg-gap {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .home-fold {
+      min-height: var(--home-fold-height, calc(100dvh - var(--site-header-offset)));
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .home-bg-gap {
+      display: block;
+      height: var(--home-bg-gap-height, 60vh);
+    }
+  }
+
+  .releases-header {
+    width: min(100%, 72rem);
+    scroll-margin-top: var(--site-header-offset);
+  }
+
+  .releases-header .section-heading {
+    margin-top: 0;
+  }
+
   .info {
     max-width: 25rem;
   }
 
-  .releases-section {
+  .releases-list {
     width: min(100%, 72rem);
-    padding-top: 20%;
   }
 
   .stream-list {
     display: flex;
     align-items: center;
     gap: 16px;
-    margin: 2rem 0;
+    margin: 1rem 0;
   }
 
   .stream-link {
@@ -124,6 +167,7 @@ import InfluencesSection from './InfluencesSection.astro';
   .stream-link:hover,
   .stream-link:focus-visible {
     opacity: 0.75;
+    filter: blur(2px);
   }
 
   .contact-list {
@@ -166,7 +210,18 @@ import InfluencesSection from './InfluencesSection.astro';
     -webkit-text-fill-color: transparent;
     mix-blend-mode: multiply;
     filter: blur(.5px);
+    justify-content: center;
     text-align: center;
+  }
+
+  .playlist-embed {
+    opacity: 80%;
+    margin-bottom: 32px;
+  }
+
+  .playlist-embed > iframe {
+    mix-blend-mode: screen;
+    border: .5px solid var(--color-accent);
   }
 
   @media (max-width: 47.99rem) {

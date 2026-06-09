@@ -68,6 +68,12 @@
   --page-fade-out: 300ms;
 }
 
+@media (min-width: 48rem) {
+  :root {
+    --header-height: 3.5rem;
+  }
+}
+
 html {
   scrollbar-gutter: stable;
   -webkit-font-smoothing: antialiased;
