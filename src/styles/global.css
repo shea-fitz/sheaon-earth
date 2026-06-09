@@ -11,7 +11,7 @@
   --font-family-sans: 'DM Mono', ui-monospace, monospace;
   --font-family-serif: 'DM Mono', ui-monospace, monospace;
   --font-family-mono: 'DM Mono', ui-monospace, monospace;
-  --font-size-xs: .675rem ;
+  --font-size-xs: .675rem;
   --font-size-sm: .875rem;
   --font-size-base: 1rem;
   --font-size-lg: 2rem;;
@@ -36,6 +36,12 @@
   --content-max-width: 1280px;
   --page-padding: ;
   --header-height: 3.5rem;
+  --nav-collapsed-width: 3.5rem;
+  --nav-open-width: 16rem;
+  --nav-drawer-max: 70vh;
+  --nav-transition: 0.35s ease;
+  --page-fade-in: 600ms;
+  --page-fade-out: 300ms;
 }
 
 body {
@@ -46,15 +52,27 @@ body {
   background-color: var(--color-bg);
 }
 
-.page-bg {
+.page-bg-layers {
   position: fixed;
   inset: 0;
   z-index: -1;
+  pointer-events: none;
+}
+
+.page-bg-layer {
+  position: absolute;
+  inset: 0;
   background-color: var(--color-bg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  opacity: 0;
+  transition: opacity var(--page-fade-in) ease-out;
+}
+
+.page-bg-layer.is-visible {
+  opacity: 1;
 }
 
 .page-bg.page-bg-bg1 {
@@ -73,32 +91,48 @@ body {
   background-image: url('/images/bg/bg4.webp');
 }
 
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  padding: 1rem 1.25rem;
-}
-
-header nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 1.25rem;
-}
-
-header a {
-  color: inherit;
-  text-decoration: none;
-}
-
-header a:hover,
-header a:focus-visible {
-  text-decoration: underline;
-}
-
 main {
-  padding-top: var(--header-height);
+  padding-top: 0;
 }
 
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.site-main.is-leaving {
+  opacity: 0;
+  transition: opacity var(--page-fade-out) ease-in;
+}
+
+.site-main.is-awaiting {
+  opacity: 0;
+}
+
+.site-main.is-entering {
+  opacity: 0;
+  animation: page-fade-in var(--page-fade-in) ease-out var(--content-enter-delay, 0ms) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-bg-layer {
+    transition: none;
+  }
+
+  .site-main.is-leaving {
+    transition: none;
+  }
+
+  .site-main.is-awaiting {
+    opacity: 1;
+  }
+
+  .site-main.is-entering {
+    animation: none;
+    opacity: 1;
+  }
+}

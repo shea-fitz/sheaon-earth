@@ -1,11 +1,13 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
+import SiteNav from '../components/SiteNav.astro';
 
 const { title = 'shea on air', background } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:animate="none">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,46 +20,63 @@ const { title = 'shea on air', background } = Astro.props;
       rel="stylesheet"
     />
     <title>{title}</title>
+    <ViewTransitions />
   </head>
   <body>
-    <div
-      class:list={['page-bg', background && `page-bg-${background}`]}
-      aria-hidden="true"
-    ></div>
+    <div class="page-bg-layers" aria-hidden="true">
+      <div
+        id="page-bg-primary"
+        class:list={['page-bg', 'page-bg-layer', 'is-visible', background && `page-bg-${background}`]}
+      ></div>
+      <div id="page-bg-secondary" class="page-bg page-bg-layer"></div>
+    </div>
 
-    <header>
-      <nav aria-label="Main" class="nav-container">
-        <a href="/">home</a>
-        <a href="/releases">releases</a>
-        <a href="/writing">writing</a>
-        <a href="/transmissions">transmissions</a>
-        <a href="/a-complete-history">a complete history</a>
-      </nav>
-    </header>
+    <div class="site-shell" data-nav-open="false">
+      <SiteNav />
+      <div class="site-main" data-background={background}>
+        <main>
+          <slot />
+        </main>
+      </div>
+    </div>
 
-    <main>
-      <slot />
-    </main>
+    <script>
+      import '../scripts/page-navigation.ts';
+    </script>
   </body>
 </html>
 
 <style>
-  .nav-container {
-    display: flex;
-    gap: 50px;
-    position: fixed;
-    top: 1.75rem;
-    right: 1rem;
+  .site-shell {
+    display: grid;
+    min-height: calc(100vh - 4rem);
   }
 
-  @media screen and (max-width: 768px) {
-  .nav-container {
-    flex-direction: column;
-    justify-content: right;
-    align-items: right;
-    gap: 12px;
+  .site-main {
+    min-width: 0;
   }
-}
 
+  @media (min-width: 48rem) {
+    .site-shell {
+      grid-template-columns: var(--nav-collapsed-width) 1fr;
+      transition: grid-template-columns var(--nav-transition);
+    }
 
+    .site-shell[data-nav-open='true'] {
+      grid-template-columns: var(--nav-open-width) 1fr;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .site-shell {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-shell {
+      transition: none;
+    }
+  }
 </style>

@@ -1,0 +1,334 @@
+---
+import { getCollection } from 'astro:content';
+import { navItems } from '../data/navigation.js';
+
+const currentPath = Astro.url.pathname;
+
+const writingEntries = (await getCollection('writing')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+const tree = navItems.map((item) => {
+  if (item.dynamicChildren === 'writing') {
+    return {
+      ...item,
+      children: writingEntries.map((entry) => ({
+        href: `/writing/${entry.slug}/`,
+        label: entry.data.title,
+      })),
+    };
+  }
+  return item;
+});
+
+function normalizePath(path) {
+  if (path !== '/' && path.endsWith('/')) return path.slice(0, -1);
+  return path;
+}
+
+const normalizedCurrent = normalizePath(currentPath);
+
+function isLinkActive(href, hasChildren = false) {
+  const normalized = normalizePath(href);
+  if (normalizedCurrent === normalized) return true;
+  if (hasChildren && normalizedCurrent.startsWith(`${normalized}/`)) return true;
+  return false;
+}
+---
+
+<div class="site-nav">
+  <button
+    type="button"
+    class="menu-trigger"
+    aria-expanded="false"
+    aria-controls="site-nav"
+  >
+    menu
+  </button>
+
+  <aside class="nav-drawer" id="site-nav" aria-hidden="true">
+    <button type="button" class="nav-close" aria-label="Close menu">
+      &lt;&lt;
+    </button>
+
+    <nav aria-label="Main">
+      <ul class="nav-tree">
+        {
+          tree.map((item) => {
+            const hasChildren = item.children && item.children.length > 0;
+            const parentActive = isLinkActive(item.href, hasChildren);
+            return (
+              <li class:list={[{ 'has-children': hasChildren }]}>
+                <a
+                  href={item.href}
+                  class:list={[{ active: parentActive }]}
+                  aria-current={
+                    normalizedCurrent === normalizePath(item.href)
+                      ? 'page'
+                      : undefined
+                  }
+                >
+                  {item.label}
+                </a>
+                {hasChildren && (
+                  <ul>
+                    {item.children.map((child) => {
+                      const childActive = isLinkActive(child.href);
+                      return (
+                        <li>
+                          <a
+                            href={child.href}
+                            class:list={[{ active: childActive }]}
+                            aria-current={childActive ? 'page' : undefined}
+                          >
+                            {child.label}
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+  </aside>
+</div>
+
+<style>
+  .site-nav {
+    position: relative;
+    z-index: 20;
+  }
+
+  .menu-trigger,
+  .nav-close {
+    font: inherit;
+    font-size: var(--font-size-sm);
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    text-transform: lowercase;
+  }
+
+  .menu-trigger:hover,
+  .menu-trigger:focus-visible,
+  .nav-close:hover,
+  .nav-close:focus-visible {
+    color: var(--color-accent);
+    outline: none;
+  }
+
+  .nav-drawer {
+    overflow: hidden;
+  }
+
+  .nav-close {
+    display: none;
+    padding-bottom: 0.5rem;
+  }
+
+  .nav-tree {
+    list-style: none;
+    margin: 0;
+    padding: 0 1rem 1.5rem 1.5rem;
+  }
+
+  .nav-tree ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 1.25rem;
+    position: relative;
+  }
+
+  .nav-tree ul::before {
+    content: '';
+    position: absolute;
+    left: 0.35rem;
+    top: 0;
+    bottom: 0.5rem;
+    width: 1px;
+    background: color-mix(in srgb, var(--color-text) 30%, transparent);
+  }
+
+  .nav-tree li {
+    position: relative;
+    padding: 0.2rem 0;
+  }
+
+  .nav-tree > li::before {
+    content: '';
+    position: absolute;
+    left: -0.85rem;
+    top: 0.7em;
+    width: 0.65rem;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-text) 30%, transparent);
+  }
+
+  .nav-tree ul li::before {
+    content: '';
+    position: absolute;
+    left: -0.9rem;
+    top: 0.7em;
+    width: 0.65rem;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-text) 30%, transparent);
+  }
+
+  .nav-tree > li:first-child::after {
+    content: '';
+    position: absolute;
+    left: -0.85rem;
+    top: 0;
+    height: 0.7em;
+    width: 1px;
+    background: color-mix(in srgb, var(--color-text) 30%, transparent);
+  }
+
+  .nav-tree > li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: -0.85rem;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: color-mix(in srgb, var(--color-text) 30%, transparent);
+  }
+
+  .nav-tree > li:last-child:not(:only-child)::after {
+    bottom: auto;
+    height: 0.7em;
+  }
+
+  .nav-tree a {
+    color: inherit;
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+  }
+
+  .nav-tree a:hover,
+  .nav-tree a:focus-visible {
+    color: var(--color-accent);
+    outline: none;
+  }
+
+  .nav-tree a.active {
+    color: var(--color-accent);
+  }
+
+  /* Desktop: left strip + slide-open drawer */
+  @media (min-width: 48rem) {
+    .site-nav {
+      min-height: 100%;
+      border-right: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+    }
+
+    .menu-trigger {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      padding: 1rem 0.75rem;
+      writing-mode: horizontal-tb;
+    }
+
+    .nav-drawer {
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity var(--nav-transition),
+        visibility var(--nav-transition);
+    }
+
+    :global(.site-shell[data-nav-open='true']) .nav-drawer {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    :global(.site-shell[data-nav-open='true']) .menu-trigger {
+      display: none;
+    }
+
+    :global(.site-shell[data-nav-open='true']) .nav-close {
+      display: block;
+    }
+  }
+
+  /* Mobile: top bar + dropdown */
+  @media (max-width: 47.99rem) {
+    .site-nav {
+      border-bottom: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+    }
+
+    .menu-trigger {
+      width: 100%;
+      min-height: var(--header-height);
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-drawer {
+      max-height: 0;
+      visibility: hidden;
+      transition:
+        max-height var(--nav-transition),
+        visibility var(--nav-transition);
+    }
+
+    :global(.site-shell[data-nav-open='true']) .nav-drawer {
+      max-height: var(--nav-drawer-max);
+      visibility: visible;
+    }
+
+    :global(.site-shell[data-nav-open='true']) .nav-close {
+      display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-drawer {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const shell = document.querySelector('.site-shell');
+  const trigger = document.querySelector('.menu-trigger');
+  const closeBtn = document.querySelector('.nav-close');
+  const drawer = document.getElementById('site-nav');
+
+  function setOpen(open) {
+    shell?.setAttribute('data-nav-open', open ? 'true' : 'false');
+    trigger?.setAttribute('aria-expanded', String(open));
+    drawer?.setAttribute('aria-hidden', String(!open));
+    if (!open) trigger?.focus();
+  }
+
+  trigger?.addEventListener('click', () => {
+    const isOpen = shell?.getAttribute('data-nav-open') === 'true';
+    setOpen(!isOpen);
+  });
+
+  closeBtn?.addEventListener('click', () => setOpen(false));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && shell?.getAttribute('data-nav-open') === 'true') {
+      setOpen(false);
+    }
+  });
+
+  drawer?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (window.matchMedia('(max-width: 47.99rem)').matches) {
+        setOpen(false);
+      }
+    });
+  });
+</script>
