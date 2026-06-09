@@ -1,0 +1,110 @@
+---
+import { releases } from '../data/releases.js';
+
+const placeholderImage = '/images/release-placeholder.svg';
+
+const sortedReleases = [...releases].sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+---
+
+{sortedReleases.length === 0 ? (
+  <p class="releases-empty">No releases yet.</p>
+) : (
+  <ul class="release-list">
+    {sortedReleases.map((release) => (
+      <li class="release-item">
+        {release.bandcampUrl ? (
+          <a
+            class="release-link"
+            href={release.bandcampUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={release.title}
+          >
+            <img
+              class="release-artwork"
+              src={release.image || placeholderImage}
+              alt={`${release.title} artwork`}
+              width="350"
+              height="350"
+              loading="lazy"
+            />
+          </a>
+        ) : (
+          <img
+            class="release-artwork"
+            src={release.image || placeholderImage}
+            alt={release.title}
+            width="350"
+            height="350"
+          />
+        )}
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .releases-empty {
+    margin: 0;
+  }
+
+  .release-list {
+    --release-gap: clamp(0.75rem, 2vw, 1.5rem);
+    --release-cols: 1;
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--release-gap);
+    width: 100%;
+  }
+
+  .release-item {
+    margin: 0;
+    min-width: 0;
+    flex: 0 0 calc((100% - (var(--release-cols) - 1) * var(--release-gap)) / var(--release-cols));
+  }
+
+  @media (min-width: 30rem) {
+    .release-list {
+      --release-cols: 2;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .release-list {
+      --release-cols: 3;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .release-list {
+      --release-cols: 4;
+    }
+  }
+
+  .release-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    line-height: 0;
+  }
+
+  .release-link:hover,
+  .release-link:focus-visible {
+    opacity: 0.85;
+  }
+
+  .release-artwork {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: var(--color-surface, #e8e8e8);
+  }
+</style>

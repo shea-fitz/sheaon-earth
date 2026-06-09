@@ -1,16 +1,16 @@
 :root {
   /* Color */
-  --color-bg: ;
+  --color-bg: #090D0D ;
   --color-surface: ;
-  --color-text: ;
+  --color-text: #E3E2E2;
   --color-text-muted: ;
   --color-accent: ;
   --color-border: ;
 
   /* Type scale */
-  --font-family-sans: ;
-  --font-family-serif: ;
-  --font-family-mono: ;
+  --font-family-sans: 'DM Mono', ui-monospace, monospace;
+  --font-family-serif: 'DM Mono', ui-monospace, monospace;
+  --font-family-mono: 'DM Mono', ui-monospace, monospace;
   --font-size-xs: ;
   --font-size-sm: ;
   --font-size-base: ;
@@ -33,6 +33,72 @@
   --space-10: ;
   --space-12: ;
   --space-16: ;
-  --content-max-width: ;
+  --content-max-width: 1280px;
   --page-padding: ;
+  --header-height: 3.5rem;
 }
+
+body {
+  margin: 2rem;
+  min-height: 100vh;
+  font-family: var(--font-family-mono);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--color-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.page-bg.page-bg-bg1 {
+  background-image: url('/images/bg/bg1.webp');
+}
+
+.page-bg.page-bg-bg2 {
+  background-image: url('/images/bg/bg2.webp');
+}
+
+.page-bg.page-bg-bg3 {
+  background-image: url('/images/bg/bg3.webp');
+}
+
+.page-bg.page-bg-bg4 {
+  background-image: url('/images/bg/bg4.webp');
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 1rem 1.25rem;
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+}
+
+header a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header a:hover,
+header a:focus-visible {
+  text-decoration: underline;
+}
+
+main {
+  padding-top: var(--header-height);
+}
+

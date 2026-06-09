@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { historyEvents } from '../data/history.js';
+
+const sortedEvents = [...historyEvents].sort((a, b) => b.year - a.year);
+const startYear = 1995;
+const endYear = 2026;
+---
+
+<Base title="A complete history — shea on air" background="bg4">
+  <p class="history-intro">
+    Significant events from {startYear} to {endYear} that led to making music as shea on air.
+  </p>
+
+  <ol class="timeline" aria-label="Life timeline, newest first">
+    {sortedEvents.map((event) => (
+      <li class="timeline-entry">
+        <time class="timeline-year" datetime={String(event.year)}>{event.year}</time>
+        <div class="timeline-body">
+          <h2 class="timeline-title">{event.title}</h2>
+          <p class="timeline-description">{event.description}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</Base>
+
+<style>
+  .history-intro {
+    margin-bottom: var(--space-8, 2rem);
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6, 1.5rem);
+    border-left: 2px solid var(--color-border, currentColor);
+    padding-left: var(--space-6, 1.5rem);
+  }
+
+  .timeline-entry {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: var(--space-4, 1rem);
+    align-items: start;
+  }
+
+  .timeline-year {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+
+  .timeline-title {
+    margin: 0 0 var(--space-2, 0.5rem);
+    font-size: var(--font-size-lg, 1.125rem);
+  }
+
+  .timeline-description {
+    margin: 0;
+  }
+</style>

@@ -15,7 +15,7 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<Base title={`${entry.data.title} — shea on air`}>
+<Base title={`${entry.data.title} — shea on air`} background="bg3">
   <EntryLayout
     title={entry.data.title}
     date={entry.data.date}
