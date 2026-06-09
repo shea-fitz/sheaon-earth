@@ -22,7 +22,7 @@ const { title = 'shea on air', background, flushTop = false } = Astro.props;
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <body>
+  <body data-background={background}>
     <div class="page-bg-layers" aria-hidden="true">
       <div
         id="page-bg-primary"

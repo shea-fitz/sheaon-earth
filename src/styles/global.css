@@ -28,8 +28,6 @@
   --color-surface: rgba(30, 30, 30, .2);
   --color-text: #ffffff;
   --color-text-muted: ;
-  --color-accent: #C3FF1E;
-  --color-border: #C3FF1E;
 
   /* Type scale */
   --font-family-sans: 'GT Mechanik', system-ui, sans-serif;
@@ -82,6 +80,19 @@ body {
   font-family: var(--font-family-sans);
   color: var(--color-text);
   background-color: var(--color-bg);
+  --color-accent: #C3FF1E;
+  --color-border: #C3FF1E;
+}
+
+body[data-background="bg2"] {
+  --color-accent: #FF5CE4;
+  --color-border: #FF5CE4;
+  --color-text: #15141D;
+}
+
+body[data-background="bg3"] {
+  --color-accent: #66CFFF;
+  --color-border: #66CFFF;
 }
 
 h1,

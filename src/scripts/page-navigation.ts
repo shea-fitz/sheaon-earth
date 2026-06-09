@@ -22,6 +22,15 @@ function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
+function syncBodyTheme(siteMain: Element | null) {
+  const background = (siteMain as HTMLElement | null)?.dataset.background;
+  if (background) {
+    document.body.dataset.background = background;
+  } else {
+    delete document.body.dataset.background;
+  }
+}
+
 function prepareIncomingSiteMain(siteMain: HTMLElement) {
   siteMain.classList.remove('is-leaving', 'is-entering');
   siteMain.classList.add('is-awaiting');
@@ -107,6 +116,7 @@ document.addEventListener('astro:before-swap', (event) => {
       const importedSiteMain = document.importNode(newSiteMain, true) as HTMLElement;
       prepareIncomingSiteMain(importedSiteMain);
       oldSiteMain.replaceWith(importedSiteMain);
+      syncBodyTheme(importedSiteMain);
     }
 
     restoreFocus();
@@ -116,6 +126,8 @@ document.addEventListener('astro:before-swap', (event) => {
 document.addEventListener('astro:after-swap', async () => {
   const siteMain = document.querySelector('.site-main');
   if (!siteMain) return;
+
+  syncBodyTheme(siteMain);
 
   if (prefersReducedMotion()) {
     if (pendingBackground) {
