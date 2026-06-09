@@ -131,6 +131,10 @@ h6 {
   background-image: url('/images/bg/bg4.webp');
 }
 
+.page-bg.page-bg-bg5 {
+  background-image: url('/images/bg/bg5.webp');
+}
+
 main {
   padding-top: 0;
 }
