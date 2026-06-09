@@ -1,47 +1,61 @@
 ---
 import { releases } from '../data/releases.js';
 
-const placeholderImage = '/images/release-placeholder.svg';
-
 const sortedReleases = [...releases].sort(
   (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
 );
+
+function releaseYear(date) {
+  return new Date(date).getFullYear();
+}
+
+function parseBandcampEmbed(embed) {
+  const value = embed?.trim();
+  if (!value) return null;
+  if (value.startsWith('https://bandcamp.com/EmbeddedPlayer')) return value;
+
+  const match = value.match(/src=["']([^"']+)["']/i);
+  return match?.[1] ?? null;
+}
 ---
 
 {sortedReleases.length === 0 ? (
   <p class="releases-empty">No releases yet.</p>
 ) : (
   <ul class="release-list">
-    {sortedReleases.map((release) => (
+    {sortedReleases.map((release) => {
+      const embedSrc = parseBandcampEmbed(release.embed);
+
+      return (
       <li class="release-item">
-        {release.bandcampUrl ? (
-          <a
-            class="release-link"
-            href={release.bandcampUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={release.title}
-          >
-            <img
-              class="release-artwork"
-              src={release.image || placeholderImage}
-              alt={`${release.title} artwork`}
+        {embedSrc && (
+          <div class="release-embed-wrapper">
+            <iframe
+              class="release-embed"
+              src={embedSrc}
+              title={`${release.title} — Bandcamp player`}
               width="350"
               height="350"
               loading="lazy"
+              allow="autoplay"
+              seamless
             />
-          </a>
-        ) : (
-          <img
-            class="release-artwork"
-            src={release.image || placeholderImage}
-            alt={release.title}
-            width="350"
-            height="350"
-          />
+          </div>
         )}
+        <div class="release-meta">
+          <div class="release-meta-header">
+            <div class="release-title">{release.title}</div>
+            <time class="release-year" datetime={release.date}>
+              [{releaseYear(release.date)}]
+            </time>
+          </div>
+          {release.themes?.trim() && (
+            <p class="release-themes">themes: {release.themes}</p>
+          )}
+        </div>
       </li>
-    ))}
+      );
+    })}
   </ul>
 )}
 
@@ -87,24 +101,65 @@ const sortedReleases = [...releases].sort(
     }
   }
 
-  .release-link {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    line-height: 0;
+  .release-embed-wrapper {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--color-surface, #e8e8e8);
+    border: .5px solid var(--color-accent);
   }
 
-  .release-link:hover,
-  .release-link:focus-visible {
-    opacity: 0.85;
-  }
-
-  .release-artwork {
+  .release-embed {
     display: block;
     width: 100%;
-    height: auto;
-    aspect-ratio: 1;
-    object-fit: cover;
-    background: var(--color-surface, #e8e8e8);
+    height: 100%;
+    border: 0;
+  }
+
+  .release-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    line-height: 1.4;
+    background-color: rgba(9, 13, 13, .25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 4px 8px;
+  }
+
+  .release-meta-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .release-title {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    font-style: italic;
+  }
+
+  .release-title > span {
+    font-style: normal;
+  }
+
+  .release-year {
+    font-variant-numeric: tabular-nums;
+    font-size: .875rem;
+  }
+
+  .release-type {
+    margin: 0;
+    font-size: .75rem;
+  }
+
+  .release-themes {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    opacity: 0.85;
   }
 </style>

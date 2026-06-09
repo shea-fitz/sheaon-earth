@@ -4,22 +4,22 @@
   --color-surface: ;
   --color-text: #E3E2E2;
   --color-text-muted: ;
-  --color-accent: ;
+  --color-accent: #C3FF1E;
   --color-border: ;
 
   /* Type scale */
   --font-family-sans: 'DM Mono', ui-monospace, monospace;
   --font-family-serif: 'DM Mono', ui-monospace, monospace;
   --font-family-mono: 'DM Mono', ui-monospace, monospace;
-  --font-size-xs: ;
-  --font-size-sm: ;
-  --font-size-base: ;
-  --font-size-lg: ;
+  --font-size-xs: .675rem ;
+  --font-size-sm: .875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 2rem;;
   --font-size-xl: ;
   --font-size-2xl: ;
   --font-size-3xl: ;
   --line-height-tight: ;
-  --line-height-normal: ;
+  --line-height-normal: 1.25;
   --line-height-relaxed: ;
 
   /* Spacing */
