@@ -59,7 +59,9 @@ function init() {
 }
 
 document.addEventListener('astro:before-preparation', () => {
-  if (!isHomePage()) teardown();
+  if (isHomePage()) {
+    teardown();
+  }
 });
 
 document.addEventListener('astro:page-load', init);

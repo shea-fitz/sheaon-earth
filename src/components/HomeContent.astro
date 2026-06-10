@@ -31,13 +31,13 @@ import InfluencesSection from './InfluencesSection.astro';
         <div class="contact-link"><a href="https://www.are.na/shea/" target="_blank">are.na/shea</a></div>
       </div>
     </section>
+
+    <div class="home-bg-gap" aria-hidden="true"></div>
+
+    <header class="releases-header" id="releases">
+      <h2 class="section-heading">Releases</h2>
+    </header>
   </div>
-
-  <div class="home-bg-gap" aria-hidden="true"></div>
-
-  <header class="releases-header" id="releases">
-    <h2 class="section-heading">Releases</h2>
-  </header>
 
   <section class="home-section releases-list">
     <ReleasesSection />
@@ -117,7 +117,13 @@ import InfluencesSection from './InfluencesSection.astro';
 
   @media (min-width: 48rem) {
     .home-fold {
+      display: flex;
+      flex-direction: column;
       min-height: var(--home-fold-height, calc(100dvh - var(--site-header-offset)));
+    }
+
+    .releases-header {
+      margin-top: auto;
     }
   }
 

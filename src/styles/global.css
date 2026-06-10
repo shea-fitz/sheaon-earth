@@ -1,3 +1,6 @@
+@import './site-nav.css';
+@import './site-layout.css';
+
 @font-face {
   font-family: 'GT Mechanik';
   src: url('/fonts/gtmechanik/GT-Mechanik-Semi-Regular-Trial.woff2') format('woff2');
@@ -25,7 +28,7 @@
 :root {
   /* Color */
   --color-bg: #090D0D ;
-  --color-surface: rgba(30, 30, 30, .2);
+  --color-surface: rgba(30, 30, 30, .15);
   --color-text: #ffffff;
   --color-text-muted: ;
 
@@ -64,8 +67,8 @@
   --nav-open-width: 16rem;
   --nav-drawer-max: 70vh;
   --nav-transition: 0.35s ease;
-  --page-fade-in: 600ms;
-  --page-fade-out: 300ms;
+  --page-fade-in: 500ms;
+  --page-fade-out: 200ms;
 }
 
 @media (min-width: 48rem) {
@@ -88,6 +91,9 @@ body {
   background-color: var(--color-bg);
   --color-accent: #C3FF1E;
   --color-border: #C3FF1E;
+  transition:
+    color var(--page-fade-in) ease-out,
+    border-color var(--page-fade-in) ease-out;
 }
 
 body[data-background="bg2"] {

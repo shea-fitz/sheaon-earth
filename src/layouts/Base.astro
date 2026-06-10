@@ -4,6 +4,8 @@ import '../styles/global.css';
 import SiteNav from '../components/SiteNav.astro';
 
 const { title = 'shea on air', background, flushTop = false } = Astro.props;
+
+const bgImages = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
 ---
 
 <!doctype html>
@@ -12,12 +14,31 @@ const { title = 'shea on air', background, flushTop = false } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="shea on air" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" data-astro-transition-persist="favicon" />
+    <link
+      rel="preload"
+      href="/fonts/batangche/BatangChe-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+      data-astro-transition-persist="font-batangche"
+    />
+    {
+      bgImages.map((bg) => (
+        <link
+          rel="preload"
+          href={`/images/bg/${bg}.webp`}
+          as="image"
+          data-astro-transition-persist={`bg-preload-${bg}`}
+        />
+      ))
+    }
+    <link rel="preconnect" href="https://fonts.googleapis.com" data-astro-transition-persist="fonts-google" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin data-astro-transition-persist="fonts-gstatic" />
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap"
       rel="stylesheet"
+      data-astro-transition-persist="font-dm-mono"
     />
     <title>{title}</title>
     <ViewTransitions />
@@ -33,7 +54,7 @@ const { title = 'shea on air', background, flushTop = false } = Astro.props;
 
     <div class="site-shell" data-nav-open="false">
       <SiteNav />
-      <div class:list={['site-main', { 'site-main-flush-top': flushTop }]} data-background={background}>
+      <div class:list={['site-main', 'is-awaiting', { 'site-main-flush-top': flushTop }]} data-background={background}>
         <main>
           <slot />
         </main>
@@ -46,44 +67,3 @@ const { title = 'shea on air', background, flushTop = false } = Astro.props;
     </script>
   </body>
 </html>
-
-<style>
-  .site-shell {
-    display: grid;
-  }
-
-  .site-main {
-    min-width: 0;
-    margin: 2rem;
-  }
-
-  @media (min-width: 48rem) {
-    .site-shell {
-      grid-template-columns: 1fr;
-      grid-template-rows: auto 1fr;
-    }
-
-    :global(.site-nav) {
-      grid-row: 1;
-      grid-column: 1;
-    }
-
-    .site-main {
-      grid-row: 2;
-      grid-column: 1;
-      padding-top: var(--site-header-offset);
-    }
-
-    .site-main-flush-top {
-      margin: 0;
-      padding-top: 0;
-    }
-  }
-
-  @media (max-width: 47.99rem) {
-    .site-main {
-      padding-bottom: var(--header-height);
-      margin: 1rem;
-    }
-  }
-</style>

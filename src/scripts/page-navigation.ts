@@ -1,16 +1,18 @@
 import { swapFunctions } from 'astro:transitions/client';
 import { crossfadeBackground } from './background';
+import { syncNavActiveState } from './nav-sync';
 
 const TIMING = {
-  contentOut: 300,
+  contentOut: 200,
   bgPause: 150,
-  bgFade: 600,
+  bgFade: 500,
   contentInDelay: 150,
-  contentIn: 600,
+  contentIn: 500,
 } as const;
 
 let contentEnterDelay = TIMING.contentInDelay;
-let pendingBackground: string | null = null;
+let deferThemeSync = false;
+let skipTransitionAnimations = false;
 
 function delay(ms: number) {
   return new Promise<void>((resolve) => {
@@ -22,6 +24,10 @@ function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
+function setNavigating(active: boolean) {
+  document.body.classList.toggle('is-navigating', active);
+}
+
 function syncBodyTheme(siteMain: Element | null) {
   const background = (siteMain as HTMLElement | null)?.dataset.background;
   if (background) {
@@ -29,6 +35,13 @@ function syncBodyTheme(siteMain: Element | null) {
   } else {
     delete document.body.dataset.background;
   }
+}
+
+function scheduleThemeAndNavSync(siteMain: Element | null, delayMs: number) {
+  window.setTimeout(() => {
+    syncBodyTheme(siteMain);
+    syncNavActiveState();
+  }, delayMs);
 }
 
 function prepareIncomingSiteMain(siteMain: HTMLElement) {
@@ -52,19 +65,57 @@ function startEnterAnimation(siteMain: HTMLElement) {
   });
 }
 
-function runInitialEnter() {
-  if (prefersReducedMotion()) return;
+function swapPageHead(newDocument: Document) {
+  const newTitle = newDocument.querySelector('title');
+  if (newTitle?.textContent) {
+    document.title = newTitle.textContent;
+  }
 
+  const persistedSelector = '[data-astro-transition-persist]';
+  const currentStyles = Array.from(
+    document.head.querySelectorAll(`style:not(${persistedSelector})`)
+  );
+  const newStyles = Array.from(
+    newDocument.head.querySelectorAll(`style:not(${persistedSelector})`)
+  );
+
+  const currentKeys = new Set(
+    currentStyles.map((style) => style.textContent?.trim() ?? '')
+  );
+
+  for (const style of currentStyles) {
+    const key = style.textContent?.trim() ?? '';
+    const stillNeeded = newStyles.some((next) => (next.textContent?.trim() ?? '') === key);
+    if (!stillNeeded) {
+      style.remove();
+    }
+  }
+
+  for (const style of newStyles) {
+    const key = style.textContent?.trim() ?? '';
+    if (!key || currentKeys.has(key)) continue;
+    document.head.appendChild(document.importNode(style, true));
+    currentKeys.add(key);
+  }
+}
+
+function runInitialEnter() {
   const siteMain = document.querySelector('.site-main');
   if (!siteMain) return;
 
-  prepareIncomingSiteMain(siteMain as HTMLElement);
+  syncNavActiveState();
+
+  if (prefersReducedMotion()) {
+    siteMain.classList.remove('is-awaiting', 'is-entering', 'is-leaving');
+    return;
+  }
+
   startEnterAnimation(siteMain as HTMLElement);
 
   window.setTimeout(() => {
     siteMain.classList.remove('is-entering', 'is-awaiting');
     siteMain.style.removeProperty('--content-enter-delay');
-  }, TIMING.contentIn);
+  }, contentEnterDelay + TIMING.contentIn);
 }
 
 if (document.readyState === 'loading') {
@@ -78,24 +129,36 @@ document.addEventListener('astro:before-preparation', (event) => {
 
   event.loader = async function loader(this: { newDocument: Document }) {
     contentEnterDelay = TIMING.contentInDelay;
-    pendingBackground = null;
+    deferThemeSync = false;
+    skipTransitionAnimations = false;
+    setNavigating(true);
 
     if (prefersReducedMotion()) {
       await originalLoader.call(this);
       return;
     }
 
-    document.querySelector('.site-main')?.classList.add('is-leaving');
-    await delay(TIMING.contentOut);
+    const currentBackground =
+      document.querySelector('.site-main')?.dataset.background ?? '';
+
     await originalLoader.call(this);
 
-    const currentBackground = document.querySelector('.site-main')?.dataset.background ?? '';
-    const nextBackground = this.newDocument.querySelector('.site-main')?.dataset.background ?? '';
+    const nextBackground =
+      this.newDocument.querySelector('.site-main')?.dataset.background ?? '';
+
+    if (nextBackground === currentBackground) {
+      skipTransitionAnimations = true;
+      return;
+    }
+
+    document.querySelector('.site-main')?.classList.add('is-leaving');
+    await delay(TIMING.contentOut);
 
     if (nextBackground && nextBackground !== currentBackground) {
       await delay(TIMING.bgPause);
-      pendingBackground = nextBackground;
-      contentEnterDelay = 0;
+      contentEnterDelay = Math.max(0, TIMING.bgFade - 200);
+      deferThemeSync = true;
+      crossfadeBackground(nextBackground);
     }
   };
 });
@@ -106,7 +169,7 @@ document.addEventListener('astro:before-swap', (event) => {
   event.swap = () => {
     swapFunctions.deselectScripts(event.newDocument);
     swapFunctions.swapRootAttributes(event.newDocument);
-    swapFunctions.swapHeadElements(event.newDocument);
+    swapPageHead(event.newDocument);
 
     const restoreFocus = swapFunctions.saveFocus();
     const oldSiteMain = document.querySelector('.site-main');
@@ -114,9 +177,19 @@ document.addEventListener('astro:before-swap', (event) => {
 
     if (oldSiteMain && newSiteMain) {
       const importedSiteMain = document.importNode(newSiteMain, true) as HTMLElement;
-      prepareIncomingSiteMain(importedSiteMain);
+
+      if (skipTransitionAnimations) {
+        importedSiteMain.classList.remove('is-leaving', 'is-entering', 'is-awaiting');
+        importedSiteMain.style.removeProperty('--content-enter-delay');
+      } else {
+        prepareIncomingSiteMain(importedSiteMain);
+      }
+
       oldSiteMain.replaceWith(importedSiteMain);
-      syncBodyTheme(importedSiteMain);
+
+      if (!deferThemeSync) {
+        syncBodyTheme(importedSiteMain);
+      }
     }
 
     restoreFocus();
@@ -125,37 +198,52 @@ document.addEventListener('astro:before-swap', (event) => {
 
 document.addEventListener('astro:after-swap', async () => {
   const siteMain = document.querySelector('.site-main');
-  if (!siteMain) return;
-
-  syncBodyTheme(siteMain);
+  if (!siteMain) {
+    setNavigating(false);
+    return;
+  }
 
   if (prefersReducedMotion()) {
-    if (pendingBackground) {
-      crossfadeBackground(pendingBackground);
-      pendingBackground = null;
+    syncBodyTheme(siteMain);
+    syncNavActiveState();
+
+    const background = siteMain.dataset.background;
+    if (background) {
+      crossfadeBackground(background);
     }
 
     siteMain.classList.remove('is-leaving', 'is-awaiting', 'is-entering');
     siteMain.style.removeProperty('--content-enter-delay');
     contentEnterDelay = TIMING.contentInDelay;
+    setNavigating(false);
     return;
   }
 
-  const bgEntering = pendingBackground !== null;
+  if (skipTransitionAnimations) {
+    syncBodyTheme(siteMain);
+    syncNavActiveState();
+    siteMain.classList.remove('is-leaving', 'is-awaiting', 'is-entering');
+    siteMain.style.removeProperty('--content-enter-delay');
+    contentEnterDelay = TIMING.contentInDelay;
+    requestAnimationFrame(() => setNavigating(false));
+    return;
+  }
 
-  if (pendingBackground) {
-    crossfadeBackground(pendingBackground);
-    pendingBackground = null;
+  if (deferThemeSync) {
+    scheduleThemeAndNavSync(siteMain, contentEnterDelay);
+  } else {
+    syncBodyTheme(siteMain);
+    syncNavActiveState();
   }
 
   startEnterAnimation(siteMain as HTMLElement);
 
-  const animDuration = bgEntering
-    ? Math.max(TIMING.contentIn, TIMING.bgFade)
-    : contentEnterDelay + TIMING.contentIn;
+  const animDuration = contentEnterDelay + TIMING.contentIn;
 
   await delay(animDuration);
   siteMain.classList.remove('is-entering', 'is-leaving');
   siteMain.style.removeProperty('--content-enter-delay');
   contentEnterDelay = TIMING.contentInDelay;
+  deferThemeSync = false;
+  setNavigating(false);
 });
