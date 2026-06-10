@@ -4,9 +4,11 @@ import { releaseNotesTag, slugifyTag } from '../utils/tags.js';
 
 interface Props {
   showNotesLinks?: boolean;
+  showCredits?: boolean;
+  showThemes?: boolean;
 }
 
-const { showNotesLinks = false } = Astro.props;
+const { showNotesLinks = false, showCredits = false, showThemes = false } = Astro.props;
 
 const sortedReleases = [...releases].sort(
   (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -64,15 +66,39 @@ function parseBandcampEmbed(embed) {
           <time class="release-year" datetime={release.date}>
             {releaseYear(release.date)}
           </time>
-          {release.themes?.trim() && (
+          {showThemes && release.themes?.trim() && (
             <p class="release-themes">themes: {release.themes}</p>
+          )}
+          {showCredits && release.credits?.length > 0 && (
+            <div class="release-credits">
+              <p class="release-credits-label">credits</p>
+              <ul class="release-credits-list">
+                {release.credits.map(({ role, name, url }) => (
+                  <li>
+                    <span class="release-credit-role">{role}</span>:{' '}
+                    {url ? (
+                      <a
+                        class="release-credit-link"
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {name}
+                      </a>
+                    ) : (
+                      name
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
           {showNotesLinks && (
             <a
               class="release-notes-link"
               href={`/notes/tags/${slugifyTag(releaseNotesTag(release))}/`}
             >
-              notes →
+              notes<span class="release-notes-arrow" aria-hidden="true"> ↝</span>
             </a>
           )}
         </div>
@@ -137,6 +163,7 @@ function parseBandcampEmbed(embed) {
   .release-title {
     font-family: BatangChe;
     text-transform: uppercase;
+    color: var(--color-text);
   }
 
   .release-year {
@@ -148,6 +175,7 @@ function parseBandcampEmbed(embed) {
     font-style: normal;
     font-family: BatangChe;
     text-transform: uppercase;
+    color: var(--color-text);
   }
 
   .release-themes {
@@ -157,6 +185,45 @@ function parseBandcampEmbed(embed) {
     line-height: 1.5;
   }
 
+  .release-credits {
+    margin-top: 1rem;
+  }
+
+  .release-credits-label {
+    margin: 0 0 0.5rem;
+    font-size: 0.875rem;
+    font-family: BatangChe;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+
+  .release-credits-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+    line-height: 1.25;
+  }
+
+  .release-credits-list li + li {
+    margin-top: 0.25rem;
+  }
+
+  .release-credit-role {
+    font-family: var(--font-family-sans);
+    color: var(--color-text);
+  }
+
+  .release-credit-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .release-credit-link:hover,
+  .release-credit-link:focus-visible {
+    filter: blur(2px);
+  }
+
   .release-notes-link {
     margin-top: 0.5rem;
     font-size: 0.875rem;
@@ -164,6 +231,17 @@ function parseBandcampEmbed(embed) {
     text-decoration: none;
     width: fit-content;
     transition: opacity 0.2s ease;
+    padding-top: 1rem;
+  }
+
+  .release-notes-arrow {
+    display: inline-block;
+    color: var(--color-accent);
+    line-height: 0;
+    vertical-align: -0.12em;
+    margin-left: 0.1em;
+    transform: scale(1.85);
+    transform-origin: left center;
   }
 
   .release-notes-link:hover,

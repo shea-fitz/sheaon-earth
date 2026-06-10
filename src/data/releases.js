@@ -4,6 +4,7 @@
  * bandcampUrl — link to the release on Bandcamp (required)
  * embed — Bandcamp embed iframe or EmbeddedPlayer src URL
  * notesTag — optional note tag for release-specific notes (defaults to lowercase title)
+ * credits — optional list of { role, name, url? } entries (shown on /releases only)
  */
 export const releases = [
   {
@@ -13,6 +14,12 @@ export const releases = [
     bandcampUrl: 'https://sheaonair.bandcamp.com/track/thought-loop-single',
     embed: '<iframe style="border: 0; width: 350px; height: 350px;" src="https://bandcamp.com/EmbeddedPlayer/album=608633446/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/" seamless><a href="https://doonkanda.bandcamp.com/album/celest">Celest by Doon Kanda</a></iframe>',
     themes:'olfactory impressions, rituals of excess, allure, intimacy,  parts work, adornment, leaving a passing trace of yourself, touching the veil, unfurling',
+    credits: [
+      { role: 'Flute, production, mixing', name: 'Shea Fitzpatrick' },
+      { role: 'Mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
+      { role: 'Artwork', name: 'Props Supply', url: 'https://props.supply/' },
+      { role: 'Guitar (Protector)', name: 'Seb Choe', url: 'https://sebchoe.com/Project-Broken-Spear' },
+    ],
   },
   {
     title: 'Thought Loop',
@@ -21,6 +28,11 @@ export const releases = [
     bandcampUrl: 'https://sheaonair.bandcamp.com/track/thought-loop-single',
     embed: '<iframe style="border: 0; width: 350px; height: 350px;" src="https://bandcamp.com/EmbeddedPlayer/track=3245623735/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/track/thought-loop-single">Thought Loop – Single by shea on air</a></iframe>',
     themes:'pettiness, rumination, snark, irony, obsessive compulsion, feeling like a loser',
+    credits: [
+      { role: 'Flute, snare drum, production', name: 'Shea Fitzpatrick' },
+      { role: 'Mixing & Mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
+      { role: 'Artwork', name: 'Shea Fitzpatrick' },
+    ],
   },
   {
     title: 'First Birthday',
@@ -28,6 +40,11 @@ export const releases = [
     type: 'EP',
     bandcampUrl: 'https://sheaonair.bandcamp.com/album/first-birthday-ep',
     embed: '<iframe style="border: 0; width: 350px; height: 350px;" src="https://bandcamp.com/EmbeddedPlayer/album=2107613924/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/first-birthday-ep">First Birthday – EP by shea on air</a></iframe>',
-    themes: 'neuroplasticity, tinnitus, grief, rebirth, friendship, recovery, routine'
+    themes: 'neuroplasticity, tinnitus, grief, rebirth, friendship, recovery, routine',
+    credits: [
+      { role: 'Flute, production', name: 'Shea Fitzpatrick' },
+      { role: 'Mixing & Mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
+      { role: 'Artwork', name: 'Shea Fitzpatrick' },
+    ],
   },
 ];
