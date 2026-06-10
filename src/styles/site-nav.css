@@ -43,15 +43,15 @@
 
 .menu-trigger,
 .nav-close {
-  font: inherit;
+  font-family: BatangChe;
   font-size: var(--font-size-sm);
   color: inherit;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.75rem 1rem;
-  text-align: left;
-  text-transform: lowercase;
+  text-align: center;
+  text-transform: uppercase;
   transition: color var(--page-fade-in) ease-out;
 }
 
@@ -65,7 +65,7 @@
 
 .nav-drawer {
   overflow: hidden;
-  background: transparent;
+  background: var(--color-surface);
 }
 
 .nav-close {
@@ -73,96 +73,33 @@
   padding-bottom: 0.5rem;
 }
 
-.nav-tree {
+.nav-list {
   list-style: none;
   margin: 0;
-  padding: 0 1rem 1.5rem 1.5rem;
+  padding: 0.5rem 1rem 1.25rem;
+  height: 100%;
 }
 
-.nav-tree ul {
-  list-style: none;
-  margin: 0;
-  padding: 0 0 0 1.25rem;
-  position: relative;
-}
-
-.nav-tree ul::before {
-  content: '';
-  position: absolute;
-  left: 0.35rem;
-  top: 0;
-  bottom: 0.5rem;
-  width: 1px;
-  background: color-mix(in srgb, var(--color-text) 30%, transparent);
-}
-
-.nav-tree li {
-  position: relative;
-}
-
-.nav-tree > li::before {
-  content: '';
-  position: absolute;
-  left: -0.85rem;
-  top: 0.7em;
-  width: 0.65rem;
-  height: 1px;
-  background: color-mix(in srgb, var(--color-text) 30%, transparent);
-}
-
-.nav-tree ul li::before {
-  content: '';
-  position: absolute;
-  left: -0.9rem;
-  top: 0.7em;
-  width: 0.65rem;
-  height: 1px;
-  background: color-mix(in srgb, var(--color-text) 30%, transparent);
-}
-
-.nav-tree > li:first-child::after {
-  content: '';
-  position: absolute;
-  left: -0.85rem;
-  top: 0;
-  height: 0.7em;
-  width: 1px;
-  background: color-mix(in srgb, var(--color-text) 30%, transparent);
-}
-
-.nav-tree > li:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: -0.85rem;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: color-mix(in srgb, var(--color-text) 30%, transparent);
-}
-
-.nav-tree > li:last-child:not(:only-child)::after {
-  bottom: auto;
-  height: 0.7em;
-}
-
-.nav-tree a {
+.nav-list a {
   display: block;
   padding: 0.75rem 0.5rem;
   margin: 0 -0.5rem;
   color: inherit;
   text-decoration: none;
-  font-size: var(--font-size-sm);
+  font-family: BatangChe;
+  font-size: 2rem;
   line-height: var(--line-height-normal);
+  text-transform: uppercase;
   transition: color var(--page-fade-in) ease-out;
 }
 
-.nav-tree a:hover,
-.nav-tree a:focus-visible {
+.nav-list a:hover,
+.nav-list a:focus-visible {
   color: var(--color-accent);
   outline: none;
 }
 
-.nav-tree a.active {
+.nav-list a.active {
   color: var(--color-accent);
 }
 
@@ -214,32 +151,72 @@
 }
 
 @media (max-width: 47.99rem) {
-  .mobile-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    align-self: start;
   }
 
-  .menu-trigger {
+  .mobile-nav {
+    position: relative;
     width: 100%;
-    min-height: var(--header-height);
+  }
+
+  .mobile-nav-bar {
     display: flex;
     align-items: center;
-    border-top: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+    gap: 1rem;
+    min-height: max(var(--header-height), 44px);
+    padding: 0 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+    backdrop-filter: blur(3px);
+  }
+
+  .mobile-nav-home {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    color: inherit;
+    text-decoration: none;
+    line-height: 1;
+    text-transform: none;
+    transition: color var(--page-fade-in) ease-out;
+  }
+
+  .mobile-nav-home:hover,
+  .mobile-nav-home:focus-visible {
+    color: var(--color-accent);
+    outline: none;
+  }
+
+  .mobile-nav-home.active {
+    color: var(--color-accent);
+  }
+
+  .mobile-nav .menu-trigger {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0 1rem;
+    margin-right: -1rem;
     transition:
       color var(--page-fade-in) ease-out,
       border-color var(--page-fade-in) ease-out;
   }
 
   .nav-drawer {
-    position: fixed;
-    bottom: var(--header-height);
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
     max-height: 0;
     overflow: hidden;
-    border-top: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+    backdrop-filter: blur(10px);
     visibility: hidden;
     pointer-events: none;
     transition:
@@ -253,9 +230,6 @@
     pointer-events: auto;
   }
 
-  .site-shell[data-nav-open='true'] .nav-close {
-    display: block;
-  }
 }
 
 body.is-navigating .desktop-nav {

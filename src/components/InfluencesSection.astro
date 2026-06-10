@@ -27,12 +27,23 @@ const categories = [
   .influences-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 32px;
+    gap: 1rem;
   }
 
   .influence-group {
     flex: 1 1 8rem;
     min-width: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .influences-grid {
+      flex-wrap: nowrap;
+    }
+
+    .influence-group {
+      flex: 0 0 auto;
+      max-width: 250px;
+    }
   }
 
   .influence-label {

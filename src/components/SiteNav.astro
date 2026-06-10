@@ -85,57 +85,46 @@ const isHomeActive = normalizedCurrent === '/';
   </nav>
 
   <div class="mobile-nav">
-    <button
-      type="button"
-      class="menu-trigger"
-      aria-expanded="false"
-      aria-controls="site-nav"
-    >
-      menu
-    </button>
+    <div class="mobile-nav-bar">
+      <a
+        href="/"
+        class:list={['nav-home', 'mobile-nav-home', { active: isHomeActive }]}
+        aria-label="home"
+        aria-current={isHomeActive ? 'page' : undefined}
+        data-nav-href="/"
+      >
+        ꩜
+      </a>
+      <button
+        type="button"
+        class="menu-trigger"
+        aria-expanded="false"
+        aria-controls="site-nav"
+      >
+        menu
+      </button>
+    </div>
 
     <aside class="nav-drawer" id="site-nav" aria-hidden="true">
-      <button type="button" class="nav-close" aria-label="Close menu">
-        &lt;&lt;
-      </button>
 
       <nav aria-label="Main">
-        <ul class="nav-tree">
+        <ul class="nav-list">
           {
-            tree.map((item) => {
-              const hasChildren = item.children && item.children.length > 0;
-              const parentActive = isLinkActive(item.href, hasChildren);
+            visibleNavItems.map((item) => {
+              const hasChildren = item.dynamicChildren !== undefined;
+              const active = isLinkActive(item.href, hasChildren);
               return (
-                <li class:list={[{ 'has-children': hasChildren }]}>
+                <li>
                   <a
                     href={item.href}
-                    class:list={[{ active: parentActive }]}
-                    aria-current={parentActive ? 'page' : undefined}
+                    class:list={[{ active }]}
+                    aria-current={active ? 'page' : undefined}
                     data-nav-href={item.href}
                     data-nav-has-children={hasChildren ? 'true' : undefined}
                     data-smooth-scroll={item.scrollTarget}
                   >
                     {item.label}
                   </a>
-                  {hasChildren && (
-                    <ul>
-                      {item.children.map((child) => {
-                        const childActive = isLinkActive(child.href);
-                        return (
-                          <li>
-                            <a
-                              href={child.href}
-                              class:list={[{ active: childActive }]}
-                              aria-current={childActive ? 'page' : undefined}
-                              data-nav-href={child.href}
-                            >
-                              {child.label}
-                            </a>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
                 </li>
               );
             })
@@ -149,7 +138,6 @@ const isHomeActive = normalizedCurrent === '/';
 <script>
   const shell = document.querySelector('.site-shell');
   const trigger = document.querySelector('.menu-trigger');
-  const closeBtn = document.querySelector('.nav-close');
   const drawer = document.getElementById('site-nav');
 
   function setOpen(open) {
@@ -163,8 +151,6 @@ const isHomeActive = normalizedCurrent === '/';
     const isOpen = shell?.getAttribute('data-nav-open') === 'true';
     setOpen(!isOpen);
   });
-
-  closeBtn?.addEventListener('click', () => setOpen(false));
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && shell?.getAttribute('data-nav-open') === 'true') {

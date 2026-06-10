@@ -51,7 +51,7 @@ import InfluencesSection from './InfluencesSection.astro';
   <section class="home-section influences-section">
     <h2 class="section-heading">Influences</h2>
     <div class="playlist-embed">
-      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/7ImqtO0F0s524tzNZqn8ZR?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <iframe data-testid="embed-iframe" style="border-radius:24px" src="https://open.spotify.com/embed/playlist/7ImqtO0F0s524tzNZqn8ZR?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
     <InfluencesSection />
   </section>
@@ -221,12 +221,11 @@ import InfluencesSection from './InfluencesSection.astro';
   }
 
   .playlist-embed {
-    opacity: 80%;
-    margin-bottom: 32px;
+    opacity: 70%;
+    margin-bottom: 2rem;
   }
 
   .playlist-embed > iframe {
-    mix-blend-mode: screen;
     border: .5px solid var(--color-accent);
   }
 
