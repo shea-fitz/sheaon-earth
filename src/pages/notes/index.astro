@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import NotesList from '../../components/NotesList.astro';
 
 const entries = (await getCollection('notes')).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
@@ -8,90 +9,5 @@ const entries = (await getCollection('notes')).sort(
 ---
 
 <Base title="shea on air: notes" background="bg3" flushTop>
-  {entries.length === 0 ? (
-    <p>No notes yet.</p>
-  ) : (
-    <ul class="notes-list">
-      {entries.map((entry) => {
-        const isoDate = entry.data.date.toISOString().slice(0, 10);
-        return (
-          <li>
-            <a href={`/notes/${entry.slug}/`} class="notes-list-item">
-              <time class="notes-list-date" datetime={isoDate}>{isoDate}</time>
-              <span class="notes-list-title">{entry.data.title}</span>
-            </a>
-          </li>
-        );
-      })}
-    </ul>
-  )}
+  <NotesList entries={entries} />
 </Base>
-
-<style>
-  .notes-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-  }
-
-  @media (min-width: 48rem) {
-    .notes-list {
-      margin-top: var(--site-header-offset);
-    }
-  }
-
-  .notes-list-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.75rem 2rem;
-    text-decoration: none;
-    color: inherit;
-    background: var(--color-surface);
-    backdrop-filter: blur(5px);
-    border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
-    transition: background 0.2s ease;
-  }
-
-  .notes-list-item:first-child {
-    border-top: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
-  }
-
-  .notes-list-item:hover,
-  .notes-list-item:focus-visible {
-    background: color-mix(in srgb, var(--color-accent) 20%, transparent);
-    backdrop-filter: blur(5px);
-    outline: none;
-  }
-
-  .notes-list-date {
-    font-family: var(--font-family-sans);
-    font-size: 1rem;
-    font-variant-numeric: tabular-nums;
-    color: var(--color-accent);
-  }
-
-  .notes-list-title {
-    font-family: var(--font-family-batangche);
-    font-size: 2rem;
-  }
-
-  @media (max-width: 768px) {
-    .notes-list-item {
-      padding: .75rem 1rem;
-      line-height: 1.15;
-    }
-
-    .notes-list-date {
-      font-size: .875rem;
-    }
-
-    .notes-list-title {
-      font-size: 1.5rem;
-    }
-  
-  }
-</style>

@@ -1,4 +1,6 @@
 ---
+import { slugifyTag } from '../utils/tags.js';
+
 const { title, date, tags } = Astro.props;
 
 const isoDate = date instanceof Date ? date.toISOString().slice(0, 10) : date;
@@ -13,7 +15,9 @@ const isoDate = date instanceof Date ? date.toISOString().slice(0, 10) : date;
       {tags?.length > 0 && (
         <ul class="entry-tags">
           {tags.map((tag) => (
-            <li>{tag}</li>
+            <li>
+              <a href={`/notes/tags/${slugifyTag(tag)}/`} class="entry-tag-link">{tag}</a>
+            </li>
           ))}
         </ul>
       )}
@@ -101,6 +105,12 @@ const isoDate = date instanceof Date ? date.toISOString().slice(0, 10) : date;
   }
 
   .entry-tags li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .entry-tag-link {
+    display: inline-block;
     font-family: var(--font-family-sans);
     font-size: var(--font-size-xs);
     line-height: 1.25;
@@ -108,6 +118,14 @@ const isoDate = date instanceof Date ? date.toISOString().slice(0, 10) : date;
     border: 1px solid color-mix(in srgb, var(--color-accent) 50%, transparent);
     background: color-mix(in srgb, var(--color-accent) 12%, transparent);
     color: var(--color-text);
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .entry-tag-link:hover,
+  .entry-tag-link:focus-visible {
+    background: color-mix(in srgb, var(--color-accent) 25%, transparent);
+    outline: none;
   }
 
   .entry-content :global(a) {

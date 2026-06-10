@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import NotesList from '../../../components/NotesList.astro';
+import { filterNotesByTag, getUniqueTags } from '../../../utils/tags.js';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('notes');
+  const uniqueTags = getUniqueTags(entries);
+
+  return uniqueTags.map(({ slug, label }) => ({
+    params: { tag: slug },
+    props: { tagLabel: label },
+  }));
+}
+
+const { tagLabel } = Astro.props;
+
+const allEntries = await getCollection('notes');
+const entries = filterNotesByTag(allEntries, tagLabel).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<Base title={`shea on air: notes tagged ${tagLabel}`} background="bg3" flushTop>
+  <div class="tagged-notes-page">
+    <header class="tagged-notes-header">
+      <a href="/notes/" class="tagged-notes-back">⬿</a>
+      <h1 class="tagged-notes-heading">notes tagged: {tagLabel}</h1>
+    </header>
+    <NotesList entries={entries} />
+  </div>
+</Base>
+
+<style>
+  .tagged-notes-page {
+    width: 100%;
+  }
+
+  .tagged-notes-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 2rem;
+    margin-top: var(--site-header-offset);
+    background: var(--color-surface);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
+
+  .tagged-notes-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-shrink: 0;
+    font-family: var(--font-family-batangche);
+    font-size: 1rem;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--color-accent);
+    border: 0.5px solid var(--color-accent);
+    background: transparent;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: color 0.2s ease;
+  }
+
+  .tagged-notes-back:hover,
+  .tagged-notes-back:focus-visible {
+    outline: none;
+  }
+
+  .tagged-notes-heading {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: inherit;
+    font-family: var(--font-family-batangche);
+    text-transform: lowercase;
+  }
+
+  .tagged-notes-page :global(.notes-list) {
+    margin-top: 0;
+  }
+
+  @media (max-width: 768px) {
+    .tagged-notes-header {
+      padding: 0.75rem 1rem;
+    }
+
+    .tagged-notes-heading {
+      font-size: 1rem;
+    }
+  }
+</style>

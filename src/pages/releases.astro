@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import ReleasesSection from '../components/ReleasesSection.astro';
+import '../styles/release-grid.css';
+---
+
+<Base title="shea on air: releases" background="bg4">
+  <div class="releases-page release-grid-context">
+    <h1 class="releases-heading">Releases</h1>
+    <ReleasesSection showNotesLinks />
+  </div>
+</Base>
+
+<style>
+  .releases-page {
+    width: 100%;
+  }
+
+  .releases-heading {
+    margin: 0 0 1rem;
+    font-size: 2rem;
+    font-weight: inherit;
+    scroll-margin-top: var(--site-header-offset);
+  }
+</style>

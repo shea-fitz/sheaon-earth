@@ -2,9 +2,10 @@
 import ReleasesSection from './ReleasesSection.astro';
 import ShowsAndFeaturesSection from './ShowsAndFeaturesSection.astro';
 import InfluencesSection from './InfluencesSection.astro';
+import '../styles/release-grid.css';
 ---
 
-<div class="home-content">
+<div class="home-content release-grid-context">
   <section class="home-section info">
     <p>shea on air is the solo musical project of flutist, drummer, producer, and designer Shea Fitzpatrick.</p>
     <div class="stream-list">
@@ -57,36 +58,6 @@ import InfluencesSection from './InfluencesSection.astro';
 </div>
 
 <style>
-  .home-content {
-    --release-gap: clamp(0.75rem, 2vw, 1.5rem);
-    --release-cols: 1;
-    --release-col-width: calc(
-      (100% - (var(--release-cols) - 1) * var(--release-gap)) / var(--release-cols)
-    );
-    --release-span-3-width: min(
-      100%,
-      calc(3 * var(--release-col-width) + 2 * var(--release-gap))
-    );
-  }
-
-  @media (min-width: 30rem) {
-    .home-content {
-      --release-cols: 2;
-    }
-  }
-
-  @media (min-width: 48rem) {
-    .home-content {
-      --release-cols: 3;
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .home-content {
-      --release-cols: 4;
-    }
-  }
-
   .home-section {
     position: relative;
     z-index: 1;

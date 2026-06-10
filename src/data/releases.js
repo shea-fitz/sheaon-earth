@@ -3,6 +3,7 @@
  *
  * bandcampUrl — link to the release on Bandcamp (required)
  * embed — Bandcamp embed iframe or EmbeddedPlayer src URL
+ * notesTag — optional note tag for release-specific notes (defaults to lowercase title)
  */
 export const releases = [
   {

@@ -1,0 +1,29 @@
+.release-grid-context {
+  --release-gap: clamp(0.75rem, 2vw, 1.5rem);
+  --release-cols: 1;
+  --release-col-width: calc(
+    (100% - (var(--release-cols) - 1) * var(--release-gap)) / var(--release-cols)
+  );
+  --release-span-3-width: min(
+    100%,
+    calc(3 * var(--release-col-width) + 2 * var(--release-gap))
+  );
+}
+
+@media (min-width: 30rem) {
+  .release-grid-context {
+    --release-cols: 2;
+  }
+}
+
+@media (min-width: 48rem) {
+  .release-grid-context {
+    --release-cols: 3;
+  }
+}
+
+@media (min-width: 64rem) {
+  .release-grid-context {
+    --release-cols: 4;
+  }
+}
