@@ -5,12 +5,21 @@
 export const historyEvents = [
   {
     year: 2026,
-    title: 'shea on air',
-    description: 'Placeholder — describe what is happening now with the project.',
+    title: 'Two Perfumes releases',
   },
+
+  {
+    year: 2023,
+    title: 'I wake up one morning with severe tinnitus that never goes away',
+  },
+
+  {
+    year: 2002,
+    title: 'my uncle teaches me a polyrhytmic clave pattern that we played with our hands on our laps & insists I learn the drums',
+  },
+
   {
     year: 1995,
     title: 'Beginning',
-    description: 'Placeholder — describe where it all started.',
   },
 ];

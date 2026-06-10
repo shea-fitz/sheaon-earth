@@ -9,7 +9,7 @@ const endYear = 2026;
 
 <Base title="An incomplete history — shea on air" background="bg5">
   <p class="history-intro">
-    Significant events from {startYear} to {endYear} that led to making music as shea on air.
+    Every moment is a culmination of every moment
   </p>
 
   <ol class="timeline" aria-label="Life timeline, newest first">
@@ -17,8 +17,7 @@ const endYear = 2026;
       <li class="timeline-entry">
         <time class="timeline-year" datetime={String(event.year)}>{event.year}</time>
         <div class="timeline-body">
-          <h2 class="timeline-title">{event.title}</h2>
-          <p class="timeline-description">{event.description}</p>
+          <p class="timeline-title">{event.title}</p>
         </div>
       </li>
     ))}
@@ -27,7 +26,9 @@ const endYear = 2026;
 
 <style>
   .history-intro {
-    margin-bottom: var(--space-8, 2rem);
+    margin-bottom: 2rem;
+    font-style: italic;
+    margin-b
   }
 
   .timeline {
@@ -36,9 +37,11 @@ const endYear = 2026;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-6, 1.5rem);
-    border-left: 2px solid var(--color-border, currentColor);
+    gap: 1rem;
+    border-left: 1px solid var(--color-border, currentColor);
     padding-left: var(--space-6, 1.5rem);
+    max-width: 32rem;
+    margin-left: 5rem;
   }
 
   .timeline-entry {
@@ -51,14 +54,25 @@ const endYear = 2026;
   .timeline-year {
     font-variant-numeric: tabular-nums;
     font-weight: 600;
+    margin-left: 1rem;
+    color: var(--color-accent);
+    font-size: .875rem;
   }
 
   .timeline-title {
-    margin: 0 0 var(--space-2, 0.5rem);
-    font-size: var(--font-size-lg, 1.125rem);
+    margin: 0;
+    padding-bottom: .5rem;
+    font-size: 1rem;
   }
 
   .timeline-description {
     margin: 0;
+    font-size: .75rem;
+  }
+
+  @media (max-width: 500px) {
+    .timeline {
+      margin-left: 2rem;
+    }
   }
 </style>
