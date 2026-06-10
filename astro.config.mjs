@@ -6,5 +6,6 @@ export default defineConfig({
   redirects: {
     '/writing': '/notes',
     '/writing/[slug]': '/notes/[slug]',
+    '/a-complete-history': '/an-incomplete-history',
   },
 });

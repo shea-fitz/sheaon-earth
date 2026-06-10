@@ -7,6 +7,31 @@
   margin: 2rem;
 }
 
+.site-main-has-overlay {
+  position: relative;
+  margin: 0;
+  padding-top: var(--site-header-offset);
+}
+
+.site-main-overlay {
+  position: fixed;
+  top: var(--site-header-offset);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(17, 60, 37, 0.5);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.site-main-has-overlay > main {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+}
+
 @media (min-width: 48rem) {
   .site-shell {
     grid-template-columns: 1fr;
@@ -49,5 +74,14 @@
 
   .site-main-flush-top {
     margin-top: 0;
+  }
+
+  .site-main-has-overlay {
+    margin: 0;
+    padding-top: 0;
+  }
+
+  .site-main-has-overlay > main {
+    padding: 1rem;
   }
 }

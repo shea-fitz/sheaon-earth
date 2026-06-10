@@ -104,17 +104,21 @@
 }
 
 @media (min-width: 48rem) {
-  .desktop-nav {
-    display: flex;
-    align-items: stretch;
-    justify-content: space-between;
+  .site-nav {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 100;
-    box-sizing: border-box;
     height: var(--site-header-offset);
+  }
+
+  .desktop-nav {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
     padding: 0 1rem;
     border-bottom: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
     transition:
@@ -232,8 +236,10 @@
 
 }
 
-body.is-navigating .desktop-nav {
+body.is-navigating .desktop-nav,
+body.is-navigating .site-main-overlay {
   backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 body.is-navigating .site-nav a,

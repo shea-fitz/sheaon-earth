@@ -3,7 +3,7 @@ import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import SiteNav from '../components/SiteNav.astro';
 
-const { title = 'shea on air', background, flushTop = false } = Astro.props;
+const { title = 'shea on air', background, flushTop = false, backgroundOverlay = false } = Astro.props;
 
 const bgImages = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
 ---
@@ -54,7 +54,11 @@ const bgImages = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
 
     <div class="site-shell" data-nav-open="false">
       <SiteNav />
-      <div class:list={['site-main', 'is-awaiting', { 'site-main-flush-top': flushTop }]} data-background={background}>
+      <div
+        class:list={['site-main', 'is-awaiting', { 'site-main-flush-top': flushTop, 'site-main-has-overlay': backgroundOverlay }]}
+        data-background={background}
+      >
+        {backgroundOverlay && <div class="site-main-overlay" aria-hidden="true"></div>}
         <main>
           <slot />
         </main>

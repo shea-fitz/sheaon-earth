@@ -1,23 +1,156 @@
 ---
 const { title, date, tags } = Astro.props;
 
-const formattedDate = date instanceof Date
-  ? date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-  : date;
+const isoDate = date instanceof Date ? date.toISOString().slice(0, 10) : date;
 ---
 
-<header class="entry-header">
-  <h1>{title}</h1>
-  <p class="entry-date"><time datetime={date instanceof Date ? date.toISOString() : date}>{formattedDate}</time></p>
-  {tags?.length > 0 && (
-    <ul class="entry-tags">
-      {tags.map((tag) => (
-        <li>{tag}</li>
-      ))}
-    </ul>
-  )}
-</header>
+<div class="entry-page">
+  <a href="/notes/" class="entry-back">⬿</a>
+  <div class="entry-main">
+    <header class="entry-header">
+      <h1>{title}</h1>
+      <p class="entry-date"><time datetime={isoDate}>{isoDate}</time></p>
+      {tags?.length > 0 && (
+        <ul class="entry-tags">
+          {tags.map((tag) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
+      )}
+    </header>
 
-<article class="entry-content">
-  <slot />
-</article>
+    <article class="entry-content">
+      <slot />
+    </article>
+  </div>
+</div>
+
+<style>
+  .entry-page {
+    --entry-content-max-width: 38rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, var(--entry-content-max-width));
+    gap: 1.5rem 2rem;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .entry-back {
+    position: sticky;
+    top: calc(var(--site-header-offset) + 2rem);
+    align-self: start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    font-family: var(--font-family-batangche);
+    font-size: 1rem;
+    line-height: 1;
+    text-decoration: none;
+    color: var(--color-accent);
+    border: 0.5px solid var(--color-accent);
+    background: transparent;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: color 0.2s ease;
+    z-index: 2;
+  }
+
+  .entry-back:hover,
+  .entry-back:focus-visible {
+    outline: none;
+  }
+
+  .entry-main {
+    width: 100%;
+    max-width: var(--entry-content-max-width);
+    min-width: 0;
+  }
+
+  .entry-main > p {
+    line-height: 1.5;
+  }
+
+  .entry-header {
+    margin-bottom: 2rem;
+    text-transform: none;
+  }
+
+  .entry-header h1 {
+    margin: 0 0 0.5rem;
+    font-size: 2.5rem;
+    text-transform: none;
+  }
+
+  .entry-date {
+    margin: 0 0 2rem;
+    font-size: .875rem;
+    color: var(--color-accent);
+  }
+
+  .entry-tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .entry-tags li {
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-xs);
+    line-height: 1.25;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 50%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+    color: var(--color-text);
+  }
+
+  .entry-content :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+    text-underline-offset: 0.15em;
+    transition: text-decoration-color 0.2s ease;
+  }
+
+  .entry-content :global(a:hover),
+  .entry-content :global(a:focus-visible) {
+    text-decoration-color: var(--color-accent);
+    outline: none;
+  }
+
+  .entry-content :global(img) {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .entry-content :global(figure) {
+    margin: 1.5rem 0;
+  }
+
+  .entry-content :global(figcaption) {
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 47.99rem) {
+    .entry-page {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .entry-back {
+      position: fixed;
+      top: calc(var(--site-header-offset) + 1rem);
+      left: 1rem;
+    }
+
+    .entry-main {
+      padding-top: 3.75rem;
+    }
+  }
+</style>
