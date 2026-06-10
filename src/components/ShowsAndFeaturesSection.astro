@@ -54,10 +54,7 @@ const rows = sections.flatMap(({ label, items }, sectionIndex) =>
   }
 
   .shows-table {
-    --release-col-width: calc(
-      (100% - (var(--release-cols) - 1) * var(--release-gap)) / var(--release-cols)
-    );
-    width: min(100%, calc(3 * var(--release-col-width) + 2 * var(--release-gap)));
+    width: var(--release-span-3-width);
     display: grid;
     grid-template-columns: 8ch max-content minmax(0, 1fr) max-content;
     column-gap: var(--release-gap);

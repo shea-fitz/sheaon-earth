@@ -38,7 +38,7 @@ export const showsAndFeatures = [
 
   {
     date: '2025-10-17',
-    title: 'Index Greenpoint Launch Party',
+    title: 'Index Greenpoint Launch',
     link: null,
     location: 'Brooklyn, NY',
     status: 'past',
