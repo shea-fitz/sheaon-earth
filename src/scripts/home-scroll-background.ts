@@ -1,8 +1,10 @@
 import { crossfadeBackground } from './background';
 
-const SCROLL_THRESHOLD = 0.5;
+const MID_SCROLL_THRESHOLD = 0.5;
+const BOTTOM_SCROLL_THRESHOLD = 0.9;
 const HOME_BACKGROUND = 'bg1';
-const SCROLL_BACKGROUND = 'bg4';
+const MID_SCROLL_BACKGROUND = 'bg4';
+const BOTTOM_SCROLL_BACKGROUND = 'bg5';
 
 let activeController: AbortController | null = null;
 let currentBackground: string | null = null;
@@ -25,7 +27,9 @@ function getScrollDepth() {
 }
 
 function backgroundForScrollDepth(depth: number) {
-  return depth >= SCROLL_THRESHOLD ? SCROLL_BACKGROUND : HOME_BACKGROUND;
+  if (depth >= BOTTOM_SCROLL_THRESHOLD) return BOTTOM_SCROLL_BACKGROUND;
+  if (depth >= MID_SCROLL_THRESHOLD) return MID_SCROLL_BACKGROUND;
+  return HOME_BACKGROUND;
 }
 
 function applyBackgroundForScroll() {
