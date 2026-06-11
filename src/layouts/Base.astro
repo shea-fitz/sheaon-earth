@@ -3,7 +3,13 @@ import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import SiteNav from '../components/SiteNav.astro';
 
-const { title = 'shea on air', background, flushTop = false, backgroundOverlay = false } = Astro.props;
+const {
+  title = 'shea on air',
+  background,
+  flushTop = false,
+  backgroundOverlay = false,
+  flipBackground = false,
+} = Astro.props;
 
 const bgImages = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
 ---
@@ -47,7 +53,7 @@ const bgImages = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
     <div class="page-bg-layers" aria-hidden="true">
       <div
         id="page-bg-primary"
-        class:list={['page-bg', 'page-bg-layer', 'is-visible', background && `page-bg-${background}`]}
+        class:list={['page-bg', 'page-bg-layer', 'is-visible', background && `page-bg-${background}`, flipBackground && 'is-flipped']}
       ></div>
       <div id="page-bg-secondary" class="page-bg page-bg-layer"></div>
     </div>
@@ -57,6 +63,7 @@ const bgImages = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
       <div
         class:list={['site-main', 'is-awaiting', { 'site-main-flush-top': flushTop, 'site-main-has-overlay': backgroundOverlay }]}
         data-background={background}
+        data-background-flip={flipBackground ? 'true' : undefined}
       >
         {backgroundOverlay && <div class="site-main-overlay" aria-hidden="true"></div>}
         <main>

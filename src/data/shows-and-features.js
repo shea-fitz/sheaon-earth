@@ -6,7 +6,7 @@ export const showsAndFeatures = [
 
   {
     date: '2026-08-27',
-    title: 'Two Perfumes EP Release @ Dean Street Studio',
+    title: 'Two Perfumes EP Release',
     link: null,
     location: 'Brooklyn, NY',
     status: 'upcoming',

@@ -107,6 +107,11 @@ body[data-background="bg3"] {
   --color-border: #66CFFF;
 }
 
+a:hover,
+a:focus-visible {
+  filter: blur(2px);
+}
+
 h1,
 h2,
 h3,
@@ -156,6 +161,10 @@ h6 {
   background-image: url('/images/bg/bg4.webp');
 }
 
+.page-bg-layer.is-flipped {
+  transform: scaleX(-1);
+}
+
 .page-bg.page-bg-bg5 {
   background-image: url('/images/bg/bg5.webp');
 }
@@ -203,5 +212,10 @@ main {
   .site-main.is-entering {
     animation: none;
     opacity: 1;
+  }
+
+  a:hover,
+  a:focus-visible {
+    filter: none;
   }
 }

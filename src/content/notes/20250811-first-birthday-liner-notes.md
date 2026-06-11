@@ -1,13 +1,9 @@
 ---
-title: Two Perfumes Liner Notes
-date: 2026-06-02
+title: First Birthday Liner Notes
+date: 2025-08-11
 tags:
   - liner notes
-  - new release
-  - production
-  - visuals
-  - two perfumes
-description: A sample note entry so you can see the frontmatter format in practice.
+  - first birthday
 ---
 
 This is placeholder body copy for your first note entry. Replace this markdown with your own words. Astro will render everything below the frontmatter as HTML on the individual note page.

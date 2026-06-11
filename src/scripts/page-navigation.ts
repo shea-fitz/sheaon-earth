@@ -1,5 +1,5 @@
 import { swapFunctions } from 'astro:transitions/client';
-import { crossfadeBackground } from './background';
+import { crossfadeBackground, syncVisibleLayerFlip } from './background';
 import { syncNavActiveState } from './nav-sync';
 
 const TIMING = {
@@ -24,12 +24,17 @@ function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
+function getFlipFromSiteMain(siteMain: Element | null | undefined) {
+  return (siteMain as HTMLElement | null)?.dataset.backgroundFlip === 'true';
+}
+
 function setNavigating(active: boolean) {
   document.body.classList.toggle('is-navigating', active);
 }
 
 function syncBodyTheme(siteMain: Element | null) {
-  const background = (siteMain as HTMLElement | null)?.dataset.background;
+  const el = siteMain as HTMLElement | null;
+  const background = el?.dataset.background;
   if (background) {
     document.body.dataset.background = background;
   } else {
@@ -143,8 +148,9 @@ document.addEventListener('astro:before-preparation', (event) => {
 
     await originalLoader.call(this);
 
-    const nextBackground =
-      this.newDocument.querySelector('.site-main')?.dataset.background ?? '';
+    const nextSiteMain = this.newDocument.querySelector('.site-main');
+    const nextBackground = nextSiteMain?.dataset.background ?? '';
+    const nextFlip = getFlipFromSiteMain(nextSiteMain);
 
     if (nextBackground === currentBackground) {
       skipTransitionAnimations = true;
@@ -158,7 +164,7 @@ document.addEventListener('astro:before-preparation', (event) => {
       await delay(TIMING.bgPause);
       contentEnterDelay = Math.max(0, TIMING.bgFade - 200);
       deferThemeSync = true;
-      crossfadeBackground(nextBackground);
+      crossfadeBackground(nextBackground, nextFlip);
     }
   };
 });
@@ -181,13 +187,15 @@ document.addEventListener('astro:before-swap', (event) => {
       if (skipTransitionAnimations) {
         importedSiteMain.classList.remove('is-leaving', 'is-entering', 'is-awaiting');
         importedSiteMain.style.removeProperty('--content-enter-delay');
+        syncBodyTheme(importedSiteMain);
+        syncVisibleLayerFlip(getFlipFromSiteMain(importedSiteMain));
       } else {
         prepareIncomingSiteMain(importedSiteMain);
       }
 
       oldSiteMain.replaceWith(importedSiteMain);
 
-      if (!deferThemeSync) {
+      if (!deferThemeSync && !skipTransitionAnimations) {
         syncBodyTheme(importedSiteMain);
       }
     }
@@ -209,7 +217,7 @@ document.addEventListener('astro:after-swap', async () => {
 
     const background = siteMain.dataset.background;
     if (background) {
-      crossfadeBackground(background);
+      crossfadeBackground(background, getFlipFromSiteMain(siteMain));
     }
 
     siteMain.classList.remove('is-leaving', 'is-awaiting', 'is-entering');
@@ -220,7 +228,6 @@ document.addEventListener('astro:after-swap', async () => {
   }
 
   if (skipTransitionAnimations) {
-    syncBodyTheme(siteMain);
     syncNavActiveState();
     siteMain.classList.remove('is-leaving', 'is-awaiting', 'is-entering');
     siteMain.style.removeProperty('--content-enter-delay');

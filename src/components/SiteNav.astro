@@ -24,6 +24,7 @@ const tree = visibleNavItems.map((item) => {
 });
 
 const desktopItems = tree.filter((item) => item.href !== '/');
+const mobileNavItems = visibleNavItems.filter((item) => item.href !== '/');
 
 function normalizePath(path) {
   if (path !== '/' && path.endsWith('/')) return path.slice(0, -1);
@@ -93,7 +94,7 @@ const isHomeActive = normalizedCurrent === '/';
         aria-current={isHomeActive ? 'page' : undefined}
         data-nav-href="/"
       >
-        ꩜
+        SHEA ON AIR ✩°｡⋆ ꩜ ｡˚ ⋆
       </a>
       <button
         type="button"
@@ -110,7 +111,7 @@ const isHomeActive = normalizedCurrent === '/';
       <nav aria-label="Main">
         <ul class="nav-list">
           {
-            visibleNavItems.map((item) => {
+            mobileNavItems.map((item) => {
               const hasChildren = item.dynamicChildren !== undefined;
               const active = isLinkActive(item.href, hasChildren);
               return (
