@@ -2,17 +2,22 @@
  * Bandcamp releases, newest first when rendered.
  *
  * bandcampUrl — link to the release on Bandcamp (required)
- * embed — Bandcamp embed iframe or EmbeddedPlayer src URL
+ * embed — Bandcamp embed iframe or EmbeddedPlayer src URL (ignored until release date)
+ * placeholderImage — optional square artwork for upcoming releases (defaults to defaultReleasePlaceholder)
+ * presaveUrl — optional presave link shown on upcoming release placeholder overlay
  * notesTag — optional note tag for release-specific notes (defaults to lowercase title)
  * credits — optional list of { role, name, url? } entries (shown on /releases only)
  */
+export const defaultReleasePlaceholder = '/images/bg/bg1.webp';
+
 export const releases = [
   {
     title: 'Two Perfumes',
     date: '2026-08-28',
     type: 'EP',
-    bandcampUrl: 'https://sheaonair.bandcamp.com/track/thought-loop-single',
-    embed: '<iframe style="border: 0; width: 350px; height: 350px;" src="https://bandcamp.com/EmbeddedPlayer/album=608633446/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/" seamless><a href="https://doonkanda.bandcamp.com/album/celest">Celest by Doon Kanda</a></iframe>',
+    bandcampUrl: 'https://sheaonair.bandcamp.com/',
+    embed: '',
+    presaveUrl: 'https://sheaonair.bandcamp.com/',
     themes:'olfactory impressions, rituals of excess, allure, intimacy,  parts work, adornment, leaving a passing trace of yourself, touching the veil, unfurling',
     credits: [
       { role: 'Flute, production, mixing', name: 'Shea Fitzpatrick' },
