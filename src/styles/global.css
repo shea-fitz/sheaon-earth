@@ -122,6 +122,15 @@ h6 {
   text-transform: uppercase;
 }
 
+figcaption {
+  font-family: var(--font-family-sans);
+  font-size: .875rem;
+  line-height: 1.25;
+  text-transform: none;
+  display: flex;
+  justify-content: center;
+}
+
 .page-bg-layers {
   position: fixed;
   inset: 0;

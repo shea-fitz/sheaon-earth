@@ -2,8 +2,9 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import NotesList from '../../components/NotesList.astro';
+import { getListedNotes } from '../../utils/notes.js';
 
-const entries = (await getCollection('notes')).sort(
+const entries = getListedNotes(await getCollection('notes')).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
 ---

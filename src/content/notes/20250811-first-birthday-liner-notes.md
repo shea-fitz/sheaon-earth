@@ -4,11 +4,15 @@ date: 2026-06-12
 tags:
   - liner notes
   - first birthday
+hidden: true
 ---
+*This is an extension of writing I originally published on Bandcamp and in a personal newsletter in August 2025*
 
-tw: suicidal ideation
+
 
 <iframe style="border: 0; width: 100%; height: 42px;" src="https://bandcamp.com/EmbeddedPlayer/album=2107613924/size=small/bgcol=ffffff/linkcol=0687f5/track=2242968790/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/first-birthday-ep">First Birthday – EP by shea on air</a></iframe>
+
+tw: suicidal ideation
 
 I was mostly a drummer until developing severe tinnitus in 2023 and shea on air emerged when I left the band scene to protect my ears & reckoned with how to make music alone. I started playing classical flute at 8 years old but haven't played much since high school. Now I'm left to build a world around it. 
 
@@ -22,30 +26,36 @@ Growing up in rock bands will always be core to my spirit but this project has h
   
 Enjoy and wear earplugs xo  
 
-# Fairy Frequency
+## Fairy Frequency
 
 "Fairy frequency" is a euphemism I use for my tinnitus. Disability literature largely informs my politics & worldview; it's also helped me process lifelong management of mental illness and now tinnitus. In July 2025, on the last day of a broken-footed jaunt through Italy that at one point involved my friends pushing me through the Venice Biennale in a pharmacy-rented wheelchair, I found a tiny book in a Milanese store called [Machine Paralysis: A Different Kind of Mobility](https://kyklada.press/product/machine-paralysis/?v=0b3b97fa6688). It felt like a kismet purchase to close the trip, if not solely for a Jasbir Puar feature (a formative queer theorist who [rocked my world with homonationalism](https://www.dukeupress.edu/terrorist-assemblages-tenth-anniversary-edition) when I was 19). My favorite essay was a piece by Tom Nóbrega that [tied code switching between Deaf and hearing spaces to trans vocal passing](https://www.are.na/block/38523136). They call their tinnitus their "inner birds."
 
-Fairy Frequency was born out of a demo I made using harmonic effects on my vocal processor on May 13, 2025. 
+Fairy Frequency was born out of a demo I made using harmonic effects on my vocal processor. 
 
 <div class="note-audio-player">
-  <p class="note-audio-player__label">palm springs tram ride (2024)</p>
-  <audio class="note-audio-player__audio" controls preload="metadata" src="/audio/notes/.../.mp3">
+  <p class="note-audio-player__label">Fairy Frequency demo on the vocal processor, 5-13-2025</p>
+  <audio class="note-audio-player__audio" controls preload="metadata" src="/audio/notes/20250811-first-birthday-liner-notes/flute-stacks-vocal-processor.m4a">
     <a href="/audio/notes/.../clip.mp3">Download audio</a>
   </audio>
 </div>
 
 
-# Crush Bait
-
-
-
-# Putter
-Putter is the most wholesome song on the EP, and came together the fastest. Every song I make has to pass the "twirl test," which is how I refer to the process of playing it back on the speakers in my studio apartment while I make a snack in the kitchen, and see if it makes me want to twirl around. In that sense Putter is the domestic anthem on the EP, conjuring the sense of just that: puttering around the house. It was originally called "Festival of [name of my street]", which is a term of endearment my friend Austin coined for any time we hang at my apartment, but I realized I was kind of doxing myself, so I changed it to Putter.
+## Crush Bait
 
 
 
 <figure>
-  <img src="/images/notes/20250811-first-birthday-liner-notes/background-texture.webp" alt="Background texture placeholder" />
-  <figcaption>Figure 2: A full-width background image used as a content placeholder.</figcaption>
+  <img src="/images/notes/20250811-first-birthday-liner-notes/crush-bait.webp" />
+  <figcaption>September 2024</figcaption>
+</figure>
+
+
+
+## Putter
+Putter is the most wholesome song on the EP, and came together the fastest. Every song I make has to pass the "twirl test," which is how I refer to the process of playing it back on the speakers in my studio apartment while I make a snack in the kitchen, and see if it makes me want to twirl around. In that sense Putter is the domestic anthem on the EP, conjuring the sense of just that: puttering around the house. It was originally called "Festival of [name of my street]", which is a term of endearment my friend Austin coined for any time we hang at my apartment, but I realized I was kind of doxing myself, so I changed it to Putter.
+
+## First Birthday
+
+<figure>
+  <img src="/images/notes/20250811-first-birthday-liner-notes/first-birthday.webp" />
 </figure>

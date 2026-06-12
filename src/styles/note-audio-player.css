@@ -9,15 +9,16 @@
 
 .note-audio-player__label {
   margin: 0 0 0.5rem;
-  font-family: var(--font-family-mono);
+  font-family: batangche;
+  font-style: italic;
   font-size: var(--font-size-sm);
   line-height: 1.4;
-  color: var(--color-accent);
 }
 
 .note-audio-player__audio {
   display: block;
   width: 100%;
   accent-color: var(--color-accent);
-  color-scheme: dark;
+  color-scheme: light;
+  mix-blend-mode: hard-light;
 }

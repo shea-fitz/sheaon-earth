@@ -33,6 +33,7 @@ const isoDate = date instanceof Date ? date.toISOString().slice(0, 10) : date;
 <style>
   .entry-page {
     --entry-content-max-width: 38rem;
+    --entry-image-max-height: min(32rem, 70vh);
     display: grid;
     grid-template-columns: auto minmax(0, var(--entry-content-max-width));
     gap: 1.5rem 2rem;
@@ -90,6 +91,16 @@ const isoDate = date instanceof Date ? date.toISOString().slice(0, 10) : date;
     text-transform: none;
   }
 
+  .entry-content :global(h2) {
+    font-size: 1.5rem;
+    text-transform: none;
+    margin: 3rem 0 1rem;
+  }
+  .entry-content :global(h3) {
+    font-size: 1.25rem;
+    text-transform: none;
+  }
+
   .entry-date {
     margin: 0 0 2rem;
     font-size: .875rem;
@@ -144,8 +155,12 @@ const isoDate = date instanceof Date ? date.toISOString().slice(0, 10) : date;
   }
 
   .entry-content :global(img) {
+    display: block;
     max-width: 100%;
+    max-height: var(--entry-image-max-height);
+    width: auto;
     height: auto;
+    margin-inline: auto;
   }
 
   .entry-content :global(figure) {

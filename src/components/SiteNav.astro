@@ -1,10 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import { navItems } from '../data/navigation.js';
+import { getListedNotes } from '../utils/notes.js';
 
 const currentPath = Astro.url.pathname;
 
-const notesEntries = (await getCollection('notes')).sort(
+const notesEntries = getListedNotes(await getCollection('notes')).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
 
