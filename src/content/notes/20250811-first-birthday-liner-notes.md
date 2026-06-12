@@ -36,6 +36,14 @@ Fairy Frequency was born out of a demo I made using harmonic effects on my vocal
 </div>
 
 
+# Crush Bait
+
+
+
+# Putter
+Putter is the most wholesome song on the EP, and came together the fastest. Every song I make has to pass the "twirl test," which is how I refer to the process of playing it back on the speakers in my studio apartment while I make a snack in the kitchen, and see if it makes me want to twirl around. In that sense Putter is the domestic anthem on the EP, conjuring the sense of just that: puttering around the house. It was originally called "Festival of [name of my street]", which is a term of endearment my friend Austin coined for any time we hang at my apartment, but I realized I was kind of doxing myself, so I changed it to Putter.
+
+
 
 <figure>
   <img src="/images/notes/20250811-first-birthday-liner-notes/background-texture.webp" alt="Background texture placeholder" />
