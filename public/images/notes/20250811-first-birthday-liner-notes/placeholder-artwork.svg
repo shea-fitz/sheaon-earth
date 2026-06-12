@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 350" role="img" aria-label="Release artwork placeholder">
+  <rect width="350" height="350" fill="#e8e8e8"/>
+  <rect x="125" y="125" width="100" height="100" rx="4" fill="#c8c8c8"/>
+  <circle cx="155" cy="155" r="12" fill="#a8a8a8"/>
+  <path d="M125 205 L175 175 L225 205 L225 225 L125 225 Z" fill="#a8a8a8"/>
+</svg>

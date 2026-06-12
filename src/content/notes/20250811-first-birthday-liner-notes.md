@@ -1,63 +1,43 @@
 ---
 title: First Birthday Liner Notes
-date: 2025-08-11
+date: 2026-06-12
 tags:
   - liner notes
   - first birthday
 ---
 
-This is placeholder body copy for your first note entry. Replace this markdown with your own words. Astro will render everything below the frontmatter as HTML on the individual note page.
+tw: suicidal ideation
 
-The section below includes a variety of markdown elements so you can style them in context.
+<iframe style="border: 0; width: 100%; height: 42px;" src="https://bandcamp.com/EmbeddedPlayer/album=2107613924/size=small/bgcol=ffffff/linkcol=0687f5/track=2242968790/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/first-birthday-ep">First Birthday – EP by shea on air</a></iframe>
 
-## First Movement
+I was mostly a drummer until developing severe tinnitus in 2023 and shea on air emerged when I left the band scene to protect my ears & reckoned with how to make music alone. I started playing classical flute at 8 years old but haven't played much since high school. Now I'm left to build a world around it. 
 
-Two perfumes, two rooms, two ways of listening. This paragraph sits under a level-two heading and includes an [inline link to Bandcamp](https://bandcamp.com) for testing link styles in running text.
+I made *First Birthday* at the end of a decade-long period of suicidal ideation, which was punctuated by, in this order: a dangerous reaction to misprescribed psychiatric medication, a near death experience, sudden onset tinnitus, and a period of profound [neuroplastic](https://en.wikipedia.org/wiki/Neuroplasticity) change in myself that ultimately saved my life (6 months of intensive [exposure therapy](https://en.wikipedia.org/wiki/Exposure_therapy#Exposure_and_response_prevention_(ERP)), tinnitus habituation, and a shrooms trip in the Colorado mountains). I'd struggled with ideation since I was a teenager, and I knew that tinnitus can[ increase individual risk of suicidal behavior](https://pmc.ncbi.nlm.nih.gov/articles/PMC6580142/), so when I woke up one morning with a sound that never went away, I really thought I was going to die. 
 
-A second paragraph with more placeholder copy. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+I was in a relationship at the time, sharing a home and a bed with someone who now had a fundamentally different sensory experience of the world than me. I would wake them up in the night to confirm whether a noise I'd heard came from inside or outside of my body. By early 2024 we broke up, I left the band I'd been playing in because I couldn't sit behind a drumset without panicking, and I moved to my own place. I made this EP in that first year on my own.
+  
+I now lean on ambient music to prioritize noise safety at live shows and mask the daily ringing in my ears and my grand dream for shea on air feels descendant from those influences yet laced with a kind of feverish urge to throw my body around behind a drum set...this EP is a nascent gesture toward that vision.
+  
+Growing up in rock bands will always be core to my spirit but this project has helped me process the loss of embodying it & psychologically recover from the change in my hearing. drumming in community is so straightforwardly cathartic; now that feeling is elusive & I long for it. Strangely I'm relieved by the pursuit to recreate it. Playing the flute & drums was always such a freak combo anyway but it’s part of my charm. Maybe the flute rocks the hardest.
+  
+Enjoy and wear earplugs xo  
 
-### Scent Notes
+# Fairy Frequency
 
-Under a level-three heading, here is an unordered list:
+"Fairy frequency" is a euphemism I use for my tinnitus. Disability literature largely informs my politics & worldview; it's also helped me process lifelong management of mental illness and now tinnitus. In July 2025, on the last day of a broken-footed jaunt through Italy that at one point involved my friends pushing me through the Venice Biennale in a pharmacy-rented wheelchair, I found a tiny book in a Milanese store called [Machine Paralysis: A Different Kind of Mobility](https://kyklada.press/product/machine-paralysis/?v=0b3b97fa6688). It felt like a kismet purchase to close the trip, if not solely for a Jasbir Puar feature (a formative queer theorist who [rocked my world with homonationalism](https://www.dukeupress.edu/terrorist-assemblages-tenth-anniversary-edition) when I was 19). My favorite essay was a piece by Tom Nóbrega that [tied code switching between Deaf and hearing spaces to trans vocal passing](https://www.are.na/block/38523136). They call their tinnitus their "inner birds."
 
-- Top note: citrus, static, morning air
-- Heart note: synth pad, warm vinyl
-- Base note: cedar, distance, reverb tail
-  - Nested detail: tape hiss at −18 dB
-  - Nested detail: room tone from the kitchen
+Fairy Frequency was born out of a demo I made using harmonic effects on my vocal processor on May 13, 2025. 
 
-And an ordered list for process steps:
+<div class="note-audio-player">
+  <p class="note-audio-player__label">palm springs tram ride (2024)</p>
+  <audio class="note-audio-player__audio" controls preload="metadata" src="/audio/notes/.../.mp3">
+    <a href="/audio/notes/.../clip.mp3">Download audio</a>
+  </audio>
+</div>
 
-1. Record the melody at half speed
-2. Layer the harmony in the afternoon light
-3. Mix until the edges disappear
-4. Export and listen on headphones in another room
 
-> A blockquote for styling. The perfume doesn't announce itself — it arrives after you've already decided to stay.
-
-Inline `code-snippet` styling can be tested here. A fenced code block follows:
-
-```
-[verse]
-  melody: Cmaj7 → Fmaj7 → Am7 → G7
-  tempo: 72 bpm
-  feel: unhurried
-```
-
----
 
 <figure>
-  <img src="/images/release-placeholder.svg" alt="Placeholder release artwork" />
-  <figcaption>Figure 1: Placeholder artwork for caption styling.</figcaption>
-</figure>
-
-<figure>
-  <img src="/images/bg/bg3.webp" alt="Background texture placeholder" />
+  <img src="/images/notes/20250811-first-birthday-liner-notes/background-texture.webp" alt="Background texture placeholder" />
   <figcaption>Figure 2: A full-width background image used as a content placeholder.</figcaption>
 </figure>
-
-For reference-style links, see the [Astro content collections docs][astro-docs].
-
-[astro-docs]: https://docs.astro.build/en/guides/content-collections/
-
-One final paragraph to close out the note. Thank you for reading these liner notes — they are placeholders until the real words arrive.

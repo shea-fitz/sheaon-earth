@@ -1,0 +1,16 @@
+---
+interface Props {
+  label: string;
+  src: string;
+  preload?: 'none' | 'metadata' | 'auto';
+}
+
+const { label, src, preload = 'metadata' } = Astro.props;
+---
+
+<div class="note-audio-player">
+  <p class="note-audio-player__label">{label}</p>
+  <audio class="note-audio-player__audio" controls preload={preload} src={src}>
+    <a href={src}>Download audio</a>
+  </audio>
+</div>
