@@ -37,7 +37,7 @@ function applyBackgroundForScroll() {
   if (nextBackground === currentBackground) return;
 
   currentBackground = nextBackground;
-  crossfadeBackground(nextBackground);
+  crossfadeBackground(nextBackground, nextBackground === MID_SCROLL_BACKGROUND);
 }
 
 function teardown() {
