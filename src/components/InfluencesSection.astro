@@ -28,6 +28,7 @@ const categories = [
     flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
+    min-width: 0;
   }
 
   .influence-group {
@@ -35,22 +36,19 @@ const categories = [
     min-width: 0;
   }
 
-   .influences-grid {
+  .influences-grid {
     gap: 2rem;
   }
 
-  @media (min-width: 48rem) {
+  @media (min-width: 64rem) {
     .influences-grid {
       flex-wrap: nowrap;
+      gap: 5rem;
     }
 
     .influence-group {
       flex: 0 0 auto;
       max-width: 250px;
-    }
-
-     .influences-grid {
-        gap: 5rem;
     }
   }
 

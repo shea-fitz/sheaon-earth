@@ -2,6 +2,8 @@
 import ReleasesSection from './ReleasesSection.astro';
 import ShowsAndFeaturesSection from './ShowsAndFeaturesSection.astro';
 import InfluencesSection from './InfluencesSection.astro';
+import SectionImagePlaceholder from './SectionImagePlaceholder.astro';
+import { homeLayoutImages } from '../data/home-layout-images.js';
 import '../styles/release-grid.css';
 ---
 
@@ -34,24 +36,45 @@ import '../styles/release-grid.css';
   <div class="home-spacer" aria-hidden="true"></div>
 
   <section class="home-section releases-section" id="releases">
-    <h2 class="section-heading">Releases</h2>
-    <ReleasesSection />
+    <div class="home-section-row home-section-row--releases">
+      <h2 class="section-heading">Releases</h2>
+      <div class="releases-section-content">
+        <ReleasesSection showTrailingPlaceholder />
+      </div>
+    </div>
   </section>
 
   <section class="home-section shows-section">
-    <h2 class="section-heading">Shows and features</h2>
-    <ShowsAndFeaturesSection />
+    <div class="home-section-row home-section-row--shows">
+      <h2 class="section-heading">Shows and features</h2>
+      <SectionImagePlaceholder
+        src={homeLayoutImages.showsLeading}
+        alt=""
+        class="home-section-aside"
+        tilt="right"
+      />
+      <div class="home-section-row__span-3-end">
+        <ShowsAndFeaturesSection />
+      </div>
+    </div>
   </section>
 
   <section class="home-section influences-section">
     <h2 class="section-heading">Influences</h2>
-    <div class="influences-layout">
-      <div class="playlist-embed">
-        <iframe data-testid="embed-iframe" style="border-radius:24px" src="https://open.spotify.com/embed/playlist/7ImqtO0F0s524tzNZqn8ZR?utm_source=generator" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <div class="home-section-row">
+      <div class="home-section-row__span-3-start influences-layout">
+        <div class="playlist-embed">
+          <iframe data-testid="embed-iframe" style="border-radius:24px" src="https://open.spotify.com/embed/playlist/7ImqtO0F0s524tzNZqn8ZR?utm_source=generator" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+        <InfluencesSection />
       </div>
-      <InfluencesSection />
+      <SectionImagePlaceholder
+        src={homeLayoutImages.influencesTrailing}
+        alt=""
+        class="home-section-aside"
+        tilt="left"
+      />
     </div>
-
   </section>
 
       <div class="video-embed">
@@ -110,6 +133,10 @@ import '../styles/release-grid.css';
   .releases-section {
     width: 100%;
     scroll-margin-top: var(--site-header-offset);
+  }
+
+  .releases-section-content {
+    min-width: 0;
   }
 
   .releases-section .section-heading {
@@ -189,8 +216,8 @@ import '../styles/release-grid.css';
   }
 
   .influences-layout {
-    width: var(--release-span-3-width);
     max-width: 100%;
+    min-width: 0;
   }
 
   .playlist-embed {

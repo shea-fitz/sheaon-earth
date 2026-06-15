@@ -1,14 +1,22 @@
 ---
 import { releases, defaultReleasePlaceholder } from '../data/releases.js';
+import { homeLayoutImages } from '../data/home-layout-images.js';
 import { releaseNotesTag, slugifyTag } from '../utils/tags.js';
+import SectionImagePlaceholder from './SectionImagePlaceholder.astro';
 
 interface Props {
   showNotesLinks?: boolean;
   showCredits?: boolean;
   showThemes?: boolean;
+  showTrailingPlaceholder?: boolean;
 }
 
-const { showNotesLinks = false, showCredits = false, showThemes = false } = Astro.props;
+const {
+  showNotesLinks = false,
+  showCredits = false,
+  showThemes = false,
+  showTrailingPlaceholder = false,
+} = Astro.props;
 
 const sortedReleases = [...releases].sort(
   (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -147,6 +155,11 @@ function formatOutDate(date) {
       </li>
       );
     })}
+    {showTrailingPlaceholder && sortedReleases.length < 4 && (
+      <li class="release-item release-trailing-placeholder home-section-aside" aria-hidden="true">
+        <SectionImagePlaceholder src={homeLayoutImages.releasesTrailing} alt="" tilt="left" />
+      </li>
+    )}
   </ul>
 )}
 
@@ -168,6 +181,10 @@ function formatOutDate(date) {
   .release-item {
     margin: 0;
     min-width: 0;
+  }
+
+  .release-trailing-placeholder {
+    list-style: none;
   }
 
   .release-artwork-wrapper {

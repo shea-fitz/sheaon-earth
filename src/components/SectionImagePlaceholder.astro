@@ -1,0 +1,63 @@
+---
+interface Props {
+  src?: string;
+  alt?: string;
+  class?: string;
+  tilt?: 'left' | 'right';
+}
+
+const { src, alt = '', class: className, tilt } = Astro.props;
+---
+
+<div class:list={['section-image-placeholder', className]}>
+  {src && (
+    <div class="section-image-placeholder__blend">
+      <img
+        class:list={[
+          'section-image-placeholder__img',
+          tilt === 'left' && 'section-image-placeholder__img--tilt-left',
+          tilt === 'right' && 'section-image-placeholder__img--tilt-right',
+        ]}
+        src={src}
+        alt={alt}
+        width="350"
+        height="350"
+        loading="lazy"
+      />
+    </div>
+  )}
+</div>
+
+<style>
+  .section-image-placeholder {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+  }
+
+  .section-image-placeholder__blend {
+    width: 75%;
+    height: 75%;
+    margin-right: auto;
+    margin-left: auto;
+    mix-blend-mode: multiply;
+  }
+
+  .section-image-placeholder__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: blur(.5px);
+    opacity: 0.75;
+    transform-origin: center;
+  }
+
+  .section-image-placeholder__img--tilt-left {
+    transform: rotate(-5deg);
+  }
+
+  .section-image-placeholder__img--tilt-right {
+    transform: rotate(4deg);
+  }
+</style>
