@@ -9,6 +9,7 @@ import '../styles/release-grid.css';
 
 <div class="home-content release-grid-context">
   <section class="home-section info">
+    <p class="bio">This is the extended universe of <span>shea on air</span>, a solo musical project by flutist, drummer, producer, and designer Shea Fitzpatrick</p>
     <div class="stream-list">
       <a class="stream-link" href="https://sheaonair.bandcamp.com/" target="_blank">
         <img src="/images/icons/bandcamp.svg" alt="Bandcamp" />
@@ -204,7 +205,8 @@ import '../styles/release-grid.css';
     opacity: 50%;
     letter-spacing: .25rem;
     background-size: 100vw 100vh;
-    background-attachment: fixed;
+    background-size: 100vw 100dvh;
+    background-attachment: scroll;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -267,4 +269,15 @@ import '../styles/release-grid.css';
     height: 100%;
     border: 0;
   }
+
+  .bio {
+    font-family: BatangChe;
+    font-style: italic;
+    }
+
+    .bio span {
+      border: .5px solid var(--color-accent);
+      border-radius: 1000%;
+      padding: 4px 8px 6px;
+    }
 </style>
