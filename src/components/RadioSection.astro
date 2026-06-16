@@ -1,0 +1,95 @@
+---
+import { radioMixes } from '../data/radio-mixes.js';
+
+function soundcloudPlayerSrc(trackId, color) {
+  const trackUrl = `https://api.soundcloud.com/tracks/soundcloud:tracks:${trackId}`;
+  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(trackUrl)}&color=${encodeURIComponent(color)}&inverse=false&auto_play=false&show_user=false`;
+}
+
+const dated = radioMixes
+  .filter((mix) => mix.date)
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const undated = radioMixes.filter((mix) => !mix.date);
+
+const mixes = [...dated, ...undated];
+---
+
+<ul class="radio-list">
+  {mixes.map((mix) => (
+    <li class="radio-item">
+      <iframe
+        class="radio-player"
+        width="100%"
+        height="20"
+        scrolling="no"
+        frameborder="no"
+        allow="autoplay; encrypted-media"
+        src={soundcloudPlayerSrc(mix.trackId, mix.color)}
+        title={mix.title}
+      />
+      {mix.tracklist?.length > 0 && (
+        <details class="radio-tracklist">
+          <summary class="radio-tracklist-toggle">Track IDs</summary>
+          <ul class="radio-tracklist-items">
+            {mix.tracklist.map((track) => (
+              <li>{track}</li>
+            ))}
+          </ul>
+        </details>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .radio-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .radio-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    color: var(--color-bg);
+    margin: 0 -2rem;
+    border-bottom: .5px solid var(--color-accent);
+    padding: 0 2rem 1rem;
+  }
+
+  .radio-player {
+    display: block;
+    border: 0;
+  }
+
+  .radio-tracklist-toggle {
+    font-family: var(--font-family-sans);
+    font-size: 10px;
+    color: var(--color-accent);
+    cursor: pointer;
+    list-style: none;
+    margin-left: 2rem;
+  }
+
+  .radio-tracklist-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .radio-tracklist-toggle:hover{
+    filter: blur(2px);
+  }
+
+  .radio-tracklist-items {
+    list-style: none;
+    margin: 0.5rem 0 0 2rem;
+    padding: 0;
+    font-family: var(--font-family-sans);
+    font-size: 10px;
+    color: var(--color-bg);
+  }
+</style>

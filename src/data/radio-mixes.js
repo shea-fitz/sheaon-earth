@@ -1,0 +1,179 @@
+/**
+ * Radio mixes on SoundCloud, rendered on /radio.
+ *
+ * title — track title
+ * slug — SoundCloud path segment under shea-on-air
+ * trackId — SoundCloud numeric track ID
+ * color — accent hex for the mini player
+ * date — ISO date (YYYY-MM-DD), stored for sorting; not displayed yet
+ * tracklist — optional array of tracks in the mix (shown in the "Track IDs" accordion)
+ */
+export const radioMixes = [
+  {
+    title: 'Flowers in Motion – no. 1',
+    slug: 'flowers-in-motion-1',
+    trackId: '1257100312',
+    color: '#888eeb',
+    date: null,
+    tracklist: ['ML Buch - Can You Hear My Heart Leave',
+      'SSIEGE - Il Re Delle Mandorle',
+      'Boundary - Fantasmagórico',
+      'TSVI - Inner Worlds',
+      'CFCF - suburbilude',
+      'Hooverphonic - Battersea',
+      'Whatever the Weather - 0°C',
+      'Rei Harakami - owari no kisetsu',
+      'Jockstrap - Concrete Over Water',
+      'Lowly - balgaens',
+      'Hundred Waters - Re:]']
+  },
+
+  {
+    title: 'Flowers in Motion - no. 2',
+    slug: 'flowers-in-motion-2',
+    trackId: '1260661684',
+    color: '#d99c98',
+    date: null,
+    tracklist: [
+      'Bodysync - Suenos Bravos',
+    'Barry Can’t Swim - Some Day I Will',
+    'Planningtorock - Gay Dreams Do Come True (Atrip remix)',
+    'Discovery Zone - Dance II',
+    'Princess Innocence - Noches',
+    'Farah - You Make Me Wanna Die',
+    'Gui.tar - How So Bright Of Universe',
+    'Sweet Trip - Zafire Melts the Heart in Modulation',
+    'KNOWER - All Time',
+    'Fuffifufzich - Heartbreakerei',
+    'Elsa Hewitt - Invisible Threads',
+    ],
+  },
+
+  {
+    title: "lucy's dirty 30",
+    slug: 'lucys-dirty-30',
+    trackId: '1263937777',
+    color: '#ff5500',
+    date: null,
+    tracklist: ['TDJ, fknsyd - Euphoria',
+      'SOPHIE - Whole New World (Sophie and Doss Remix)',
+      'Lone - Pineapple Crush',
+      'Dusky - Flo Jam (Logic1000 Remix)',
+      'Textasy - Déja Vu Bass (ft. DJ Di’jital)',
+      'Overmono - Gunk',
+      'Betta Lemme - Mommy',
+      'umru - honest (ft. Cecile Believe)',
+      'Octo Octa - Can You See Me?',
+      'Slayyyter - New Life (unreleased)']
+  },
+
+  {
+    title: 'Flowers in Motion - no. 3',
+    slug: 'flowers-in-motion-3',
+    trackId: '1265762482',
+    color: '#ba2025',
+    date: null,
+    tracklist: ['John Fahey - Dance of the Inhabitants of the     Invisible City of Bladensburg',
+      'You’ll Never Get to Heaven - Pink and Gold and Blue',
+      'Delroy Edwards - I Love Sloane',
+      'Deadharrie - Behind the Light',
+      'Papa M - Krusty',
+      'John Glacier - Senseless',
+      'Dua Saleh - angel rock',
+      'Sneaks - Sanity',
+      'FACS - Casual Indifference',
+      'Chynna - seasonal depression pt. 2',
+     'My Idea - Breathe You (Beat Version)',
+      'Radio Flyer - Six Year Ballet'],
+  },
+
+  {
+    title: 'Flowers in Motion - no. 4',
+    slug: 'flowers-in-motion-4',
+    trackId: '1272323614',
+    color: '#348ce4',
+    date: null,
+    tracklist: ['TSVI, Loraine James - Gloom',
+      'Overmono - Phosycon',
+      'Franco Nanni - Mitosi',
+      'Nala Sinephro - Space 1',
+      'Whatever the Weather - 2°C (Intermittent Rain)',
+      'Kelly Lee Owens - Keep Walking',
+      'The Famous Boyfriend - It Sounds As If You Are Falling Apart',
+      'Dub Tractor - Hideout',
+      'Pure X - Heavy Air'],
+  },
+
+  {
+    title: 'Flowers in Motion – no. 5',
+    slug: 'flowers-in-motion-5',
+    trackId: '1320333814',
+    color: '#658cc8',
+    date: null,
+    tracklist: [
+      'Laurel Halo – Wow',
+      'Oneohtrix Point Never – I Don’t Love Me Anymore',
+      'Earth Trax – Dream Pop',
+      'TDJ – Pushed You Away',
+      'Daphni – Clavicle',
+      'Nala, Nikki Nair – The World Is Always Ending',
+      'Plaid – missing',
+     'Flume – Jasper’s Song',
+      'Rsavoir – Illusion',
+    ],
+  },
+
+  {
+    title: 'Flowers in Motion - no. 6',
+    slug: 'flowers-in-motion-6',
+    trackId: '1413094996',
+    color: '#7b8c7a',
+    date: null,
+    tracklist: [
+      'Steve Vai – Ballerina 12/24',
+      'Boundary – Interlazados',
+      'Caribou – Paul’s Birthday',
+      'Khotin – Baikal Acid',
+      'Photay – Roaming',
+      'Caroline Says – A Good Thief Steals Clean',
+      'I’lls – Substitions',
+      'Estrada – Public Secret',
+      'Claire Dickson – Arctic',
+      'Julia Holter – Lucette Stranded on the Island'
+    ],
+  },
+
+  {
+    title: 'Cloud Nine on 8 Ball with Mengze - guest mix by shea on air',
+    slug: 'cloud-nine',
+    trackId: '2100954594',
+    color: '#459a8c',
+    date: null,
+    tracklist: [
+      'Emerald Web – Ice Caves',
+      'Third Coast Percussion – Aguas da Amazonia: Amazon River (Philip Glass)',
+      'Céline Dessberg – Chintamani',
+      'King Crimson – Matte Kudasai',
+      'Guerra Fría & Sad Madona – La Nuit',
+      'Saskia – You Left Your Soul Behind',
+      'Dummy – Opaline Bubbletear',
+      'Kaikobad – Cornsilk',
+      'Broken Spear – Lurave',
+      'nthng – Don’t Be Scared',
+      'Maara – Sip From My Chalice',
+      'Iceboy Violet & Nueen – Closer',
+      'Donna Lewis – Heaven Sent You',
+      'Sinéad O’Connor – I Am Stretched on Your Grave',
+      'Janet Jackson – When We Oooo',
+      'Whatever The Weather – 15°C',
+      'Kiss Facility – Prayer at the Dinner Table',
+      'Ezra Feinberg & David Lackner – Future Sand',
+      'Bruce Cockburn – Giftbearer',
+      'Dorothy Carter – Autumn Song',
+      'SUSS – Echo Lake',
+      'Mark McGuire – Eleven Sevens',
+      'May Klug – Hold Me (I Am Your Blob)',
+      'Angel Hair No. 12 – Intro'
+    ],
+  },
+];
