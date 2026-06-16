@@ -18,7 +18,7 @@
 .desktop-nav a {
   color: inherit;
   text-decoration: none;
-  font-family: BatangChe;
+  font-family: var(--font-family-batang);
   font-size: 1rem;
   line-height: var(--line-height-normal);
   text-transform: uppercase;
@@ -43,7 +43,7 @@
 
 .menu-trigger,
 .nav-close {
-  font-family: BatangChe;
+  font-family: var(--font-family-batang);
   font-size: var(--font-size-sm);
   color: inherit;
   background: none;
@@ -86,7 +86,7 @@
   margin: 0 -0.5rem;
   color: inherit;
   text-decoration: none;
-  font-family: BatangChe;
+  font-family: var(--font-family-batang);
   font-size: 2rem;
   line-height: var(--line-height-normal);
   text-transform: uppercase;
@@ -181,7 +181,7 @@
     display: flex;
     align-items: center;
     padding: 0.75rem 0;
-    font-family: var(--font-family-batangche);
+    font-family: var(--font-family-batang);
     color: inherit;
     text-decoration: none;
     line-height: 1;

@@ -9,7 +9,7 @@
 
 .note-audio-player__label {
   margin: 0 0 0.5rem;
-  font-family: batangche;
+  font-family: var(--font-family-batang);
   font-style: italic;
   font-size: var(--font-size-sm);
   line-height: 1.4;
