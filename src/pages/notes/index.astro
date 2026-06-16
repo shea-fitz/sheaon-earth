@@ -10,5 +10,7 @@ const entries = getListedNotes(await getCollection('notes')).sort(
 ---
 
 <Base title="shea on air: notes" background="bg3" flushTop>
-  <NotesList entries={entries} />
+  <div class="centered-page-content">
+    <NotesList entries={entries} />
+  </div>
 </Base>

@@ -28,12 +28,6 @@
   }
 
   .home-content {
-    --layout-ref-width: min(100%, var(--content-max-width));
-    --layout-col-width-4: calc(
-      (var(--layout-ref-width) - 3 * var(--release-gap)) / 4
-    );
-    max-width: calc(3 * var(--layout-col-width-4) + 2 * var(--release-gap));
-    margin-inline: auto;
     --release-cols: 3;
   }
 }

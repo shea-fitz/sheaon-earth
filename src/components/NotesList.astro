@@ -43,16 +43,14 @@ const { entries } = Astro.props;
 <style>
   .notes-list-empty {
     margin: 0;
-    padding: 0.75rem 2rem;
+    padding: 0.75rem;
   }
 
   .notes-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
+    width: 100%;
   }
 
   @media (min-width: 48rem) {
@@ -65,7 +63,7 @@ const { entries } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    padding: 0.75rem 2rem;
+    padding: 0.75rem;
     text-decoration: none;
     color: inherit;
     background: var(--color-surface);
@@ -133,7 +131,7 @@ const { entries } = Astro.props;
 
   @media (max-width: 768px) {
     .notes-list-item {
-      padding: .75rem 1rem;
+      padding: 0.75rem;
       line-height: 1.15;
     }
 
