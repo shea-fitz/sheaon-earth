@@ -11,11 +11,9 @@ hidden: false
 
 <iframe style="border: 0; width: 100%; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=2107613924/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/first-birthday-ep">First Birthday – EP by shea on air</a></iframe>
 
-I was mostly a drummer until developing severe tinnitus in 2023 and shea on air emerged when I left the band scene to protect my ears & reckoned with how to make music alone. I started playing classical flute at 8 years old but haven't played much since high school. Now I'm left to build a world around it. 
+I was mostly a drummer until developing severe [tinnitus](https://en.wikipedia.org/wiki/Tinnitus) in 2023 and shea on air emerged when I left the band scene to protect my ears & reckoned with how to make music alone. I started playing classical flute at 8 years old but haven't played much since high school. Now I'm left to build a world around it. 
 
-*First Birthday* is my debut EP and I made the whole thing alone in my studio apartment with a 2-octave midi controller and my 1958 Gemeinhardt flute. Its making punctuated a rocky and dynamic period of my life that unfolded in this order: psychatric trauma, a near-death experience, sudden onset tinnitus, and a period of profound [neuroplastic](https://en.wikipedia.org/wiki/Neuroplasticity) change in myself (6 months of [exposure therapy](https://en.wikipedia.org/wiki/Exposure_therapy#Exposure_and_response_prevention_(ERP)), tinnitus habituation, and a prototypically profound psychedelic experience). The extent of the cognitive shift I experienced in these months felt like I had generated a whole new brain, and I joked when turning 29 that it was my first birthday.
-
-Like most art, the emotional weight of the project is disproportionate to the material scope. It was the first thing I've ever made that felt like a true externalization of myself, something that could only exist because of my specific skills, limitations, and sensibilities. I played the rough EP for a friend and halfway through Crush Bait he had tears in his eyes and said, "It really sounds like you."
+*First Birthday* is my debut EP and I made the whole thing alone in my studio apartment with a 2-octave midi controller and my 1958 Gemeinhardt flute. Its making punctuated a rocky and dynamic period of my life that unfolded in this order: psychatric trauma, a near-death experience, sudden onset tinnitus, and a period of profound [neuroplastic](https://en.wikipedia.org/wiki/Neuroplasticity) change in myself (6 months of [exposure therapy](https://en.wikipedia.org/wiki/Exposure_therapy#Exposure_and_response_prevention_(ERP)), tinnitus habituation, and a profound psychedelic experience). The extent of the cognitive shift I experienced felt like I had generated a whole new brain, and I joked when turning 29 that it was my first birthday.
 
 I now lean on ambient music to prioritize noise safety at live shows and mask the daily ringing in my ears and my grand dream for shea on air feels descendant from those influences yet laced with a kind of feverish urge to throw my body around behind a drum set. This EP is a nascent gesture toward that vision.
   
@@ -41,7 +39,9 @@ Enjoy and wear earplugs xo
 
 <iframe style="border: 0; width: 100%; height: 42px;" src="https://bandcamp.com/EmbeddedPlayer/album=2107613924/size=small/bgcol=ffffff/linkcol=0687f5/track=1595110107/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/first-birthday-ep">First Birthday – EP by shea on air</a></iframe>
 
-Crush Bait isn't so much about crushes as it is about renewed optimism for the abundance of connection of all kinds and being reminded of my agency to pursue them. All the voice samples are from real moments in my life with my friends, who are my kin, and who keep me here. (But I've also heard that Crush Bait works as its name...)
+Crush Bait isn't so much about crushes as it is about renewed optimism for the abundance of connection of all kinds and being reminded of my agency to pursue them. All the voice samples are from real moments in my life with my friends (but I've also heard that Crush Bait works as its name...)
+
+I'm extra proud of Crush Bait (it's my favorite on the EP) and it actually got radio play on [NTS](https://www.nts.live/shows/macca/episodes/macca-28th-march-2026) in a segment of supporter submissions. It was the first song played in the very first edition of the segment, despite like, a zillion people submitting stuff in a chaotic discord chat, so I thought that was cool.
 
 <figure>
   <img src="/images/notes/20250811-first-birthday-liner-notes/crush-bait.webp" />
