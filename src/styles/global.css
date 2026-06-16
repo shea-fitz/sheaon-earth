@@ -30,7 +30,8 @@
   --color-bg: #090D0D ;
   --color-surface: rgba(30, 30, 30, .15);
   --color-text: #ffffff;
-  --color-text-muted: ;
+  --color-text-muted: #DADADA;
+  --color-muted: var(--color-text-muted);
 
   /* Type scale */
   --font-family-sans: 'GT Mechanik', system-ui, sans-serif;

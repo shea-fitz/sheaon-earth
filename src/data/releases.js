@@ -17,7 +17,6 @@ export const releases = [
     type: 'EP',
     bandcampUrl: 'https://sheaonair.bandcamp.com/',
     embed: '',
-    presaveUrl: 'https://sheaonair.bandcamp.com/',
     themes:'olfactory impressions, rituals of excess, allure, intimacy,  parts work, adornment, leaving a passing trace of yourself, touching the veil, unfurling',
     credits: [
       { role: 'Flute, production, mixing', name: 'Shea Fitzpatrick' },
