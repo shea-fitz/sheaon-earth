@@ -30,10 +30,10 @@ const mixes = [...dated, ...undated];
       />
       {mix.tracklist?.length > 0 && (
         <details class="radio-tracklist">
-          <summary class="radio-tracklist-toggle">Tracklist ⤵</summary>
+          <summary class="radio-tracklist-toggle">Tracklist ↯</summary>
           <ul class="radio-tracklist-items">
-            {mix.tracklist.map((track) => (
-              <li>{track}</li>
+            {mix.tracklist.map((track, index) => (
+              <li style={`--item-index: ${index}`}>{track}</li>
             ))}
           </ul>
         </details>
@@ -92,5 +92,28 @@ const mixes = [...dated, ...undated];
     font-family: var(--font-family-sans);
     font-size: .75rem;
     color: var(--color-bg);
+  }
+
+  details[open] .radio-tracklist-items li {
+    opacity: 0;
+    animation: radio-tracklist-fade-in 0.35s ease forwards;
+    animation-delay: calc(var(--item-index) * 35ms);
+  }
+
+  @keyframes radio-tracklist-fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    details[open] .radio-tracklist-items li {
+      animation: none;
+      opacity: 1;
+    }
   }
 </style>
