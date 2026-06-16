@@ -1,21 +1,17 @@
 ---
 import { releases, defaultReleasePlaceholder } from '../data/releases.js';
-import { homeLayoutImages } from '../data/home-layout-images.js';
 import { releaseNotesTag, slugifyTag } from '../utils/tags.js';
-import SectionImagePlaceholder from './SectionImagePlaceholder.astro';
 
 interface Props {
   showNotesLinks?: boolean;
   showCredits?: boolean;
   showThemes?: boolean;
-  showTrailingPlaceholder?: boolean;
 }
 
 const {
   showNotesLinks = false,
   showCredits = false,
   showThemes = false,
-  showTrailingPlaceholder = false,
 } = Astro.props;
 
 const sortedReleases = [...releases].sort(
@@ -155,11 +151,6 @@ function formatOutDate(date) {
       </li>
       );
     })}
-    {showTrailingPlaceholder && sortedReleases.length < 4 && (
-      <li class="release-item release-trailing-placeholder home-section-aside" aria-hidden="true">
-        <SectionImagePlaceholder src={homeLayoutImages.releasesTrailing} alt="" tilt="left" />
-      </li>
-    )}
   </ul>
 )}
 
@@ -181,10 +172,6 @@ function formatOutDate(date) {
   .release-item {
     margin: 0;
     min-width: 0;
-  }
-
-  .release-trailing-placeholder {
-    list-style: none;
   }
 
   .release-artwork-wrapper {
@@ -238,7 +225,7 @@ function formatOutDate(date) {
 
   .release-out-date {
     margin: 0;
-    font-family: var(--font-family-batang);
+    font-family: BatangChe;
     font-size: 1.25rem;
     text-transform: uppercase;
     line-height: 1.2;
@@ -287,7 +274,7 @@ function formatOutDate(date) {
   }
 
   .release-title {
-    font-family: var(--font-family-batang);
+    font-family: BatangChe;
     text-transform: uppercase;
     color: var(--color-text);
   }
@@ -300,7 +287,7 @@ function formatOutDate(date) {
 
   .release-type {
     font-style: normal;
-    font-family: var(--font-family-batang);
+    font-family: BatangChe;
     text-transform: uppercase;
     color: var(--color-text);
   }
@@ -310,7 +297,7 @@ function formatOutDate(date) {
     font-size: .875rem;
     font-style: italic;
     line-height: 1.5;
-    font-family: var(--font-family-batang);
+    font-family: batangche;
   }
 
   .release-credits {
@@ -320,7 +307,7 @@ function formatOutDate(date) {
   .release-credits-label {
     margin: 0 0 0.5rem;
     font-size: 0.875rem;
-    font-family: var(--font-family-batang);
+    font-family: BatangChe;
     text-transform: uppercase;
     color: var(--color-text);
   }
