@@ -28,7 +28,7 @@
 :root {
   /* Color */
   --color-bg: #090D0D ;
-  --color-surface: rgba(30, 30, 30, .15);
+  --color-surface: rgba(30, 30, 30, .25);
   --color-text: #ffffff;
   --color-text-muted: #DADADA;
   --color-muted: var(--color-text-muted);
