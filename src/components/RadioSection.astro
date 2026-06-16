@@ -30,7 +30,7 @@ const mixes = [...dated, ...undated];
       />
       {mix.tracklist?.length > 0 && (
         <details class="radio-tracklist">
-          <summary class="radio-tracklist-toggle">Track IDs</summary>
+          <summary class="radio-tracklist-toggle">Tracklist ⤵</summary>
           <ul class="radio-tracklist-items">
             {mix.tracklist.map((track) => (
               <li>{track}</li>
@@ -67,12 +67,14 @@ const mixes = [...dated, ...undated];
   }
 
   .radio-tracklist-toggle {
-    font-family: var(--font-family-sans);
-    font-size: 10px;
+    font-family: batangche;
+    text-transform: uppercase;
+    font-size: .875rem;
     color: var(--color-accent);
     cursor: pointer;
     list-style: none;
     margin-left: 2rem;
+    mix-blend-mode: multiply;
   }
 
   .radio-tracklist-toggle::-webkit-details-marker {
@@ -88,7 +90,7 @@ const mixes = [...dated, ...undated];
     margin: 0.5rem 0 0 2rem;
     padding: 0;
     font-family: var(--font-family-sans);
-    font-size: 10px;
+    font-size: .75rem;
     color: var(--color-bg);
   }
 </style>
