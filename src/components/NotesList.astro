@@ -5,6 +5,7 @@ interface Props {
     data: {
       title: string;
       date: Date;
+      tags: string[];
     };
   }>;
 }
@@ -22,7 +23,16 @@ const { entries } = Astro.props;
         <li>
           <a href={`/notes/${entry.slug}/`} class="notes-list-item">
             <time class="notes-list-date" datetime={isoDate}>{isoDate}</time>
-            <span class="notes-list-title">{entry.data.title}</span>
+            <span class="notes-list-title-row">
+              <span class="notes-list-title">{entry.data.title}</span>
+              {entry.data.tags.length > 0 && (
+                <span class="notes-list-tags" aria-label="Tags">
+                  {entry.data.tags.map((tag) => (
+                    <span class="notes-list-tag">{tag}</span>
+                  ))}
+                </span>
+              )}
+            </span>
           </a>
         </li>
       );
@@ -85,6 +95,40 @@ const { entries } = Astro.props;
   .notes-list-title {
     font-family: var(--font-family-batangche);
     font-size: 2rem;
+    min-width: 0;
+  }
+
+  .notes-list-tags {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .notes-list-title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .notes-list-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      flex-shrink: 0;
+      max-width: 45%;
+    }
+
+    .notes-list-tag {
+      display: inline-block;
+      font-family: var(--font-family-sans);
+      font-size: var(--font-size-xs);
+      line-height: 1.25;
+      padding: 0.35rem 0.65rem;
+      border: 1px solid color-mix(in srgb, var(--color-accent) 50%, transparent);
+      background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+      white-space: nowrap;
+    }
   }
 
   @media (max-width: 768px) {
