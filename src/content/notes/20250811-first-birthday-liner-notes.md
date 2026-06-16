@@ -57,7 +57,12 @@ Crush Bait isn't so much about crushes as it is about renewed optimism for the a
 Putter is the most wholesome song on the EP and came together the fastest. Every song I make has to pass the "twirl test," which is how I refer to the process of playing it back on the speakers in my studio apartment while I make a snack in the kitchen and see if it makes me want to move my body. So Putter is the domestic anthem on the EP, for puttering around the house, and is a celebration of finding routines in a new home. It was originally called "Festival of [name of my street]", which is a term of endearment my friend Austin coined for any time we hang at my apartment, but that's kind of doxing myself, so Putter is an alias.
 
 ## First Birthday
+
 <iframe style="border: 0; width: 100%; height: 42px;" src="https://bandcamp.com/EmbeddedPlayer/album=2107613924/size=small/bgcol=ffffff/linkcol=0687f5/track=2242968790/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/first-birthday-ep">First Birthday – EP by shea on air</a></iframe>
+
+This is the first song on the EP that I made and was the true  breakthrough toward finding my musical point of view. Something I was working through was how I could possibly convey the pain I felt within the emotional scope of the flute – the end of this song is truly a wail, and the sound design around it felt like a successful integration of my identity as a drummer. I was kind of like, oh, this is the project right here. This is the seed of everything I'm trying to emotionally accomplish in my weird set of sonic constraints as a flutist who used to play the drums, and longs to recreate the emotional force of drumming with a truly antithetical instrument. 
+
+The sample at the very end is from a rehearsal with the band I played in from 2022-2024. It's there because I wanted to drum on the EP.
 
 <figure>
   <img src="/images/notes/20250811-first-birthday-liner-notes/first-birthday.webp" />
