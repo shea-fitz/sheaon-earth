@@ -2,16 +2,16 @@
 @import './site-layout.css';
 
 @font-face {
-  font-family: 'GT Mechanik';
-  src: url('/fonts/gtmechanik/GT-Mechanik-Semi-Regular-Trial.woff2') format('woff2');
+  font-family: 'GT America';
+  src: url('/fonts/gtamerica/GT-America-Standard-Regular-Trial.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'GT Mechanik';
-  src: url('/fonts/gtmechanik/GT-Mechanik-Semi-Regular-Oblique-Trial.woff2') format('woff2');
+  font-family: 'GT America';
+  src: url('/fonts/gtamerica/GT-America-Standard-Regular-Italic-Trial.otf') format('opentype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -34,7 +34,7 @@
   --color-muted: var(--color-text-muted);
 
   /* Type scale */
-  --font-family-sans: 'GT Mechanik', system-ui, sans-serif;
+  --font-family-sans: 'GT America', system-ui, sans-serif;
   --font-family-serif: 'BatangChe', ui-serif, serif;
   --font-family-mono: 'DM Mono', ui-monospace, monospace;
   --font-family-batangche: 'BatangChe', ui-serif, serif;
