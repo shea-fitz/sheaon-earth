@@ -16,4 +16,12 @@ My flute technique is no better than it was in high school, but my musicianship 
 
 I dramatically detuned the flute by pulling the head out as far as I could, and used strong and imprecise attack as if throwing air from my body like punches. The snare part is a live recording I made by hauling my snare drum to Dean studio to record in a call booth. I thought marching-band-like percussion would elicit an ironic sense of discipline (i.e. repetitive thought patterns) and uncool-ness (i.e. the embarrassment of realizing you’re thinking more about something than everyone else).
 
-The single art was inspired by an image I found in a children’s craft book at Anna’s Berlin apartment in 2020, Laurie Anderson’s Big Science, and the cyanotype kit Hadley got me for my birthday. It's a polaroid self-portrait with drawn-on paper taped to my glasses, which is, fittingly, really embarrassing. 
+The single art was inspired by an image I found in a children’s craft book at Anna’s Berlin apartment in 2020, Laurie Anderson’s *Big Science*, and the cyanotype kit Hadley got me for my birthday. It's a polaroid self-portrait with drawn-on paper taped to my glasses, which is, fittingly, really embarrassing. 
+
+<figure>
+  <img src="/images/notes/20251222-thought-loop-liner-notes/thought-loop.webp" />
+</figure>
+
+<figure>
+  <img src="/images/notes/20251222-thought-loop-liner-notes/thought-loop_art.webp" />
+</figure>
