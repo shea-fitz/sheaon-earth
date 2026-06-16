@@ -70,6 +70,8 @@
   --nav-transition: 0.35s ease;
   --page-fade-in: 500ms;
   --page-fade-out: 200ms;
+  --scroll-reveal-duration: 700ms;
+  --scroll-reveal-distance: 0.75rem;
 }
 
 @media (min-width: 48rem) {
@@ -208,6 +210,19 @@ main {
   animation: page-fade-in var(--page-fade-in) ease-out var(--content-enter-delay, 0ms) both;
 }
 
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--scroll-reveal-distance));
+  transition:
+    opacity var(--scroll-reveal-duration) ease-out,
+    transform var(--scroll-reveal-duration) ease-out;
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .page-bg-layer {
     transition: none;
@@ -229,5 +244,11 @@ main {
   a:hover,
   a:focus-visible {
     filter: none;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
