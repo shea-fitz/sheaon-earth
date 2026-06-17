@@ -91,6 +91,32 @@ function swapPageHead(newDocument: Document) {
   for (const style of newStyles) {
     document.head.appendChild(document.importNode(style, true));
   }
+
+  const currentStylesheets = new Map(
+    Array.from(
+      document.head.querySelectorAll<HTMLLinkElement>(
+        `link[rel="stylesheet"]:not(${persistedSelector})`
+      )
+    ).map((link) => [link.href, link])
+  );
+  const newStylesheets = Array.from(
+    newDocument.head.querySelectorAll<HTMLLinkElement>(
+      `link[rel="stylesheet"]:not(${persistedSelector})`
+    )
+  );
+  const nextStylesheetHrefs = new Set(newStylesheets.map((link) => link.href));
+
+  for (const [href, link] of currentStylesheets) {
+    if (!nextStylesheetHrefs.has(href)) {
+      link.remove();
+    }
+  }
+
+  for (const link of newStylesheets) {
+    if (!currentStylesheets.has(link.href)) {
+      document.head.appendChild(document.importNode(link, true));
+    }
+  }
 }
 
 function runInitialEnter() {
