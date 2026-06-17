@@ -171,6 +171,10 @@ const isoDate = date instanceof Date ? date.toISOString().slice(0, 10) : date;
     margin-top: 0.5rem;
   }
 
+  .entry-content :global(p) {
+    line-height: 1.35;
+  }
+
   @media (max-width: 47.99rem) {
     .entry-page {
       grid-template-columns: 1fr;
