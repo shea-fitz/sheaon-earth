@@ -11,7 +11,7 @@ const { src, alt = '', class: className, tilt } = Astro.props;
 
 <div class:list={['section-image-placeholder', className]}>
   {src && (
-    <div class="section-image-placeholder__blend">
+    <div class="section-image-placeholder__blend" data-section-parallax>
       <img
         class:list={[
           'section-image-placeholder__img',
@@ -33,13 +33,15 @@ const { src, alt = '', class: className, tilt } = Astro.props;
     position: relative;
     width: 100%;
     aspect-ratio: 1;
+    overflow: hidden;
   }
 
   .section-image-placeholder__blend {
-    width: 75%;
-    height: 75%;
-    margin-right: auto;
-    margin-left: auto;
+    position: absolute;
+    inset: 12.5%;
+    transform: translateY(var(--parallax-y, 0px));
+    mix-blend-mode: screen;
+    will-change: transform;
   }
 
   .section-image-placeholder__img {
@@ -47,8 +49,8 @@ const { src, alt = '', class: className, tilt } = Astro.props;
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: blur(.5px);
-    opacity: 0.75;
+    filter: blur(.75px);
+    opacity: 0.6;
     transform-origin: center;
   }
 
@@ -58,5 +60,12 @@ const { src, alt = '', class: className, tilt } = Astro.props;
 
   .section-image-placeholder__img--tilt-right {
     transform: rotate(4deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .section-image-placeholder__blend {
+      --parallax-y: 0px;
+      will-change: auto;
+    }
   }
 </style>

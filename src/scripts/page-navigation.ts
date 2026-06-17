@@ -84,23 +84,12 @@ function swapPageHead(newDocument: Document) {
     newDocument.head.querySelectorAll(`style:not(${persistedSelector})`)
   );
 
-  const currentKeys = new Set(
-    currentStyles.map((style) => style.textContent?.trim() ?? '')
-  );
-
   for (const style of currentStyles) {
-    const key = style.textContent?.trim() ?? '';
-    const stillNeeded = newStyles.some((next) => (next.textContent?.trim() ?? '') === key);
-    if (!stillNeeded) {
-      style.remove();
-    }
+    style.remove();
   }
 
   for (const style of newStyles) {
-    const key = style.textContent?.trim() ?? '';
-    if (!key || currentKeys.has(key)) continue;
     document.head.appendChild(document.importNode(style, true));
-    currentKeys.add(key);
   }
 }
 
