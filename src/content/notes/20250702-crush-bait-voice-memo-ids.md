@@ -4,6 +4,7 @@ date: 2025-07-02
 tags:
   - liner notes
   - first birthday
+hidden: true
 ---
 
 <iframe style="border: 0; width: 100%; height: 42px;" src="https://bandcamp.com/EmbeddedPlayer/album=2107613924/size=small/bgcol=ffffff/linkcol=0687f5/track=1595110107/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/first-birthday-ep">First Birthday – EP by shea on air</a></iframe>
