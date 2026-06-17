@@ -1,5 +1,5 @@
 ---
-title: The First Birthday Orange
+title: The First Birthday Orange Isn't AI :(
 date: 2025-08-30
 tags:
   - visual process
@@ -7,7 +7,7 @@ tags:
 hidden: false
 ---
 
-I made all the metal pieces in the First Birthday EP art by [carving lost wax](https://www.are.na/shea/lost-wax-gdio3mqsdky) and casting them in white brass. They were supposed to be hairpins but failed to pin hair, so Sam recommended I shove them in some fruit or the ground instead. In the weeks leading up to the EP release, I was staying at a house in Lake Garda with ~10 friends, but my foot was broken so I stayed home alone one day while everyone went for a bike ride. I wandered the house grounds in my medical boot with Sam's manual film camera.
+Some people have told me that they assumed the artwork for First Birthday is AI-generated...rip...but it's all manual fabrication. I made all the metal pieces in the First Birthday EP art by [carving lost wax](https://www.are.na/shea/lost-wax-gdio3mqsdky) and casting them in white brass. They were supposed to be hairpins but failed to pin hair, so Sam recommended I shove them in some fruit or the ground instead. In the weeks leading up to the EP release, I was staying at a house in Lake Garda with ~10 friends, but my foot was broken so I stayed home alone one day while everyone went for a bike ride. I wandered the house grounds in my medical boot with Sam's manual film camera.
 
 The image with the orange is the second photo I took on film because I burned most of it under the Italian sun. How romantic. The original photo is barely edited.
 
