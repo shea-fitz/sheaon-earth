@@ -1,6 +1,6 @@
 ---
 title: The First Birthday Orange Isn't AI :(
-date: 2025-08-30
+date: 2026-06-16
 tags:
   - visual process
   - first birthday
