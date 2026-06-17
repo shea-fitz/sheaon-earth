@@ -41,6 +41,40 @@
   text-transform: none;
 }
 
+.nav-home-glyphs {
+  display: inline-flex;
+  margin-left: .5rem;
+  align-items: baseline;
+  gap: 0.15em;
+  transition: gap 0.2s linear;
+}
+
+.nav-home-glyph-group {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  transition: gap 0.2s linear;
+}
+
+.nav-home-glyph {
+  display: inline-block;
+}
+
+.nav-home:hover,
+.nav-home:focus-visible {
+  filter: blur(1px);
+}
+
+.nav-home:hover .nav-home-glyphs,
+.nav-home:focus-visible .nav-home-glyphs {
+  gap: 0.4em;
+}
+
+.nav-home:hover .nav-home-glyph-group,
+.nav-home:focus-visible .nav-home-glyph-group {
+  gap: 0.2em;
+}
+
 .menu-trigger,
 .nav-close {
   font-family: BatangChe;
@@ -252,6 +286,21 @@ body.is-navigating .nav-close {
 @media (prefers-reduced-motion: reduce) {
   .nav-drawer {
     transition: none;
+  }
+
+  .nav-home-glyphs,
+  .nav-home-glyph-group {
+    transition: none;
+  }
+
+  .nav-home:hover .nav-home-glyphs,
+  .nav-home:focus-visible .nav-home-glyphs {
+    gap: 0.15em;
+  }
+
+  .nav-home:hover .nav-home-glyph-group,
+  .nav-home:focus-visible .nav-home-glyph-group {
+    gap: 0;
   }
 
   body.is-navigating .desktop-nav {

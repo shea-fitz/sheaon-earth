@@ -27,6 +27,8 @@ const mixes = [...dated, ...undated];
         allow="autoplay; encrypted-media"
         src={soundcloudPlayerSrc(mix.trackId, mix.color)}
         title={mix.title}
+        data-track-id={mix.trackId}
+        {...(mix.artwork ? { 'data-artwork': mix.artwork } : {})}
       />
       {mix.tracklist?.length > 0 && (
         <details class="radio-tracklist">
@@ -41,6 +43,14 @@ const mixes = [...dated, ...undated];
     </li>
   ))}
 </ul>
+
+<div class="radio-artwork-disc" aria-hidden="true" hidden>
+  <div class="radio-artwork-disc__inner"></div>
+</div>
+
+<script>
+  import '../scripts/radio-artwork-disc.ts';
+</script>
 
 <style>
   .radio-list {
@@ -115,6 +125,59 @@ const mixes = [...dated, ...undated];
       animation: none;
       opacity: 1;
       filter: none;
+    }
+  }
+
+  .radio-artwork-disc {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 10;
+    width: 250px;
+    height: 250px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .radio-artwork-disc.is-visible {
+    opacity: 1;
+  }
+
+  .radio-artwork-disc__inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: .5px solid var(--color-accent);
+    background-size: cover;
+    background-position: center;
+    box-shadow:
+      0 0 48px 16px color-mix(in srgb, var(--color-accent) 25%, transparent),
+      0 0 96px 32px color-mix(in srgb, var(--color-accent) 5%, transparent);
+  }
+
+  .radio-artwork-disc.is-spinning .radio-artwork-disc__inner {
+    animation: radio-disc-spin 24s linear infinite;
+  }
+
+  @keyframes radio-disc-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .radio-artwork-disc {
+      bottom: 1.25rem;
+      right: 1.25rem;
+      width: 150px;
+      height: 150px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .radio-artwork-disc.is-spinning .radio-artwork-disc__inner {
+      animation: none;
     }
   }
 </style>

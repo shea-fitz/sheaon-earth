@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { navItems } from '../data/navigation.js';
 import { getListedNotes } from '../utils/notes.js';
+import NavHomeLabel from './NavHomeLabel.astro';
 
 const currentPath = Astro.url.pathname;
 
@@ -60,7 +61,7 @@ const isHomeActive = normalizedCurrent === '/';
       aria-current={isHomeActive ? 'page' : undefined}
       data-nav-href="/"
     >
-     SHEA ON AIR ✩°｡⋆ ꩜ ｡˚ ⋆
+      <NavHomeLabel />
     </a>
     <ul class="desktop-nav-links">
       {
@@ -95,7 +96,7 @@ const isHomeActive = normalizedCurrent === '/';
         aria-current={isHomeActive ? 'page' : undefined}
         data-nav-href="/"
       >
-        SHEA ON AIR ✩°｡⋆ ꩜ ｡˚ ⋆
+        <NavHomeLabel />
       </a>
       <button
         type="button"

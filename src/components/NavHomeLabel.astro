@@ -1,0 +1,21 @@
+---
+const glyphGroups = [
+  ['✩', '°', '｡', '⋆'],
+  ['꩜'],
+  ['｡', '˚'],
+  ['⋆'],
+];
+---
+
+<span class="nav-home-label">SHEA ON AIR </span>
+<span class="nav-home-glyphs" aria-hidden="true">
+  {
+    glyphGroups.map((group) => (
+      <span class="nav-home-glyph-group">
+        {group.map((glyph) => (
+          <span class="nav-home-glyph">{glyph}</span>
+        ))}
+      </span>
+    ))
+  }
+</span>

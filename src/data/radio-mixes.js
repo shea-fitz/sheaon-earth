@@ -7,12 +7,14 @@
  * color — accent hex for the mini player
  * date — ISO date (YYYY-MM-DD), stored for sorting; not displayed yet
  * tracklist — optional array of tracks in the mix (shown in the "Track IDs" accordion)
+ * artwork — path to square mix artwork (WebP), shown in the rotating disc on play
  */
 export const radioMixes = [
   {
     title: 'Flowers in Motion – no. 1',
     slug: 'flowers-in-motion-1',
     trackId: '1257100312',
+    artwork: '/images/radio/flowers-in-motion-1.webp',
     color: '#888eeb',
     date: '2022-04-25',
     tracklist: ['ML Buch - Can You Hear My Heart Leave',
@@ -32,6 +34,7 @@ export const radioMixes = [
     title: 'Flowers in Motion - no. 2',
     slug: 'flowers-in-motion-2',
     trackId: '1260661684',
+    artwork: '/images/radio/flowers-in-motion-2.webp',
     color: '#d99c98',
     date: '2022-05-01',
     tracklist: [
@@ -53,7 +56,8 @@ export const radioMixes = [
     title: "lucy's dirty 30",
     slug: 'lucys-dirty-30',
     trackId: '1263937777',
-    color: '#ff5500',
+    artwork: '/images/radio/lucys-dirty-30.webp',
+    color: '#ecd6f4',
     date: '2022-05-09',
     tracklist: ['TDJ, fknsyd - Euphoria',
       'SOPHIE - Whole New World (Sophie and Doss Remix)',
@@ -71,6 +75,7 @@ export const radioMixes = [
     title: 'Flowers in Motion - no. 3',
     slug: 'flowers-in-motion-3',
     trackId: '1265762482',
+    artwork: '/images/radio/flowers-in-motion-3.webp',
     color: '#ba2025',
     date: '2022-05-24',
     tracklist: ['John Fahey - Dance of the Inhabitants of the     Invisible City of Bladensburg',
@@ -91,6 +96,7 @@ export const radioMixes = [
     title: 'Flowers in Motion - no. 4',
     slug: 'flowers-in-motion-4',
     trackId: '1272323614',
+    artwork: '/images/radio/flowers-in-motion-4.webp',
     color: '#348ce4',
     date: '2022-05-24',
     tracklist: ['TSVI, Loraine James - Gloom',
@@ -108,6 +114,7 @@ export const radioMixes = [
     title: 'Flowers in Motion – no. 5',
     slug: 'flowers-in-motion-5',
     trackId: '1320333814',
+    artwork: '/images/radio/flowers-in-motion-5.webp',
     color: '#658cc8',
     date: '2022-11-26',
     tracklist: [
@@ -127,6 +134,7 @@ export const radioMixes = [
     title: 'Flowers in Motion - no. 6',
     slug: 'flowers-in-motion-6',
     trackId: '1413094996',
+    artwork: '/images/radio/flowers-in-motion-6.webp',
     color: '#7b8c7a',
     date: '2024-06-08',
     tracklist: [
@@ -147,6 +155,7 @@ export const radioMixes = [
     title: 'Cloud Nine on 8 Ball with Mengze - guest mix by shea on air',
     slug: 'cloud-nine',
     trackId: '2100954594',
+    artwork: '/images/radio/cloud-nine.webp',
     color: '#459a8c',
     date: '2025-05-09',
     tracklist: [
