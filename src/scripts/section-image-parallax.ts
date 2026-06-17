@@ -1,6 +1,6 @@
 // Negative rate makes the layer lag behind scroll, appearing farther back in depth.
-const DEPTH_RATE = -0.2;
-const HEADROOM_RATIO = 0.15;
+const DEPTH_RATE = -0.3;
+const HEADROOM_RATIO = 0.18;
 const PARALLAX_SELECTOR = '[data-section-parallax]';
 
 let activeController: AbortController | null = null;
