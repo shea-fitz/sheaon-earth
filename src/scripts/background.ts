@@ -4,6 +4,11 @@ export function crossfadeBackground(background: string, flip = false) {
   if (!primary || !secondary) return;
 
   const visible = primary.classList.contains('is-visible') ? primary : secondary;
+  const visibleBackground = [...visible.classList].find((className) => className.startsWith('page-bg-bg'));
+  const visibleFlip = visible.classList.contains('is-flipped');
+
+  if (visibleBackground === `page-bg-${background}` && visibleFlip === flip) return;
+
   const hidden = visible === primary ? secondary : primary;
 
   hidden.className = 'page-bg page-bg-layer';

@@ -40,6 +40,10 @@ function applyBackgroundForScroll() {
   crossfadeBackground(nextBackground, nextBackground === MID_SCROLL_BACKGROUND);
 }
 
+function syncCurrentBackground() {
+  currentBackground = backgroundForScrollDepth(getScrollDepth());
+}
+
 function teardown() {
   activeController?.abort();
   activeController = null;
@@ -54,7 +58,7 @@ function init() {
   const controller = new AbortController();
   activeController = controller;
 
-  applyBackgroundForScroll();
+  syncCurrentBackground();
 
   window.addEventListener('scroll', applyBackgroundForScroll, {
     passive: true,
@@ -69,9 +73,3 @@ document.addEventListener('astro:before-preparation', () => {
 });
 
 document.addEventListener('astro:page-load', init);
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}

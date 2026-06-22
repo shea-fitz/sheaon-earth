@@ -210,15 +210,33 @@ main {
   animation: page-fade-in var(--page-fade-in) ease-out var(--content-enter-delay, 0ms) both;
 }
 
+main.scroll-reveal-pending :is(
+  section,
+  .timeline-entry,
+  .release-item,
+  .shows-row,
+  .notes-list > li,
+  .entry-header,
+  .entry-content,
+  .mix-list > iframe,
+  > p
+):not([aria-hidden="true"], .home-spacer) {
+  opacity: 0;
+  transform: translateY(var(--scroll-reveal-distance));
+}
+
 [data-reveal] {
   opacity: 0;
   transform: translateY(var(--scroll-reveal-distance));
+}
+
+main.scroll-reveal-active [data-reveal] {
   transition:
     opacity var(--scroll-reveal-duration) ease-out,
     transform var(--scroll-reveal-duration) ease-out;
 }
 
-[data-reveal].is-revealed {
+main.scroll-reveal-active [data-reveal].is-revealed {
   opacity: 1;
   transform: none;
 }
@@ -244,6 +262,21 @@ main {
   a:hover,
   a:focus-visible {
     filter: none;
+  }
+
+  main.scroll-reveal-pending :is(
+    section,
+    .timeline-entry,
+    .release-item,
+    .shows-row,
+    .notes-list > li,
+    .entry-header,
+    .entry-content,
+    .mix-list > iframe,
+    > p
+  ) {
+    opacity: 1;
+    transform: none;
   }
 
   [data-reveal] {

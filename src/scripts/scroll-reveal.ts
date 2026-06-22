@@ -44,6 +44,14 @@ function revealElement(element: Element) {
   observer?.unobserve(element);
 }
 
+function clearPendingState(main: HTMLElement) {
+  main.classList.remove('scroll-reveal-pending');
+}
+
+function activateReveal(main: HTMLElement) {
+  main.classList.add('scroll-reveal-active');
+}
+
 function waitForPageEnter(signal: AbortSignal): Promise<void> {
   return new Promise((resolve) => {
     if (signal.aborted) {
@@ -122,6 +130,16 @@ function teardown() {
   }
 }
 
+function primeReveal() {
+  if (prefersReducedMotion()) return;
+
+  const main = document.querySelector('main');
+  if (!main) return;
+
+  discoverElements(main);
+  clearPendingState(main);
+}
+
 async function init() {
   teardown();
 
@@ -133,6 +151,7 @@ async function init() {
   const { signal } = controller;
 
   const elements = discoverElements(main);
+  clearPendingState(main);
 
   if (elements.length === 0) return;
 
@@ -144,14 +163,15 @@ async function init() {
   await waitForPageEnter(signal);
   if (signal.aborted) return;
 
+  activateReveal(main);
   startObserving(elements, signal);
 }
+
+primeReveal();
 
 document.addEventListener('astro:before-preparation', teardown);
 document.addEventListener('astro:page-load', init);
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
+if (document.readyState !== 'loading') {
   init();
 }
