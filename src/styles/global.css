@@ -67,7 +67,7 @@
   --nav-collapsed-width: 3.5rem;
   --nav-open-width: 16rem;
   --nav-drawer-max: 70vh;
-  --nav-transition: 0.35s ease;
+  --nav-transition: 0.35s;
   --page-fade-in: 500ms;
   --page-fade-out: 200ms;
   --scroll-reveal-duration: 700ms;

@@ -337,7 +337,7 @@
     pointer-events: auto;
     transition:
       opacity var(--nav-transition) ease,
-      visibility 0s linear 0s;
+      visibility 0s;
   }
 
 }
