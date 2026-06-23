@@ -50,6 +50,10 @@ function isLinkActive(href, hasChildren = false) {
 }
 
 const isHomeActive = normalizedCurrent === '/';
+
+function mapItemId(href) {
+  return href.replace(/^\//, '').replace(/\//g, '-') || 'home';
+}
 ---
 
 <div class="site-nav">
@@ -104,23 +108,33 @@ const isHomeActive = normalizedCurrent === '/';
         aria-expanded="false"
         aria-controls="site-nav"
       >
-        menu
+        map
       </button>
     </div>
 
     <aside class="nav-drawer" id="site-nav" aria-hidden="true">
-
-      <nav aria-label="Main">
-        <ul class="nav-list">
+      <nav class="nav-map" aria-label="Main">
+        <svg
+          class="nav-map-paths"
+          aria-hidden="true"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <path class="nav-map-path" data-map-path="releases-notes" vector-effect="non-scaling-stroke" />
+          <path class="nav-map-path" data-map-path="notes-history" vector-effect="non-scaling-stroke" />
+          <path class="nav-map-path" data-map-path="history-radio" vector-effect="non-scaling-stroke" />
+          <path class="nav-map-path" data-map-path="radio-releases" vector-effect="non-scaling-stroke" />
+        </svg>
+        <ul class="nav-map-items">
           {
             mobileNavItems.map((item) => {
               const hasChildren = item.dynamicChildren !== undefined;
               const active = isLinkActive(item.href, hasChildren);
               return (
-                <li>
+                <li class="nav-map-item" data-map-item={mapItemId(item.href)}>
                   <a
                     href={item.href}
-                    class:list={[{ active }]}
+                    class:list={['nav-map-link', { active }]}
                     aria-current={active ? 'page' : undefined}
                     data-nav-href={item.href}
                     data-nav-has-children={hasChildren ? 'true' : undefined}
@@ -142,12 +156,280 @@ const isHomeActive = normalizedCurrent === '/';
   const shell = document.querySelector('.site-shell');
   const trigger = document.querySelector('.menu-trigger');
   const drawer = document.getElementById('site-nav');
+  const map = drawer?.querySelector('.nav-map');
+  const mapPaths = drawer?.querySelectorAll('.nav-map-path');
+
+  const pathConfig = [
+    {
+      key: 'releases-notes',
+      type: 'arc',
+      from: { item: 'releases', edge: 'top' },
+      to: { item: 'notes', edge: 'top' },
+      bow: -11,
+    },
+    {
+      key: 'notes-history',
+      type: 's',
+      from: { item: 'notes', edge: 'bottom' },
+      to: { item: 'an-incomplete-history', edge: 'upper-top', inset: 0.52 },
+      bend: 0.2,
+      drift: [0.25, 0.25],
+    },
+    {
+      key: 'history-radio',
+      type: 's',
+      from: { item: 'an-incomplete-history', edge: 'top' },
+      to: { item: 'radio', edge: 'bottom' },
+      bend: 0.2,
+      drift: [-0.5, -0.5],
+    },
+    {
+      key: 'radio-releases',
+      type: 's',
+      from: { item: 'radio', edge: 'top' },
+      to: { item: 'releases', edge: 'bottom' },
+      bend: 0.18,
+      drift: [-0.5, -1],
+    },
+  ];
+
+  function fmt(value) {
+    return value.toFixed(2);
+  }
+
+  function viewToPixel(viewPoint) {
+    const mapRect = map.getBoundingClientRect();
+    return {
+      x: mapRect.left + (viewPoint[0] / 100) * mapRect.width,
+      y: mapRect.top + (viewPoint[1] / 100) * mapRect.height,
+    };
+  }
+
+  function rayCircleHit(ox, oy, dx, dy, ccx, ccy, radius) {
+    const fx = ox - ccx;
+    const fy = oy - ccy;
+    const b = 2 * (fx * dx + fy * dy);
+    const c = fx * fx + fy * fy - radius * radius;
+    const discriminant = b * b - 4 * c;
+
+    if (discriminant < 0) return null;
+
+    const sqrt = Math.sqrt(discriminant);
+    const t1 = (-b + sqrt) / 2;
+    const t2 = (-b - sqrt) / 2;
+    const candidates = [t1, t2].filter((t) => t > 0.001);
+
+    if (!candidates.length) return null;
+
+    const t = Math.min(...candidates);
+    return { t, x: ox + dx * t, y: oy + dy * t };
+  }
+
+  function getCapsuleEntryPoint(rect, fromX, fromY, nudge = 0) {
+    const cx = (rect.left + rect.right) / 2;
+    const cy = (rect.top + rect.bottom) / 2;
+    const radius = rect.height / 2;
+    const capOffset = Math.max(0, rect.width / 2 - radius);
+
+    let dirX = cx - fromX;
+    let dirY = cy - fromY;
+    const len = Math.hypot(dirX, dirY) || 1;
+    dirX /= len;
+    dirY /= len;
+
+    const hits = [];
+
+    const rightCap = rayCircleHit(fromX, fromY, dirX, dirY, rect.right - radius, cy, radius);
+    if (rightCap) hits.push(rightCap);
+
+    const leftCap = rayCircleHit(fromX, fromY, dirX, dirY, rect.left + radius, cy, radius);
+    if (leftCap) hits.push(leftCap);
+
+    if (capOffset > 0) {
+      if (dirY > 0) {
+        const t = (cy + radius - fromY) / dirY;
+        if (t > 0) {
+          const x = fromX + dirX * t;
+          if (Math.abs(x - cx) <= capOffset + 0.5) {
+            hits.push({ t, x, y: cy + radius });
+          }
+        }
+      }
+
+      if (dirY < 0) {
+        const t = (cy - radius - fromY) / dirY;
+        if (t > 0) {
+          const x = fromX + dirX * t;
+          if (Math.abs(x - cx) <= capOffset + 0.5) {
+            hits.push({ t, x, y: cy - radius });
+          }
+        }
+      }
+    }
+
+    const hit = hits.sort((a, b) => a.t - b.t)[0];
+    if (!hit) return { x: rect.right, y: cy };
+
+    if (!nudge) return hit;
+
+    const rightCapCenterX = rect.right - radius;
+    const leftCapCenterX = rect.left + radius;
+    const onRightCap = Math.abs(hit.x - rightCapCenterX) <= radius + 0.5;
+    const onLeftCap = Math.abs(hit.x - leftCapCenterX) <= radius + 0.5;
+
+    if (onRightCap) {
+      const angle = Math.atan2(hit.y - cy, hit.x - rightCapCenterX) + nudge;
+      return {
+        x: rightCapCenterX + radius * Math.cos(angle),
+        y: cy + radius * Math.sin(angle),
+      };
+    }
+
+    if (onLeftCap) {
+      const angle = Math.atan2(hit.y - cy, hit.x - leftCapCenterX) + nudge;
+      return {
+        x: leftCapCenterX + radius * Math.cos(angle),
+        y: cy + radius * Math.sin(angle),
+      };
+    }
+
+    return hit;
+  }
+
+  function getMapAnchor(itemId, edge, endpoint = {}) {
+    if (!map) return null;
+
+    const link = map.querySelector(`[data-map-item="${itemId}"] .nav-map-link`);
+    if (!link) return null;
+
+    const mapRect = map.getBoundingClientRect();
+    const rect = link.getBoundingClientRect();
+
+    if (!mapRect.width || !mapRect.height) return null;
+
+    const toView = (x, y) => [
+      ((x - mapRect.left) / mapRect.width) * 100,
+      ((y - mapRect.top) / mapRect.height) * 100,
+    ];
+
+    const cx = (rect.left + rect.right) / 2;
+    const cy = (rect.top + rect.bottom) / 2;
+
+    switch (edge) {
+      case 'top':
+        return toView(cx, rect.top);
+      case 'bottom':
+        return toView(cx, rect.bottom);
+      case 'left':
+        return toView(rect.left, cy);
+      case 'right':
+        return toView(rect.right, cy);
+      case 'upper-top': {
+        const radius = rect.height / 2;
+        const capOffset = Math.max(0, rect.width / 2 - radius);
+        const inset = endpoint.inset ?? 0.5;
+        const overlap = endpoint.overlap ?? 1;
+        const x = cx + capOffset * inset;
+        return toView(x, rect.top + overlap);
+      }
+      case 'top-right': {
+        const radius = rect.height / 2;
+        const capCenterX = rect.right - radius;
+        const angle = endpoint.angle ?? -Math.PI / 4;
+        return toView(
+          capCenterX + radius * Math.cos(angle),
+          cy + radius * Math.sin(angle)
+        );
+      }
+      case 'toward': {
+        if (!endpoint.toward) return null;
+
+        const from = viewToPixel(endpoint.toward);
+        const point = getCapsuleEntryPoint(rect, from.x, from.y, endpoint.nudge ?? 0);
+        return toView(point.x, point.y);
+      }
+      default:
+        return null;
+    }
+  }
+
+  function smoothSCurve(start, end, { bend = 0.2, drift = [0, 0] }) {
+    const [x0, y0] = start;
+    const [x3, y3] = end;
+    const dx = x3 - x0;
+    const dy = y3 - y0;
+    const length = Math.hypot(dx, dy) || 1;
+    const normalX = -dy / length;
+    const normalY = dx / length;
+    const amplitude = length * bend;
+    const [driftX, driftY] = drift;
+
+    const cp1x = x0 + dx * 0.33 + normalX * amplitude + driftX;
+    const cp1y = y0 + dy * 0.33 + normalY * amplitude + driftY;
+    const cp2x = x0 + dx * 0.67 - normalX * amplitude + driftX;
+    const cp2y = y0 + dy * 0.67 - normalY * amplitude + driftY;
+
+    return `M ${fmt(x0)} ${fmt(y0)} C ${fmt(cp1x)} ${fmt(cp1y)}, ${fmt(cp2x)} ${fmt(cp2y)}, ${fmt(x3)} ${fmt(y3)}`;
+  }
+
+  function smoothArc(start, end, { bow = -6 }) {
+    const [x0, y0] = start;
+    const [x3, y3] = end;
+    const dx = x3 - x0;
+    const apexY = Math.min(y0, y3) + bow;
+
+    const cp1x = x0 + dx * 0.22;
+    const cp1y = apexY;
+    const cp2x = x0 + dx * 0.78;
+    const cp2y = apexY;
+
+    return `M ${fmt(x0)} ${fmt(y0)} C ${fmt(cp1x)} ${fmt(cp1y)}, ${fmt(cp2x)} ${fmt(cp2y)}, ${fmt(x3)} ${fmt(y3)}`;
+  }
+
+  function buildMapPath(start, end, config) {
+    if (config.type === 'arc') {
+      return smoothArc(start, end, { bow: config.bow });
+    }
+
+    return smoothSCurve(start, end, {
+      bend: config.bend,
+      drift: config.drift,
+    });
+  }
+
+  function updateMapPaths() {
+    if (!map || !mapPaths?.length) return;
+    if (shell?.getAttribute('data-nav-open') !== 'true') return;
+
+    pathConfig.forEach((config) => {
+      const pathEl = map.querySelector(`[data-map-path="${config.key}"]`);
+      const start = getMapAnchor(config.from.item, config.from.edge, config.from);
+      const end = getMapAnchor(config.to.item, config.to.edge, {
+        ...config.to,
+        toward: config.to.edge === 'toward' ? start : config.to.toward,
+      });
+
+      if (!pathEl || !start || !end) return;
+
+      pathEl.setAttribute('d', buildMapPath(start, end, config));
+    });
+  }
+
+  let resizeFrame = 0;
+
+  function scheduleMapPathUpdate() {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => {
+      requestAnimationFrame(updateMapPaths);
+    });
+  }
 
   function setOpen(open) {
     shell?.setAttribute('data-nav-open', open ? 'true' : 'false');
     trigger?.setAttribute('aria-expanded', String(open));
     drawer?.setAttribute('aria-hidden', String(!open));
     if (!open) trigger?.focus();
+    if (open) scheduleMapPathUpdate();
   }
 
   trigger?.addEventListener('click', () => {
@@ -170,4 +452,6 @@ const isHomeActive = normalizedCurrent === '/';
   });
 
   document.addEventListener('astro:before-preparation', closeNav);
+  window.addEventListener('resize', scheduleMapPathUpdate);
+  document.fonts?.ready.then(scheduleMapPathUpdate);
 </script>

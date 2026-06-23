@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "node scripts/convert-images-to-webp.mjs"
+      }
+    ]
+  }
+}

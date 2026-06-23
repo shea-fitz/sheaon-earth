@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+staged_images=$(git diff --cached --name-only --diff-filter=ACM | grep -iE '\.(jpe?g|png)$' || true)
+
+if [ -z "$staged_images" ]; then
+  exit 0
+fi
+
+for file in $staged_images; do
+  if [ ! -f "$file" ]; then
+    continue
+  fi
+
+  node scripts/convert-images-to-webp.mjs "$file"
+
+  webp="${file%.*}.webp"
+  git add "$webp"
+  git rm -f --cached --ignore-unmatch "$file" >/dev/null 2>&1 || true
+done
+
+exit 0

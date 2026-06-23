@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "prepare": "git config core.hooksPath .githooks 2>/dev/null || true",
+    "convert-images": "node scripts/convert-images-to-webp.mjs --all"
   },
   "dependencies": {
     "astro": "^5.7.0"
