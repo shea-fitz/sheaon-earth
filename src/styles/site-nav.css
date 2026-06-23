@@ -58,11 +58,17 @@
 
 .nav-home-glyph {
   display: inline-block;
+  transition: margin-left 0.3s linear;
 }
 
 .nav-home:hover,
 .nav-home:focus-visible {
   filter: blur(1px);
+}
+
+.nav-home:hover .nav-home-glyph-group:first-child .nav-home-glyph:first-child,
+.nav-home:focus-visible .nav-home-glyph-group:first-child .nav-home-glyph:first-child {
+  margin-left: 0.4em;
 }
 
 .nav-home:hover .nav-home-glyphs,
@@ -72,7 +78,7 @@
 
 .nav-home:hover .nav-home-glyph-group,
 .nav-home:focus-visible .nav-home-glyph-group {
-  gap: 0.2em;
+  gap: 0.5em;
 }
 
 .menu-trigger,
@@ -360,7 +366,8 @@ body.is-navigating .nav-close {
   }
 
   .nav-home-glyphs,
-  .nav-home-glyph-group {
+  .nav-home-glyph-group,
+  .nav-home-glyph {
     transition: none;
   }
 
@@ -372,6 +379,11 @@ body.is-navigating .nav-close {
   .nav-home:hover .nav-home-glyph-group,
   .nav-home:focus-visible .nav-home-glyph-group {
     gap: 0;
+  }
+
+  .nav-home:hover .nav-home-glyph-group:first-child .nav-home-glyph:first-child,
+  .nav-home:focus-visible .nav-home-glyph-group:first-child .nav-home-glyph:first-child {
+    margin-left: 0;
   }
 
   body.is-navigating .desktop-nav {
