@@ -179,6 +179,7 @@
 .nav-map-link.active {
   color: var(--color-accent);
   border-color: var(--color-accent);
+  border-width: 1.5px;
 }
 
 .nav-map-item[data-map-item='releases'] {
