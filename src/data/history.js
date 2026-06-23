@@ -9,8 +9,18 @@ export const historyEvents = [
   },
 
   {
+    year: 2025,
+    title: 'First Birthday (EP)',
+  },
+
+  {
     year: 2023,
     title: 'I wake up one morning with severe tinnitus that never goes away',
+  },
+
+  {
+    year: 2008,
+    title: "I start playing the flute because it's what my mom played in her school band",
   },
 
   {
@@ -19,7 +29,12 @@ export const historyEvents = [
   },
 
   {
+    year: 1996,
+    title: 'first birthday (real)',
+  },
+
+  {
     year: 1995,
-    title: 'Beginning',
+    title: 'shea on earth',
   },
 ];
