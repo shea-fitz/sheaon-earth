@@ -127,7 +127,8 @@
 .nav-map-path {
   fill: none;
   stroke: currentColor;
-  stroke-width: 1;
+  stroke-width: .5px;
+  stroke-dasharray: 15 10;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -313,32 +314,30 @@
   }
 
   .nav-drawer {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    max-height: 0;
-    overflow: hidden;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    visibility: hidden;
-    pointer-events: none;
-    transition:
-      max-height var(--nav-transition),
-      visibility var(--nav-transition);
-  }
-
-  .site-shell[data-nav-open='true'] .nav-drawer {
     position: fixed;
     top: var(--mobile-nav-bar-height);
     left: 0;
     right: 0;
     height: calc(100dvh - var(--mobile-nav-bar-height));
-    max-height: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 15%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 99;
+    transition:
+      opacity var(--nav-transition) ease,
+      visibility 0s linear var(--nav-transition);
+  }
+
+  .site-shell[data-nav-open='true'] .nav-drawer {
+    opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    z-index: 99;
+    transition:
+      opacity var(--nav-transition) ease,
+      visibility 0s linear 0s;
   }
 
 }
