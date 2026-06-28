@@ -110,6 +110,11 @@ body[data-background="bg3"] {
   --color-border: #66CFFF;
 }
 
+body[data-background="bg5"] {
+  --color-accent: #C3FF1E;
+  --color-border: #C3FF1E;
+}
+
 a:hover,
 a:focus-visible {
   filter: blur(2px);

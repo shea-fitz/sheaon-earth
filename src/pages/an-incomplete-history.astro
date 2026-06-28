@@ -8,14 +8,26 @@ const endYear = 2026;
 ---
 
 <Base title="shea on air: an incomplete history" background="bg5">
-  <p class="history-intro">
-    I was mainly a drummer until developing hearing changes in 2023 and shea on air emerged when I left the band scene to protect my ears long term and grappled with how to make music alone. I started playing classical flute when I was 8 years old but hadn't played much since high school. It's the only other instrument I play, so when I stopped drumming it became central. 
-    <br/><br/>
+  <div class="history-intro-row">
+    <p class="history-intro">
+      I was mainly a drummer until developing hearing changes in 2023 and shea on air emerged when I left the band scene to protect my ears long term and grappled with how to make music alone. I started playing classical flute when I was 8 years old but hadn't played much since high school. It's the only other instrument I play, so when I stopped drumming it became central. 
+      <br/><br/>
 
-    This project's sound is defined by the fusion and inherent constraints of these opposing sensibilities, and an equal appreciation for both ambient and pop music. I record and produce the whole thing in my studio apartment with one mic, a 2-octave midi controller, my 1958 Gemeinhardt flute, and Ableton.<br/><br/>
-    
-   My vision for shea on air is to stretch the narrow mainstream connotations of the flute (whimsical, precise, diminutive, feminine, new age) through distortion, humor, and purposeful de-skilling – classical sound processed through an unfettered, embodied, DIY spirit forged by years drumming.
-  </p>
+      This project's sound is defined by the fusion and inherent constraints of these opposing sensibilities, and an equal appreciation for both ambient and pop music. I record and produce the whole thing in my studio apartment with my 1958 Haynes flute, one mic, a 2-octave synth, and Ableton.<br/><br/>
+      
+     My vision for shea on air is to stretch the narrow mainstream connotations of the flute (whimsical, precise, diminutive, feminine, new age) through distortion, humor, and purposeful de-skilling – classical sound processed through an unfettered, embodied, DIY spirit forged by years drumming.
+    </p>
+
+    <div class="history-intro-image">
+      <img
+        src="/images/notes/20260617-curved-head-flutes/2003.webp"
+        alt="Shea playing flute as a child, 2003"
+        width="761"
+        height="605"
+        loading="lazy"
+      />
+    </div>
+  </div>
 
   <ol class="timeline" aria-label="Life timeline, newest first">
     {sortedEvents.map((event) => (
@@ -30,15 +42,39 @@ const endYear = 2026;
 </Base>
 
 <style>
-  .history-intro {
+  .history-intro-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
     margin-bottom: 2rem;
+  }
+
+  .history-intro {
+    flex: 1 1 50%;
     max-width: 50%;
+    margin: 0;
     font-family: batangche;
     font-style: italic;
     background: var(--color-surface);
     backdrop-filter: blur(8px);
     padding: 1rem;
     line-height: 1.35;
+  }
+
+  .history-intro-image {
+    flex: 1 1 50%;
+    max-width: 50%;
+    padding: 2rem 10rem;
+    display: none;
+  }
+
+  .history-intro-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    opacity: 90%;
+    border: 1px solid var(--color-accent);
+    border-radius: 1000%;
   }
 
   .timeline {
@@ -86,7 +122,12 @@ const endYear = 2026;
       margin-left: 2rem;
     }
 
-    .history-intro {
+    .history-intro-row {
+      flex-direction: column;
+    }
+
+    .history-intro,
+    .history-intro-image {
       max-width: 100%;
     }
   }
