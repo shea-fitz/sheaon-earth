@@ -20,9 +20,10 @@ export const releases = [
     themes:'olfactory impressions, rituals of excess, allure, intimacy,  parts work, adornment, leaving a passing trace of yourself, touching the veil, unfurling',
     credits: [
       { role: 'Flute, production, mixing', name: 'Shea Fitzpatrick' },
-      { role: 'Mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
+      { role: 'Mixing & mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
       { role: 'Artwork', name: 'Props Supply', url: 'https://props.supply/' },
       { role: 'Guitar (Protector)', name: 'Seb Choe', url: 'https://sebchoe.com/Project-Broken-Spear' },
+      { role: 'Ukulele (Not Every Seagull is a Seagull)', name: 'Lucy Liu' },
     ],
   },
   {
@@ -34,7 +35,7 @@ export const releases = [
     themes:'pettiness, rumination, snark, irony, obsessive compulsion, feeling like a loser',
     credits: [
       { role: 'Flute, snare drum, production', name: 'Shea Fitzpatrick' },
-      { role: 'Mixing & Mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
+      { role: 'Mixing & mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
       { role: 'Artwork', name: 'Shea Fitzpatrick' },
     ],
   },
@@ -47,7 +48,7 @@ export const releases = [
     themes: 'neuroplasticity, tinnitus, grief, rebirth, friendship, recovery, routine',
     credits: [
       { role: 'Flute, production', name: 'Shea Fitzpatrick' },
-      { role: 'Mixing & Mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
+      { role: 'Mixing & mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
       { role: 'Artwork', name: 'Shea Fitzpatrick' },
     ],
   },
