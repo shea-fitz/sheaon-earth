@@ -20,10 +20,10 @@ export const releases = [
     themes:'olfactory impressions, rituals of excess, allure, intimacy,  parts work, adornment, leaving a passing trace of yourself, touching the veil, unfurling',
     credits: [
       { role: 'Flute, production, mixing', name: 'Shea Fitzpatrick' },
-      { role: 'Mixing & mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
+      { role: 'Mixing (You Died In My Dream Last Night, Not Every Seagull is a Seagull) & mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
       { role: 'Artwork', name: 'Props Supply', url: 'https://props.supply/' },
       { role: 'Guitar (Protector)', name: 'Seb Choe', url: 'https://sebchoe.com/Project-Broken-Spear' },
-      { role: 'Ukulele (Not Every Seagull is a Seagull)', name: 'Lucy Liu' },
+      { role: 'Ukulele (Kite Scene)', name: 'Lucy Siyao Liu' },
     ],
   },
   {
