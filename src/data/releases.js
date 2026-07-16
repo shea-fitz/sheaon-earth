@@ -17,7 +17,7 @@ export const releases = [
     type: 'EP',
     bandcampUrl: 'https://sheaonair.bandcamp.com/',
     embed: '',
-    themes:'olfactory impressions, rituals of excess, allure, intimacy,  parts work, adornment, leaving a passing trace of yourself, touching the veil, unfurling',
+    themes:'olfactory impressions, rituals of excess, allure, adornment, leaving a passing trace of yourself, touching the veil',
     credits: [
       { role: 'Flute, production, mixing', name: 'Shea Fitzpatrick' },
       { role: 'Mixing (You Died In My Dream Last Night, Not Every Seagull is a Seagull) & mastering', name: 'Mark Matter', url: 'https://www.recordhouseny.com/' },
