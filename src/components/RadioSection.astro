@@ -26,6 +26,7 @@ const mixes = [...dated, ...undated];
         scrolling="no"
         frameborder="no"
         allow="autoplay; encrypted-media"
+        loading="eager"
         src={soundcloudPlayerSrc(mix.trackId, mix.color)}
         title={mix.title}
         data-track-id={mix.trackId}

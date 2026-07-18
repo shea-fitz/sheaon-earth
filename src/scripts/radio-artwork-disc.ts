@@ -1,6 +1,7 @@
 const FADE_MS = 800;
 const SC_API_URL = 'https://w.soundcloud.com/player/api.js';
-const SWITCH_TIMEOUT_MS = 2500;
+const SWITCH_TIMEOUT_MS = 3000;
+const READY_TIMEOUT_MS = 4000;
 
 interface SoundCloudWidget {
   bind: (event: string, callback: () => void) => void;
@@ -33,7 +34,10 @@ let activeMixIndex: number | null = null;
 let hideTimeout: number | null = null;
 let pendingPlayIndex: number | null = null;
 let pendingPlayTimeout: number | null = null;
+
 const widgetsByIndex = new Map<number, SoundCloudWidget>();
+const readyByIndex = new Set<number>();
+const readyWaiters = new Map<number, Array<() => void>>();
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -88,10 +92,69 @@ function getMixTitles() {
   return Array.from(getMixIframes()).map((iframe) => iframe.title);
 }
 
-function pauseAllExcept(index: number) {
-  widgetsByIndex.forEach((widget, mixIndex) => {
-    if (mixIndex !== index) widget.pause();
+function getIframeByIndex(index: number) {
+  return document.querySelector<HTMLIFrameElement>(`.radio-player[data-mix-index="${index}"]`);
+}
+
+function markWidgetReady(index: number) {
+  readyByIndex.add(index);
+  const waiters = readyWaiters.get(index);
+  if (!waiters) return;
+  readyWaiters.delete(index);
+  waiters.forEach((resolve) => resolve());
+}
+
+function waitForWidgetReady(index: number, signal: AbortSignal) {
+  if (readyByIndex.has(index)) return Promise.resolve();
+
+  return new Promise<void>((resolve) => {
+    if (signal.aborted) {
+      resolve();
+      return;
+    }
+
+    const onAbort = () => {
+      cleanup();
+      resolve();
+    };
+
+    const timeout = window.setTimeout(() => {
+      cleanup();
+      resolve();
+    }, READY_TIMEOUT_MS);
+
+    const done = () => {
+      cleanup();
+      resolve();
+    };
+
+    const cleanup = () => {
+      signal.removeEventListener('abort', onAbort);
+      window.clearTimeout(timeout);
+      const waiters = readyWaiters.get(index);
+      if (waiters) {
+        readyWaiters.set(
+          index,
+          waiters.filter((fn) => fn !== done)
+        );
+      }
+    };
+
+    const waiters = readyWaiters.get(index) ?? [];
+    waiters.push(done);
+    readyWaiters.set(index, waiters);
+    signal.addEventListener('abort', onAbort, { once: true });
   });
+}
+
+function nudgeIframeIntoView(index: number) {
+  const iframe = getIframeByIndex(index);
+  if (!iframe) return;
+  iframe.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+
+function pauseMix(index: number) {
+  widgetsByIndex.get(index)?.pause();
 }
 
 function wrapIndex(index: number, length: number) {
@@ -168,6 +231,10 @@ function showJukebox(activeIndex: number) {
     orb.classList.toggle('is-center', isCenter);
     orb.classList.toggle('is-floating', isCenter && !prefersReducedMotion());
     orb.classList.toggle('is-side', !isCenter);
+
+    if (!isCenter) {
+      nudgeIframeIntoView(mixIndex);
+    }
   });
 
   if (visibleCount === 0) return;
@@ -196,17 +263,19 @@ function hideJukebox() {
 }
 
 function playMixAtIndex(index: number) {
-  const widget = widgetsByIndex.get(index);
-  if (!widget) return;
   if (activeMixIndex === index) return;
 
+  const widget = widgetsByIndex.get(index);
+  if (!widget) return;
+
+  nudgeIframeIntoView(index);
   beginMixSwitch(index);
   widget.play();
 }
 
 function pauseMixAtIndex(index: number) {
   clearPendingPlay();
-  widgetsByIndex.get(index)?.pause();
+  pauseMix(index);
 }
 
 function bindJukeboxOrbs(signal: AbortSignal) {
@@ -215,11 +284,13 @@ function bindJukeboxOrbs(signal: AbortSignal) {
 
   jukebox.querySelectorAll<HTMLButtonElement>('.radio-jukebox__orb').forEach((orb) => {
     const isCenterOrb = orb.dataset.offset === '0';
-    let touchHandled = false;
-    let touchResetTimeout: number | null = null;
 
-    const activate = () => {
+    const onPointerUp = (event: PointerEvent) => {
       if (signal.aborted || orb.hasAttribute('hidden') || !orb.dataset.mixIndex) return;
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+
+      event.preventDefault();
+      event.stopPropagation();
 
       const mixIndex = Number(orb.dataset.mixIndex);
 
@@ -231,41 +302,7 @@ function bindJukeboxOrbs(signal: AbortSignal) {
       playMixAtIndex(mixIndex);
     };
 
-    if (!isCenterOrb) {
-      orb.addEventListener(
-        'touchend',
-        (event) => {
-          event.preventDefault();
-          touchHandled = true;
-
-          if (touchResetTimeout !== null) {
-            window.clearTimeout(touchResetTimeout);
-          }
-
-          touchResetTimeout = window.setTimeout(() => {
-            touchHandled = false;
-            touchResetTimeout = null;
-          }, 500);
-
-          activate();
-        },
-        { passive: false, signal }
-      );
-    }
-
-    orb.addEventListener(
-      'click',
-      (event) => {
-        if (touchHandled) {
-          event.preventDefault();
-          return;
-        }
-
-        event.stopPropagation();
-        activate();
-      },
-      { signal }
-    );
+    orb.addEventListener('pointerup', onPointerUp, { signal });
   });
 }
 
@@ -279,16 +316,23 @@ function bindWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
   if (!artwork || mixIndex === undefined) return;
 
   const mixIndexNum = Number(mixIndex);
+  widgetsByIndex.set(mixIndexNum, widget);
 
   const onPlay = () => {
     if (signal.aborted) return;
     if (pendingPlayIndex !== null && mixIndexNum !== pendingPlayIndex) return;
 
+    const previousIndex = activeMixIndex;
     clearPendingPlay();
     activeMixIndex = mixIndexNum;
     activeIframe = iframe;
-    pauseAllExcept(mixIndexNum);
     showJukebox(mixIndexNum);
+
+    if (previousIndex !== null && previousIndex !== mixIndexNum) {
+      window.requestAnimationFrame(() => {
+        pauseMix(previousIndex);
+      });
+    }
   };
 
   const onStop = () => {
@@ -303,11 +347,28 @@ function bindWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
 
   widget.bind(window.SC.Widget.Events.READY, () => {
     if (signal.aborted) return;
-    widgetsByIndex.set(mixIndexNum, widget);
+    markWidgetReady(mixIndexNum);
     widget.bind(window.SC.Widget.Events.PLAY, onPlay);
     widget.bind(window.SC.Widget.Events.PAUSE, onStop);
     widget.bind(window.SC.Widget.Events.FINISH, onStop);
   });
+}
+
+async function warmWidgets(signal: AbortSignal) {
+  const iframes = getMixIframes();
+  const savedScrollY = window.scrollY;
+
+  for (const iframe of iframes) {
+    if (signal.aborted) break;
+
+    const mixIndex = iframe.dataset.mixIndex;
+    if (mixIndex === undefined || readyByIndex.has(Number(mixIndex))) continue;
+
+    iframe.scrollIntoView({ block: 'nearest' });
+    await waitForWidgetReady(Number(mixIndex), signal);
+  }
+
+  window.scrollTo(0, savedScrollY);
 }
 
 function teardown() {
@@ -317,6 +378,8 @@ function teardown() {
   activeMixIndex = null;
   clearPendingPlay();
   widgetsByIndex.clear();
+  readyByIndex.clear();
+  readyWaiters.clear();
   clearHideTimeout();
 
   const jukebox = getJukebox();
@@ -351,8 +414,18 @@ async function init() {
 
   if (signal.aborted) return;
 
-  bindJukeboxOrbs(signal);
   iframes.forEach((iframe) => bindWidget(iframe, signal));
+  bindJukeboxOrbs(signal);
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(() => {
+      void warmWidgets(signal);
+    });
+  } else {
+    window.setTimeout(() => {
+      void warmWidgets(signal);
+    }, 500);
+  }
 }
 
 document.addEventListener('astro:before-preparation', teardown);
