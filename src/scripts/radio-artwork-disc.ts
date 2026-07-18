@@ -8,7 +8,6 @@ interface SoundCloudWidget {
   unbind: (event: string) => void;
   play: () => void;
   pause: () => void;
-  load: (url: string, options?: Record<string, unknown>) => void;
 }
 
 interface SoundCloudGlobal {
@@ -99,10 +98,6 @@ function getMixTitles() {
 
 function getIframeByIndex(index: number) {
   return document.querySelector<HTMLIFrameElement>(`.radio-player[data-mix-index="${index}"]`);
-}
-
-function getTrackApiUrl(index: number) {
-  return getIframeByIndex(index)?.dataset.trackApiUrl ?? '';
 }
 
 function pauseAllExcept(driverIndex: number) {
@@ -235,35 +230,12 @@ function stopPlayback() {
 function requestMixPlay(index: number) {
   if (activeMixIndex === index) return;
 
-  const targetUrl = getTrackApiUrl(index);
-  if (!targetUrl) return;
-
-  beginMixSwitch(index);
-  showJukebox(index);
-
-  const driverWidget =
-    audioDriverIndex !== null ? listWidgetsByIndex.get(audioDriverIndex) : null;
-
-  // Reuse the embed that's already playing. On iOS, starting a different embed
-  // often pauses the current one without actually starting the new track.
-  if (driverWidget && audioDriverIndex !== null && activeMixIndex !== null) {
-    driverWidget.play();
-    driverWidget.load(targetUrl, {
-      auto_play: true,
-      show_user: false,
-      single_active: false,
-      callback: () => {
-        if (pendingPlayIndex === index) driverWidget.play();
-      },
-    });
-    return;
-  }
-
   const targetWidget = listWidgetsByIndex.get(index);
   if (!targetWidget) return;
 
+  beginMixSwitch(index);
+  showJukebox(index);
   audioDriverIndex = index;
-  getIframeByIndex(index)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   targetWidget.play();
 }
 
@@ -338,6 +310,7 @@ function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
 
   const mixIndexNum = Number(mixIndex);
   listWidgetsByIndex.set(mixIndexNum, widget);
+  let playbackEventsBound = false;
 
   const onPlay = () => {
     if (signal.aborted) return;
@@ -351,18 +324,14 @@ function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
       return;
     }
 
-    if (pendingPlayIndex !== null) {
-      if (audioDriverIndex === null || mixIndexNum !== audioDriverIndex) return;
-    }
-
-    const resolvedIndex = pendingPlayIndex ?? mixIndexNum;
+    if (pendingPlayIndex !== null && mixIndexNum !== pendingPlayIndex) return;
 
     clearPendingPlay();
     audioDriverIndex = mixIndexNum;
-    activeMixIndex = resolvedIndex;
+    activeMixIndex = mixIndexNum;
 
     pauseAllExcept(mixIndexNum);
-    showJukebox(resolvedIndex);
+    showJukebox(mixIndexNum);
   };
 
   const onPause = () => {
@@ -403,9 +372,12 @@ function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
 
     readyByIndex.add(mixIndexNum);
 
-    if (pendingPlayIndex === mixIndexNum && audioDriverIndex === mixIndexNum) {
+    if (pendingPlayIndex === mixIndexNum) {
       widget.play();
     }
+
+    if (playbackEventsBound) return;
+    playbackEventsBound = true;
 
     widget.bind(window.SC.Widget.Events.PLAY, onPlay);
     widget.bind(window.SC.Widget.Events.PAUSE, onPause);
