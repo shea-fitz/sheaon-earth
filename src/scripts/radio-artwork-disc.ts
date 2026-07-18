@@ -199,21 +199,12 @@ function playMixAtIndex(index: number) {
   const widget = widgetsByIndex.get(index);
   if (!widget) return;
   if (activeMixIndex === index) return;
-  if (pendingPlayIndex !== null) return;
 
-  const previousIndex = activeMixIndex;
   beginMixSwitch(index);
-
-  // iOS requires play() synchronously inside the user-gesture handler.
   widget.play();
-
-  if (previousIndex !== null && previousIndex !== index) {
-    widgetsByIndex.get(previousIndex)?.pause();
-  }
 }
 
 function pauseMixAtIndex(index: number) {
-  if (pendingPlayIndex !== null) return;
   clearPendingPlay();
   widgetsByIndex.get(index)?.pause();
 }
@@ -223,13 +214,16 @@ function bindJukeboxOrbs(signal: AbortSignal) {
   if (!jukebox) return;
 
   jukebox.querySelectorAll<HTMLButtonElement>('.radio-jukebox__orb').forEach((orb) => {
-    const onOrbClick = (event: MouseEvent) => {
+    const isCenterOrb = orb.dataset.offset === '0';
+    let touchHandled = false;
+    let touchResetTimeout: number | null = null;
+
+    const activate = () => {
       if (signal.aborted || orb.hasAttribute('hidden') || !orb.dataset.mixIndex) return;
 
-      event.stopPropagation();
-
       const mixIndex = Number(orb.dataset.mixIndex);
-      if (orb.dataset.offset === '0') {
+
+      if (isCenterOrb) {
         if (activeMixIndex === mixIndex) pauseMixAtIndex(mixIndex);
         return;
       }
@@ -237,7 +231,41 @@ function bindJukeboxOrbs(signal: AbortSignal) {
       playMixAtIndex(mixIndex);
     };
 
-    orb.addEventListener('click', onOrbClick, { signal });
+    if (!isCenterOrb) {
+      orb.addEventListener(
+        'touchend',
+        (event) => {
+          event.preventDefault();
+          touchHandled = true;
+
+          if (touchResetTimeout !== null) {
+            window.clearTimeout(touchResetTimeout);
+          }
+
+          touchResetTimeout = window.setTimeout(() => {
+            touchHandled = false;
+            touchResetTimeout = null;
+          }, 500);
+
+          activate();
+        },
+        { passive: false, signal }
+      );
+    }
+
+    orb.addEventListener(
+      'click',
+      (event) => {
+        if (touchHandled) {
+          event.preventDefault();
+          return;
+        }
+
+        event.stopPropagation();
+        activate();
+      },
+      { signal }
+    );
   });
 }
 

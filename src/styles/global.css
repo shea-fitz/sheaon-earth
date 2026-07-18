@@ -99,10 +99,11 @@ body {
     border-color var(--page-fade-in) ease-out;
 }
 
-body[data-background="bg2"] {
+body[data-background='bg2'] {
   --color-accent: #FF5CE4;
   --color-border: #FF5CE4;
   --color-text: #15141D;
+  background-color: #6b7da8;
 }
 
 body[data-background="bg3"] {
@@ -141,12 +142,15 @@ figcaption {
 
 .page-bg-layers {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
   z-index: -1;
   pointer-events: none;
-  /* Stabilize mobile viewport sizing (iOS address bar) */
-  height: 100vh;
-  height: 100dvh;
 }
 
 .page-bg-layer {
