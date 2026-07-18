@@ -1,9 +1,13 @@
 ---
 import { radioMixes } from '../data/radio-mixes.js';
 
+function soundcloudTrackApiUrl(trackId) {
+  return `https://api.soundcloud.com/tracks/soundcloud:tracks:${trackId}`;
+}
+
 function soundcloudPlayerSrc(trackId, color) {
-  const trackUrl = `https://api.soundcloud.com/tracks/soundcloud:tracks:${trackId}`;
-  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(trackUrl)}&color=${encodeURIComponent(color)}&inverse=false&auto_play=false&show_user=false`;
+  const trackUrl = soundcloudTrackApiUrl(trackId);
+  return `https://w.soundcloud.com/player/?url=${encodeURIComponent(trackUrl)}&color=${encodeURIComponent(color)}&inverse=false&auto_play=false&show_user=false&single_active=false`;
 }
 
 const dated = radioMixes
@@ -30,6 +34,7 @@ const mixes = [...dated, ...undated];
         src={soundcloudPlayerSrc(mix.trackId, mix.color)}
         title={mix.title}
         data-track-id={mix.trackId}
+        data-track-api-url={soundcloudTrackApiUrl(mix.trackId)}
         data-mix-index={index}
         {...(mix.artwork ? { 'data-artwork': mix.artwork } : {})}
       />
@@ -46,6 +51,21 @@ const mixes = [...dated, ...undated];
     </li>
   ))}
 </ul>
+
+<iframe
+  id="radio-master-player"
+  class="radio-master-player"
+  title="Radio playback"
+  width="100%"
+  height="20"
+  scrolling="no"
+  frameborder="no"
+  allow="autoplay; encrypted-media"
+  loading="eager"
+  src={soundcloudPlayerSrc(mixes[0].trackId, mixes[0].color)}
+  tabindex="-1"
+  aria-hidden="true"
+/>
 
 <div class="radio-jukebox" aria-hidden="true" hidden>
   <button type="button" class="radio-jukebox__orb" data-offset="-2" hidden aria-label="Play mix">
@@ -109,6 +129,18 @@ const mixes = [...dated, ...undated];
   .radio-player {
     display: block;
     border: 0;
+  }
+
+  .radio-master-player {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
 
   .radio-tracklist-toggle {
