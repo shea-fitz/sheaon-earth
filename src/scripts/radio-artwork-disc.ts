@@ -1,6 +1,7 @@
 const FADE_MS = 800;
 const SC_API_URL = 'https://w.soundcloud.com/player/api.js';
 const SWITCH_TIMEOUT_MS = 5000;
+const PAUSE_HIDE_DELAY_MS = 600;
 
 interface SoundCloudWidget {
   bind: (event: string, callback: () => void) => void;
@@ -34,12 +35,17 @@ let audioDriverIndex: number | null = null;
 let hideTimeout: number | null = null;
 let pendingPlayIndex: number | null = null;
 let pendingPlayTimeout: number | null = null;
+let pauseHideTimeout: number | null = null;
 
 const listWidgetsByIndex = new Map<number, SoundCloudWidget>();
 const readyByIndex = new Set<number>();
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function isJukeboxEnabled() {
+  return window.matchMedia('(min-width: 769px)').matches;
 }
 
 function loadScript(src: string): Promise<void> {
@@ -117,6 +123,13 @@ function clearHideTimeout() {
   }
 }
 
+function clearPauseHideTimeout() {
+  if (pauseHideTimeout !== null) {
+    window.clearTimeout(pauseHideTimeout);
+    pauseHideTimeout = null;
+  }
+}
+
 function clearPendingPlay() {
   pendingPlayIndex = null;
   if (pendingPlayTimeout !== null) {
@@ -126,6 +139,7 @@ function clearPendingPlay() {
 }
 
 function beginMixSwitch(targetIndex: number) {
+  clearPauseHideTimeout();
   pendingPlayIndex = targetIndex;
 
   if (pendingPlayTimeout !== null) {
@@ -138,6 +152,8 @@ function beginMixSwitch(targetIndex: number) {
 }
 
 function showJukebox(activeIndex: number) {
+  if (!isJukeboxEnabled()) return;
+
   const jukebox = getJukebox();
   if (!jukebox) return;
 
@@ -184,11 +200,14 @@ function showJukebox(activeIndex: number) {
   if (visibleCount === 0) return;
 
   clearHideTimeout();
+  clearPauseHideTimeout();
   jukebox.removeAttribute('hidden');
   jukebox.classList.add('is-visible');
 }
 
 function hideJukebox() {
+  if (!isJukeboxEnabled()) return;
+
   const jukebox = getJukebox();
   if (!jukebox) return;
 
@@ -210,7 +229,7 @@ function stopPlayback() {
   clearPendingPlay();
   activeMixIndex = null;
   audioDriverIndex = null;
-  hideJukebox();
+  if (isJukeboxEnabled()) hideJukebox();
 }
 
 function requestMixPlay(index: number) {
@@ -250,13 +269,27 @@ function requestMixPlay(index: number) {
 
 function pauseActivePlayback() {
   clearPendingPlay();
+  clearPauseHideTimeout();
 
   if (audioDriverIndex !== null) {
     listWidgetsByIndex.get(audioDriverIndex)?.pause();
   }
+
+  stopPlayback();
+}
+
+function schedulePauseHide() {
+  clearPauseHideTimeout();
+  pauseHideTimeout = window.setTimeout(() => {
+    pauseHideTimeout = null;
+    if (pendingPlayIndex !== null) return;
+    stopPlayback();
+  }, PAUSE_HIDE_DELAY_MS);
 }
 
 function bindJukeboxOrbs(signal: AbortSignal) {
+  if (!isJukeboxEnabled()) return;
+
   const jukebox = getJukebox();
   if (!jukebox) return;
 
@@ -309,6 +342,15 @@ function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
   const onPlay = () => {
     if (signal.aborted) return;
 
+    clearPauseHideTimeout();
+
+    if (!isJukeboxEnabled()) {
+      audioDriverIndex = mixIndexNum;
+      activeMixIndex = mixIndexNum;
+      pauseAllExcept(mixIndexNum);
+      return;
+    }
+
     if (pendingPlayIndex !== null) {
       if (audioDriverIndex === null || mixIndexNum !== audioDriverIndex) return;
     }
@@ -323,11 +365,36 @@ function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
     showJukebox(resolvedIndex);
   };
 
-  const onStop = () => {
+  const onPause = () => {
     if (signal.aborted) return;
+
+    if (!isJukeboxEnabled()) {
+      if (audioDriverIndex !== mixIndexNum) return;
+      activeMixIndex = null;
+      audioDriverIndex = null;
+      return;
+    }
+
     if (pendingPlayIndex !== null) return;
     if (audioDriverIndex !== mixIndexNum) return;
 
+    schedulePauseHide();
+  };
+
+  const onFinish = () => {
+    if (signal.aborted) return;
+
+    if (!isJukeboxEnabled()) {
+      if (audioDriverIndex !== mixIndexNum) return;
+      activeMixIndex = null;
+      audioDriverIndex = null;
+      return;
+    }
+
+    if (pendingPlayIndex !== null) return;
+    if (audioDriverIndex !== mixIndexNum) return;
+
+    clearPauseHideTimeout();
     stopPlayback();
   };
 
@@ -341,8 +408,8 @@ function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
     }
 
     widget.bind(window.SC.Widget.Events.PLAY, onPlay);
-    widget.bind(window.SC.Widget.Events.PAUSE, onStop);
-    widget.bind(window.SC.Widget.Events.FINISH, onStop);
+    widget.bind(window.SC.Widget.Events.PAUSE, onPause);
+    widget.bind(window.SC.Widget.Events.FINISH, onFinish);
   });
 }
 
@@ -382,6 +449,7 @@ function teardown() {
   activeMixIndex = null;
   audioDriverIndex = null;
   clearPendingPlay();
+  clearPauseHideTimeout();
   listWidgetsByIndex.clear();
   readyByIndex.clear();
   clearHideTimeout();
@@ -421,14 +489,16 @@ async function init() {
   iframes.forEach((iframe) => bindListWidget(iframe, signal));
   bindJukeboxOrbs(signal);
 
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(() => {
-      void warmWidgets(signal);
-    });
-  } else {
-    window.setTimeout(() => {
-      void warmWidgets(signal);
-    }, 500);
+  if (isJukeboxEnabled()) {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => {
+        void warmWidgets(signal);
+      });
+    } else {
+      window.setTimeout(() => {
+        void warmWidgets(signal);
+      }, 500);
+    }
   }
 }
 

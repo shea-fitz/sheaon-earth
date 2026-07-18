@@ -302,26 +302,12 @@ const mixes = [...dated, ...undated];
   }
 
   @media (max-width: 768px) {
-    .radio-section {
-      --radio-jukebox-bottom: max(1.25rem, env(safe-area-inset-bottom));
-      --radio-jukebox-orb-size: 100px;
-    }
-
     .radio-jukebox {
-      bottom: var(--radio-jukebox-bottom);
-      gap: 0.75rem;
+      display: none !important;
     }
 
-    .radio-jukebox__orb[data-offset='-2'],
-    .radio-jukebox__orb[data-offset='2'] {
-      width: 40px;
-      height: 40px;
-    }
-
-    .radio-jukebox__orb[data-offset='-1'],
-    .radio-jukebox__orb[data-offset='1'] {
-      width: 64px;
-      height: 64px;
+    .radio-section:has(.radio-jukebox.is-visible) .radio-list {
+      padding-bottom: 1rem;
     }
   }
 
