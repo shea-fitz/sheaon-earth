@@ -1,5 +1,7 @@
 const FADE_MS = 800;
 const SC_API_URL = 'https://w.soundcloud.com/player/api.js';
+const SWITCH_TIMEOUT_MS = 4000;
+const FLOAT_RESTORE_MS = 2500;
 
 interface SoundCloudWidget {
   bind: (event: string, callback: () => void) => void;
@@ -25,16 +27,17 @@ declare global {
   }
 }
 
-type AudioSource = 'list' | 'orb';
-
 let activeController: AbortController | null = null;
 let apiLoadPromise: Promise<void> | null = null;
 let activeMixIndex: number | null = null;
 let hideTimeout: number | null = null;
-let audioSource: AudioSource | null = null;
+let pendingPlayIndex: number | null = null;
+let pendingPlayTimeout: number | null = null;
+let floatRestoreTimeout: number | null = null;
+let floatedIframe: HTMLIFrameElement | null = null;
+let floatedPlaceholder: HTMLDivElement | null = null;
 
 const listWidgetsByIndex = new Map<number, SoundCloudWidget>();
-const orbWidgetsByPlayer = new WeakMap<HTMLIFrameElement, SoundCloudWidget>();
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -93,26 +96,10 @@ function getIframeByIndex(index: number) {
   return document.querySelector<HTMLIFrameElement>(`.radio-player[data-mix-index="${index}"]`);
 }
 
-function getOrbPlayers() {
-  return document.querySelectorAll<HTMLIFrameElement>('.radio-jukebox__orb-player');
-}
-
 function pauseAllListWidgets(exceptIndex?: number) {
   listWidgetsByIndex.forEach((widget, index) => {
     if (index !== exceptIndex) widget.pause();
   });
-}
-
-function pauseAllOrbWidgets(exceptPlayer?: HTMLIFrameElement) {
-  getOrbPlayers().forEach((player) => {
-    if (player === exceptPlayer) return;
-    orbWidgetsByPlayer.get(player)?.pause();
-  });
-}
-
-function pauseAllWidgets(except?: { index?: number; orbPlayer?: HTMLIFrameElement }) {
-  pauseAllListWidgets(except?.index);
-  pauseAllOrbWidgets(except?.orbPlayer);
 }
 
 function wrapIndex(index: number, length: number) {
@@ -127,16 +114,82 @@ function clearHideTimeout() {
   }
 }
 
-function updateOrbPlayer(orb: HTMLElement, mixIndex: number, title: string) {
-  const player = orb.querySelector<HTMLIFrameElement>('.radio-jukebox__orb-player');
-  const listIframe = getIframeByIndex(mixIndex);
-  if (!player || !listIframe?.src) return;
+function clearPendingPlay() {
+  pendingPlayIndex = null;
+  if (pendingPlayTimeout !== null) {
+    window.clearTimeout(pendingPlayTimeout);
+    pendingPlayTimeout = null;
+  }
+}
 
-  if (player.dataset.mixIndex === String(mixIndex)) return;
+function clearFloatRestoreTimeout() {
+  if (floatRestoreTimeout !== null) {
+    window.clearTimeout(floatRestoreTimeout);
+    floatRestoreTimeout = null;
+  }
+}
 
-  player.dataset.mixIndex = String(mixIndex);
-  player.title = title;
-  player.src = listIframe.src;
+function beginMixSwitch(targetIndex: number) {
+  pendingPlayIndex = targetIndex;
+
+  if (pendingPlayTimeout !== null) {
+    window.clearTimeout(pendingPlayTimeout);
+  }
+
+  pendingPlayTimeout = window.setTimeout(() => {
+    clearPendingPlay();
+    restoreFloatedIframe();
+  }, SWITCH_TIMEOUT_MS);
+}
+
+function restoreFloatedIframe() {
+  clearFloatRestoreTimeout();
+
+  if (!floatedIframe || !floatedPlaceholder) return;
+
+  const iframe = floatedIframe;
+  const placeholder = floatedPlaceholder;
+
+  floatedIframe = null;
+  floatedPlaceholder = null;
+
+  iframe.removeAttribute('style');
+  placeholder.replaceWith(iframe);
+}
+
+function scheduleFloatRestore() {
+  clearFloatRestoreTimeout();
+  floatRestoreTimeout = window.setTimeout(() => {
+    restoreFloatedIframe();
+    floatRestoreTimeout = null;
+  }, FLOAT_RESTORE_MS);
+}
+
+function floatListIframeToOrb(index: number, orb: HTMLElement) {
+  const iframe = getIframeByIndex(index);
+  if (!iframe) return;
+
+  restoreFloatedIframe();
+
+  const rect = orb.getBoundingClientRect();
+  const placeholder = document.createElement('div');
+  placeholder.className = 'radio-player-placeholder';
+  iframe.parentNode?.insertBefore(placeholder, iframe);
+
+  iframe.style.position = 'fixed';
+  iframe.style.left = `${rect.left + rect.width / 2 - 12}px`;
+  iframe.style.top = `${rect.top + rect.height / 2 - 10}px`;
+  iframe.style.width = '48px';
+  iframe.style.height = '20px';
+  iframe.style.zIndex = '100';
+  iframe.style.opacity = '0.01';
+  iframe.style.border = '0';
+  iframe.style.margin = '0';
+  iframe.style.padding = '0';
+
+  document.body.appendChild(iframe);
+  floatedIframe = iframe;
+  floatedPlaceholder = placeholder;
 }
 
 function showJukebox(activeIndex: number) {
@@ -173,7 +226,7 @@ function showJukebox(activeIndex: number) {
 
     const isCenter = offset === 0;
     if (orb instanceof HTMLButtonElement) {
-      orb.setAttribute('aria-label', `Pause ${title}`);
+      orb.setAttribute('aria-label', isCenter ? `Pause ${title}` : `Play ${title}`);
     }
     orb.removeAttribute('hidden');
     visibleCount += 1;
@@ -181,10 +234,6 @@ function showJukebox(activeIndex: number) {
     orb.classList.toggle('is-center', isCenter);
     orb.classList.toggle('is-floating', isCenter && !prefersReducedMotion());
     orb.classList.toggle('is-side', !isCenter);
-
-    if (!isCenter) {
-      updateOrbPlayer(orb, mixIndex, title);
-    }
   });
 
   if (visibleCount === 0) return;
@@ -213,99 +262,89 @@ function hideJukebox() {
 }
 
 function activateMix(index: number) {
+  clearPendingPlay();
+  restoreFloatedIframe();
   activeMixIndex = index;
   showJukebox(index);
 }
 
 function stopPlayback() {
+  clearPendingPlay();
+  restoreFloatedIframe();
   activeMixIndex = null;
-  audioSource = null;
   hideJukebox();
 }
 
-function handleMixPlay(
-  mixIndex: number,
-  source: AudioSource,
-  activePlayer?: HTMLIFrameElement,
-  signal?: AbortSignal
-) {
-  if (signal?.aborted) return;
+function playMixAtIndex(index: number, orb: HTMLElement, useApiPlay: boolean) {
+  if (activeMixIndex === index) return;
 
-  pauseAllWidgets({ index: mixIndex, orbPlayer: activePlayer });
-  audioSource = source;
-  activateMix(mixIndex);
+  const widget = listWidgetsByIndex.get(index);
+  if (!widget) return;
+
+  beginMixSwitch(index);
+  showJukebox(index);
+  floatListIframeToOrb(index, orb);
+  scheduleFloatRestore();
+
+  if (useApiPlay) {
+    widget.play();
+  }
 }
 
 function pauseActivePlayback() {
-  if (activeMixIndex === null) return;
+  clearPendingPlay();
+  restoreFloatedIframe();
 
-  if (audioSource === 'list') {
+  if (activeMixIndex !== null) {
     listWidgetsByIndex.get(activeMixIndex)?.pause();
-    return;
-  }
-
-  if (audioSource === 'orb') {
-    getOrbPlayers().forEach((player) => {
-      if (player.dataset.mixIndex === String(activeMixIndex)) {
-        orbWidgetsByPlayer.get(player)?.pause();
-      }
-    });
   }
 }
 
-function bindCenterOrb(signal: AbortSignal) {
-  const centerOrb = getJukebox()?.querySelector<HTMLButtonElement>('.radio-jukebox__orb[data-offset="0"]');
-  if (!centerOrb) return;
+function bindJukeboxOrbs(signal: AbortSignal) {
+  const jukebox = getJukebox();
+  if (!jukebox) return;
 
-  centerOrb.addEventListener(
-    'pointerup',
-    (event) => {
-      if (signal.aborted || centerOrb.hasAttribute('hidden') || !centerOrb.dataset.mixIndex) return;
-      if (event.pointerType === 'mouse' && event.button !== 0) return;
+  jukebox.querySelectorAll<HTMLButtonElement>('.radio-jukebox__orb').forEach((orb) => {
+    const isCenterOrb = orb.dataset.offset === '0';
 
-      event.preventDefault();
-      event.stopPropagation();
+    orb.addEventListener(
+      'touchstart',
+      () => {
+        if (signal.aborted || isCenterOrb || orb.hasAttribute('hidden') || !orb.dataset.mixIndex) return;
 
-      const mixIndex = Number(centerOrb.dataset.mixIndex);
-      if (activeMixIndex === mixIndex) pauseActivePlayback();
-    },
-    { passive: false, signal }
-  );
-}
+        const mixIndex = Number(orb.dataset.mixIndex);
+        beginMixSwitch(mixIndex);
+        showJukebox(mixIndex);
+        floatListIframeToOrb(mixIndex, orb);
+        scheduleFloatRestore();
+      },
+      { passive: true, signal }
+    );
 
-function bindOrbPlayer(orb: HTMLElement, signal: AbortSignal) {
-  const player = orb.querySelector<HTMLIFrameElement>('.radio-jukebox__orb-player');
-  if (!player || !window.SC) return;
+    orb.addEventListener(
+      'pointerdown',
+      (event) => {
+        if (signal.aborted || orb.hasAttribute('hidden') || !orb.dataset.mixIndex) return;
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
 
-  const attachWidget = () => {
-    if (signal.aborted || !window.SC) return;
+        const mixIndex = Number(orb.dataset.mixIndex);
 
-    const widget = window.SC.Widget(player);
-    orbWidgetsByPlayer.set(player, widget);
+        if (isCenterOrb) {
+          event.preventDefault();
+          event.stopPropagation();
+          if (activeMixIndex === mixIndex) pauseActivePlayback();
+          return;
+        }
 
-    const onPlay = () => {
-      const mixIndex = Number(orb.dataset.mixIndex);
-      if (Number.isNaN(mixIndex)) return;
-      handleMixPlay(mixIndex, 'orb', player, signal);
-    };
+        if (event.pointerType === 'touch') return;
 
-    const onStop = () => {
-      if (signal.aborted) return;
-      if (audioSource !== 'orb') return;
-      if (activeMixIndex !== Number(orb.dataset.mixIndex)) return;
-      stopPlayback();
-    };
-
-    widget.bind(window.SC.Widget.Events.READY, () => {
-      if (signal.aborted) return;
-      widget.bind(window.SC.Widget.Events.PLAY, onPlay);
-      widget.bind(window.SC.Widget.Events.PAUSE, onStop);
-      widget.bind(window.SC.Widget.Events.FINISH, onStop);
-    });
-  };
-
-  player.addEventListener('load', attachWidget, { signal });
-  if (player.src) attachWidget();
+        event.preventDefault();
+        event.stopPropagation();
+        playMixAtIndex(mixIndex, orb, true);
+      },
+      { passive: false, signal }
+    );
+  });
 }
 
 function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
@@ -321,13 +360,26 @@ function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
   listWidgetsByIndex.set(mixIndexNum, widget);
 
   const onPlay = () => {
-    handleMixPlay(mixIndexNum, 'list', undefined, signal);
+    if (signal.aborted) return;
+    if (pendingPlayIndex !== null && mixIndexNum !== pendingPlayIndex) return;
+
+    const previousIndex = activeMixIndex;
+    clearPendingPlay();
+    restoreFloatedIframe();
+    activeMixIndex = mixIndexNum;
+
+    if (previousIndex !== null && previousIndex !== mixIndexNum) {
+      listWidgetsByIndex.get(previousIndex)?.pause();
+    }
+
+    showJukebox(mixIndexNum);
   };
 
   const onStop = () => {
     if (signal.aborted) return;
-    if (audioSource !== 'list') return;
+    if (pendingPlayIndex !== null) return;
     if (activeMixIndex !== mixIndexNum) return;
+
     stopPlayback();
   };
 
@@ -343,7 +395,8 @@ function teardown() {
   activeController?.abort();
   activeController = null;
   activeMixIndex = null;
-  audioSource = null;
+  clearPendingPlay();
+  restoreFloatedIframe();
   listWidgetsByIndex.clear();
   clearHideTimeout();
 
@@ -379,12 +432,7 @@ async function init() {
 
   if (signal.aborted) return;
 
-  jukebox.querySelectorAll<HTMLElement>('.radio-jukebox__orb').forEach((orb) => {
-    if (orb.dataset.offset === '0') return;
-    bindOrbPlayer(orb, signal);
-  });
-
-  bindCenterOrb(signal);
+  bindJukeboxOrbs(signal);
   iframes.forEach((iframe) => bindListWidget(iframe, signal));
 }
 

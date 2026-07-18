@@ -53,62 +53,26 @@ const mixes = [...dated, ...undated];
 </ul>
 
 <div class="radio-jukebox" aria-hidden="true" hidden>
-  <div class="radio-jukebox__orb" data-offset="-2" hidden>
+  <button type="button" class="radio-jukebox__orb" data-offset="-2" hidden aria-label="Play mix">
     <span class="radio-jukebox__orb-label"></span>
     <span class="radio-jukebox__orb-inner"></span>
-    <iframe
-      class="radio-jukebox__orb-player"
-      scrolling="no"
-      frameborder="no"
-      allow="autoplay; encrypted-media"
-      loading="eager"
-      title="Play mix"
-      tabindex="-1"
-    />
-  </div>
-  <div class="radio-jukebox__orb" data-offset="-1" hidden>
+  </button>
+  <button type="button" class="radio-jukebox__orb" data-offset="-1" hidden aria-label="Play mix">
     <span class="radio-jukebox__orb-label"></span>
     <span class="radio-jukebox__orb-inner"></span>
-    <iframe
-      class="radio-jukebox__orb-player"
-      scrolling="no"
-      frameborder="no"
-      allow="autoplay; encrypted-media"
-      loading="eager"
-      title="Play mix"
-      tabindex="-1"
-    />
-  </div>
+  </button>
   <button type="button" class="radio-jukebox__orb is-center" data-offset="0" hidden aria-label="Pause mix">
     <span class="radio-jukebox__orb-label"></span>
     <span class="radio-jukebox__orb-inner"></span>
   </button>
-  <div class="radio-jukebox__orb" data-offset="1" hidden>
+  <button type="button" class="radio-jukebox__orb" data-offset="1" hidden aria-label="Play mix">
     <span class="radio-jukebox__orb-label"></span>
     <span class="radio-jukebox__orb-inner"></span>
-    <iframe
-      class="radio-jukebox__orb-player"
-      scrolling="no"
-      frameborder="no"
-      allow="autoplay; encrypted-media"
-      loading="eager"
-      title="Play mix"
-      tabindex="-1"
-    />
-  </div>
-  <div class="radio-jukebox__orb" data-offset="2" hidden>
+  </button>
+  <button type="button" class="radio-jukebox__orb" data-offset="2" hidden aria-label="Play mix">
     <span class="radio-jukebox__orb-label"></span>
     <span class="radio-jukebox__orb-inner"></span>
-    <iframe
-      class="radio-jukebox__orb-player"
-      scrolling="no"
-      frameborder="no"
-      allow="autoplay; encrypted-media"
-      loading="eager"
-      title="Play mix"
-      tabindex="-1"
-    />
-  </div>
+  </button>
 </div>
 
 </div>
@@ -243,7 +207,7 @@ const mixes = [...dated, ...undated];
 
   .radio-jukebox__orb.is-side {
     z-index: 2;
-    overflow: hidden;
+    cursor: pointer;
   }
 
   .radio-jukebox__orb.is-center {
@@ -251,18 +215,11 @@ const mixes = [...dated, ...undated];
     cursor: pointer;
   }
 
-  .radio-jukebox__orb-player {
+  .radio-jukebox__orb.is-side::before {
+    content: '';
     position: absolute;
-    inset: 0;
-    z-index: 3;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    opacity: 0.01;
-    cursor: pointer;
+    inset: -14px;
+    z-index: 1;
   }
 
   .radio-jukebox__orb-label {
@@ -298,6 +255,11 @@ const mixes = [...dated, ...undated];
     filter: brightness(1.08);
   }
 
+  .radio-player-placeholder {
+    display: block;
+    height: 20px;
+  }
+
   .radio-jukebox__orb-inner {
     display: block;
     width: 100%;
@@ -310,7 +272,6 @@ const mixes = [...dated, ...undated];
     box-shadow:
       0 0 48px 16px color-mix(in srgb, var(--color-accent) 25%, transparent),
       0 0 96px 32px color-mix(in srgb, var(--color-accent) 5%, transparent);
-    pointer-events: none;
   }
 
   .radio-jukebox__orb[data-offset='-2'],
