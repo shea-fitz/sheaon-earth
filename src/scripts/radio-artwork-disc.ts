@@ -30,6 +30,8 @@ let apiLoadPromise: Promise<void> | null = null;
 let activeIframe: HTMLIFrameElement | null = null;
 let activeMixIndex: number | null = null;
 let hideTimeout: number | null = null;
+let suppressStop = false;
+let suppressStopTimeout: number | null = null;
 const widgetsByIndex = new Map<number, SoundCloudWidget>();
 
 function prefersReducedMotion() {
@@ -176,17 +178,39 @@ function hideJukebox() {
   }, FADE_MS);
 }
 
+function beginMixSwitch() {
+  suppressStop = true;
+  if (suppressStopTimeout !== null) {
+    window.clearTimeout(suppressStopTimeout);
+  }
+  suppressStopTimeout = window.setTimeout(() => {
+    suppressStop = false;
+    suppressStopTimeout = null;
+  }, 500);
+}
+
+function endMixSwitch() {
+  suppressStop = false;
+  if (suppressStopTimeout !== null) {
+    window.clearTimeout(suppressStopTimeout);
+    suppressStopTimeout = null;
+  }
+}
+
 function playMixAtIndex(index: number) {
   const widget = widgetsByIndex.get(index);
-  if (!widget) return;
+  const iframe = getIframeByIndex(index);
+  if (!widget || !iframe) return;
 
+  beginMixSwitch();
   activeMixIndex = index;
-  activeIframe = getIframeByIndex(index) ?? null;
+  activeIframe = iframe;
   pauseAllExcept(index);
   widget.play();
 }
 
 function pauseMixAtIndex(index: number) {
+  endMixSwitch();
   widgetsByIndex.get(index)?.pause();
 }
 
@@ -202,6 +226,7 @@ function handleJukeboxClick(event: Event) {
     return;
   }
 
+  event.preventDefault();
   playMixAtIndex(mixIndex);
 }
 
@@ -218,6 +243,7 @@ function bindWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
 
   const onPlay = () => {
     if (signal.aborted) return;
+    endMixSwitch();
     activeMixIndex = mixIndexNum;
     activeIframe = iframe;
     pauseAllExcept(mixIndexNum);
@@ -225,8 +251,8 @@ function bindWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
   };
 
   const onStop = () => {
-    if (signal.aborted) return;
-    if (activeMixIndex !== mixIndexNum) return;
+    if (signal.aborted || suppressStop) return;
+    if (activeIframe !== iframe) return;
     activeMixIndex = null;
     activeIframe = null;
     hideJukebox();
@@ -246,6 +272,11 @@ function teardown() {
   activeController = null;
   activeIframe = null;
   activeMixIndex = null;
+  suppressStop = false;
+  if (suppressStopTimeout !== null) {
+    window.clearTimeout(suppressStopTimeout);
+    suppressStopTimeout = null;
+  }
   widgetsByIndex.clear();
   clearHideTimeout();
 
