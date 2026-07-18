@@ -1,12 +1,13 @@
 const FADE_MS = 800;
 const SC_API_URL = 'https://w.soundcloud.com/player/api.js';
-const SWITCH_TIMEOUT_MS = 4000;
+const SWITCH_TIMEOUT_MS = 5000;
 
 interface SoundCloudWidget {
   bind: (event: string, callback: () => void) => void;
   unbind: (event: string) => void;
   play: () => void;
   pause: () => void;
+  load: (url: string, options?: Record<string, unknown>) => void;
 }
 
 interface SoundCloudGlobal {
@@ -29,6 +30,7 @@ declare global {
 let activeController: AbortController | null = null;
 let apiLoadPromise: Promise<void> | null = null;
 let activeMixIndex: number | null = null;
+let audioDriverIndex: number | null = null;
 let hideTimeout: number | null = null;
 let pendingPlayIndex: number | null = null;
 let pendingPlayTimeout: number | null = null;
@@ -91,6 +93,16 @@ function getMixTitles() {
 
 function getIframeByIndex(index: number) {
   return document.querySelector<HTMLIFrameElement>(`.radio-player[data-mix-index="${index}"]`);
+}
+
+function getTrackApiUrl(index: number) {
+  return getIframeByIndex(index)?.dataset.trackApiUrl ?? '';
+}
+
+function pauseAllExcept(driverIndex: number) {
+  listWidgetsByIndex.forEach((widget, index) => {
+    if (index !== driverIndex) widget.pause();
+  });
 }
 
 function wrapIndex(index: number, length: number) {
@@ -197,29 +209,50 @@ function hideJukebox() {
 function stopPlayback() {
   clearPendingPlay();
   activeMixIndex = null;
+  audioDriverIndex = null;
   hideJukebox();
 }
 
 function requestMixPlay(index: number) {
   if (activeMixIndex === index) return;
 
-  const widget = listWidgetsByIndex.get(index);
-  if (!widget) return;
+  const targetUrl = getTrackApiUrl(index);
+  if (!targetUrl) return;
 
   beginMixSwitch(index);
   showJukebox(index);
 
-  getIframeByIndex(index)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  const driverWidget =
+    audioDriverIndex !== null ? listWidgetsByIndex.get(audioDriverIndex) : null;
 
-  // Must run synchronously inside the tap handler (iOS audio policy).
-  widget.play();
+  // Reuse the embed that's already playing. On iOS, starting a different embed
+  // often pauses the current one without actually starting the new track.
+  if (driverWidget && audioDriverIndex !== null && activeMixIndex !== null) {
+    driverWidget.play();
+    driverWidget.load(targetUrl, {
+      auto_play: true,
+      show_user: false,
+      single_active: false,
+      callback: () => {
+        if (pendingPlayIndex === index) driverWidget.play();
+      },
+    });
+    return;
+  }
+
+  const targetWidget = listWidgetsByIndex.get(index);
+  if (!targetWidget) return;
+
+  audioDriverIndex = index;
+  getIframeByIndex(index)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  targetWidget.play();
 }
 
 function pauseActivePlayback() {
   clearPendingPlay();
 
-  if (activeMixIndex !== null) {
-    listWidgetsByIndex.get(activeMixIndex)?.pause();
+  if (audioDriverIndex !== null) {
+    listWidgetsByIndex.get(audioDriverIndex)?.pause();
   }
 }
 
@@ -255,7 +288,7 @@ function bindJukeboxOrbs(signal: AbortSignal) {
 
     orb.addEventListener('touchstart', onSideOrbTap, { passive: false, signal });
     orb.addEventListener('pointerup', (event) => {
-      if (event.pointerType === 'touch') return;
+      if ((event as PointerEvent).pointerType === 'touch') return;
       onSideOrbTap(event);
     }, { passive: false, signal });
   });
@@ -275,23 +308,25 @@ function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
 
   const onPlay = () => {
     if (signal.aborted) return;
-    if (pendingPlayIndex !== null && mixIndexNum !== pendingPlayIndex) return;
 
-    const previousIndex = activeMixIndex;
-    clearPendingPlay();
-    activeMixIndex = mixIndexNum;
-
-    if (previousIndex !== null && previousIndex !== mixIndexNum) {
-      listWidgetsByIndex.get(previousIndex)?.pause();
+    if (pendingPlayIndex !== null) {
+      if (audioDriverIndex === null || mixIndexNum !== audioDriverIndex) return;
     }
 
-    showJukebox(mixIndexNum);
+    const resolvedIndex = pendingPlayIndex ?? mixIndexNum;
+
+    clearPendingPlay();
+    audioDriverIndex = mixIndexNum;
+    activeMixIndex = resolvedIndex;
+
+    pauseAllExcept(mixIndexNum);
+    showJukebox(resolvedIndex);
   };
 
   const onStop = () => {
     if (signal.aborted) return;
     if (pendingPlayIndex !== null) return;
-    if (activeMixIndex !== mixIndexNum) return;
+    if (audioDriverIndex !== mixIndexNum) return;
 
     stopPlayback();
   };
@@ -301,7 +336,7 @@ function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
 
     readyByIndex.add(mixIndexNum);
 
-    if (pendingPlayIndex === mixIndexNum) {
+    if (pendingPlayIndex === mixIndexNum && audioDriverIndex === mixIndexNum) {
       widget.play();
     }
 
@@ -345,6 +380,7 @@ function teardown() {
   activeController?.abort();
   activeController = null;
   activeMixIndex = null;
+  audioDriverIndex = null;
   clearPendingPlay();
   listWidgetsByIndex.clear();
   readyByIndex.clear();
