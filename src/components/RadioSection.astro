@@ -190,9 +190,21 @@ const mixes = [...dated, ...undated];
     -webkit-tap-highlight-color: transparent;
   }
 
-  .radio-jukebox__orb.is-clickable,
-  .radio-jukebox__orb.is-center {
+  .radio-jukebox__orb.is-side {
+    z-index: 2;
     cursor: pointer;
+  }
+
+  .radio-jukebox__orb.is-center {
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  .radio-jukebox__orb.is-side::before {
+    content: '';
+    position: absolute;
+    inset: -14px;
+    z-index: 1;
   }
 
   .radio-jukebox__orb-label {
@@ -223,7 +235,7 @@ const mixes = [...dated, ...undated];
     transform: translateX(-50%) translateY(0);
   }
 
-  .radio-jukebox__orb.is-clickable:hover .radio-jukebox__orb-inner,
+  .radio-jukebox__orb.is-side:hover .radio-jukebox__orb-inner,
   .radio-jukebox__orb.is-center:hover .radio-jukebox__orb-inner {
     filter: brightness(1.08);
   }
