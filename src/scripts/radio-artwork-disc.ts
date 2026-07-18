@@ -1,13 +1,11 @@
 const FADE_MS = 800;
 const SC_API_URL = 'https://w.soundcloud.com/player/api.js';
-const SWITCH_TIMEOUT_MS = 5000;
 
 interface SoundCloudWidget {
   bind: (event: string, callback: () => void) => void;
   unbind: (event: string) => void;
   play: () => void;
   pause: () => void;
-  load: (url: string, options?: Record<string, unknown>) => void;
 }
 
 interface SoundCloudGlobal {
@@ -27,23 +25,16 @@ declare global {
   }
 }
 
-type AudioSource = 'list' | 'master';
+type AudioSource = 'list' | 'orb';
 
 let activeController: AbortController | null = null;
 let apiLoadPromise: Promise<void> | null = null;
 let activeMixIndex: number | null = null;
 let hideTimeout: number | null = null;
-let pendingPlayIndex: number | null = null;
-let pendingPlayTimeout: number | null = null;
 let audioSource: AudioSource | null = null;
-let loadTargetIndex: number | null = null;
-let masterAudioPrimed = false;
-let masterLoadedIndex: number | null = 0;
-
-let masterWidget: SoundCloudWidget | null = null;
-let masterReady = false;
 
 const listWidgetsByIndex = new Map<number, SoundCloudWidget>();
+const orbWidgetsByPlayer = new WeakMap<HTMLIFrameElement, SoundCloudWidget>();
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -102,12 +93,26 @@ function getIframeByIndex(index: number) {
   return document.querySelector<HTMLIFrameElement>(`.radio-player[data-mix-index="${index}"]`);
 }
 
-function getTrackApiUrl(index: number) {
-  return getIframeByIndex(index)?.dataset.trackApiUrl ?? '';
+function getOrbPlayers() {
+  return document.querySelectorAll<HTMLIFrameElement>('.radio-jukebox__orb-player');
 }
 
-function pauseAllListWidgets() {
-  listWidgetsByIndex.forEach((widget) => widget.pause());
+function pauseAllListWidgets(exceptIndex?: number) {
+  listWidgetsByIndex.forEach((widget, index) => {
+    if (index !== exceptIndex) widget.pause();
+  });
+}
+
+function pauseAllOrbWidgets(exceptPlayer?: HTMLIFrameElement) {
+  getOrbPlayers().forEach((player) => {
+    if (player === exceptPlayer) return;
+    orbWidgetsByPlayer.get(player)?.pause();
+  });
+}
+
+function pauseAllWidgets(except?: { index?: number; orbPlayer?: HTMLIFrameElement }) {
+  pauseAllListWidgets(except?.index);
+  pauseAllOrbWidgets(except?.orbPlayer);
 }
 
 function wrapIndex(index: number, length: number) {
@@ -122,26 +127,16 @@ function clearHideTimeout() {
   }
 }
 
-function clearPendingPlay() {
-  pendingPlayIndex = null;
-  if (pendingPlayTimeout !== null) {
-    window.clearTimeout(pendingPlayTimeout);
-    pendingPlayTimeout = null;
-  }
-}
+function updateOrbPlayer(orb: HTMLElement, mixIndex: number, title: string) {
+  const player = orb.querySelector<HTMLIFrameElement>('.radio-jukebox__orb-player');
+  const listIframe = getIframeByIndex(mixIndex);
+  if (!player || !listIframe?.src) return;
 
-function beginMixSwitch(targetIndex: number) {
-  pendingPlayIndex = targetIndex;
-  loadTargetIndex = targetIndex;
+  if (player.dataset.mixIndex === String(mixIndex)) return;
 
-  if (pendingPlayTimeout !== null) {
-    window.clearTimeout(pendingPlayTimeout);
-  }
-
-  pendingPlayTimeout = window.setTimeout(() => {
-    clearPendingPlay();
-    loadTargetIndex = null;
-  }, SWITCH_TIMEOUT_MS);
+  player.dataset.mixIndex = String(mixIndex);
+  player.title = title;
+  player.src = listIframe.src;
 }
 
 function showJukebox(activeIndex: number) {
@@ -178,7 +173,7 @@ function showJukebox(activeIndex: number) {
 
     const isCenter = offset === 0;
     if (orb instanceof HTMLButtonElement) {
-      orb.setAttribute('aria-label', isCenter ? `Pause ${title}` : `Play ${title}`);
+      orb.setAttribute('aria-label', `Pause ${title}`);
     }
     orb.removeAttribute('hidden');
     visibleCount += 1;
@@ -186,6 +181,10 @@ function showJukebox(activeIndex: number) {
     orb.classList.toggle('is-center', isCenter);
     orb.classList.toggle('is-floating', isCenter && !prefersReducedMotion());
     orb.classList.toggle('is-side', !isCenter);
+
+    if (!isCenter) {
+      updateOrbPlayer(orb, mixIndex, title);
+    }
   });
 
   if (visibleCount === 0) return;
@@ -214,147 +213,99 @@ function hideJukebox() {
 }
 
 function activateMix(index: number) {
-  clearPendingPlay();
-  loadTargetIndex = null;
   activeMixIndex = index;
   showJukebox(index);
 }
 
 function stopPlayback() {
-  clearPendingPlay();
-  loadTargetIndex = null;
   activeMixIndex = null;
   audioSource = null;
   hideJukebox();
 }
 
-function primeMasterAudio() {
-  if (!masterWidget || !masterReady || masterAudioPrimed) return;
-  masterAudioPrimed = true;
-  masterWidget.play();
-  masterWidget.pause();
-}
+function handleMixPlay(
+  mixIndex: number,
+  source: AudioSource,
+  activePlayer?: HTMLIFrameElement,
+  signal?: AbortSignal
+) {
+  if (signal?.aborted) return;
 
-function resolveMasterPlayTarget(): number | null {
-  if (pendingPlayIndex !== null) return pendingPlayIndex;
-  if (loadTargetIndex !== null) return loadTargetIndex;
-  return null;
-}
-
-function playViaList(index: number) {
-  const widget = listWidgetsByIndex.get(index);
-  if (!widget) return;
-
-  beginMixSwitch(index);
-  showJukebox(index);
-  getIframeByIndex(index)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-  widget.play();
-}
-
-function playViaMaster(index: number) {
-  if (!masterWidget) return;
-  if (activeMixIndex === index && audioSource === 'master') return;
-
-  const trackUrl = getTrackApiUrl(index);
-  if (!trackUrl) return;
-
-  if (!masterReady) {
-    playViaList(index);
-    return;
-  }
-
-  beginMixSwitch(index);
-  showJukebox(index);
-  primeMasterAudio();
-
-  // iOS: play() must run synchronously inside the tap handler.
-  masterWidget.play();
-
-  if (masterLoadedIndex === index) {
-    return;
-  }
-
-  masterWidget.load(trackUrl, {
-    auto_play: true,
-    show_user: false,
-    single_active: false,
-    callback: () => {
-      masterLoadedIndex = index;
-      if (pendingPlayIndex !== index) return;
-      masterWidget?.play();
-    },
-  });
+  pauseAllWidgets({ index: mixIndex, orbPlayer: activePlayer });
+  audioSource = source;
+  activateMix(mixIndex);
 }
 
 function pauseActivePlayback() {
-  clearPendingPlay();
-  loadTargetIndex = null;
-  masterWidget?.pause();
-  pauseAllListWidgets();
+  if (activeMixIndex === null) return;
+
+  if (audioSource === 'list') {
+    listWidgetsByIndex.get(activeMixIndex)?.pause();
+    return;
+  }
+
+  if (audioSource === 'orb') {
+    getOrbPlayers().forEach((player) => {
+      if (player.dataset.mixIndex === String(activeMixIndex)) {
+        orbWidgetsByPlayer.get(player)?.pause();
+      }
+    });
+  }
 }
 
-function bindJukeboxOrbs(signal: AbortSignal) {
-  const jukebox = getJukebox();
-  if (!jukebox) return;
+function bindCenterOrb(signal: AbortSignal) {
+  const centerOrb = getJukebox()?.querySelector<HTMLButtonElement>('.radio-jukebox__orb[data-offset="0"]');
+  if (!centerOrb) return;
 
-  jukebox.querySelectorAll<HTMLButtonElement>('.radio-jukebox__orb').forEach((orb) => {
-    const isCenterOrb = orb.dataset.offset === '0';
+  centerOrb.addEventListener(
+    'pointerup',
+    (event) => {
+      if (signal.aborted || centerOrb.hasAttribute('hidden') || !centerOrb.dataset.mixIndex) return;
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
 
-    orb.addEventListener(
-      'pointerup',
-      (event) => {
-        if (signal.aborted || orb.hasAttribute('hidden') || !orb.dataset.mixIndex) return;
-        if (event.pointerType === 'mouse' && event.button !== 0) return;
+      event.preventDefault();
+      event.stopPropagation();
 
-        event.preventDefault();
-        event.stopPropagation();
-
-        const mixIndex = Number(orb.dataset.mixIndex);
-
-        if (isCenterOrb) {
-          if (activeMixIndex === mixIndex) pauseActivePlayback();
-          return;
-        }
-
-        playViaMaster(mixIndex);
-      },
-      { passive: false, signal }
-    );
-  });
+      const mixIndex = Number(centerOrb.dataset.mixIndex);
+      if (activeMixIndex === mixIndex) pauseActivePlayback();
+    },
+    { passive: false, signal }
+  );
 }
 
-function bindMasterWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
-  if (!window.SC) return;
+function bindOrbPlayer(orb: HTMLElement, signal: AbortSignal) {
+  const player = orb.querySelector<HTMLIFrameElement>('.radio-jukebox__orb-player');
+  if (!player || !window.SC) return;
 
-  const widget = window.SC.Widget(iframe);
-  masterWidget = widget;
+  const attachWidget = () => {
+    if (signal.aborted || !window.SC) return;
 
-  const onPlay = () => {
-    if (signal.aborted) return;
+    const widget = window.SC.Widget(player);
+    orbWidgetsByPlayer.set(player, widget);
 
-    const targetIndex = resolveMasterPlayTarget();
-    if (targetIndex === null) return;
+    const onPlay = () => {
+      const mixIndex = Number(orb.dataset.mixIndex);
+      if (Number.isNaN(mixIndex)) return;
+      handleMixPlay(mixIndex, 'orb', player, signal);
+    };
 
-    audioSource = 'master';
-    pauseAllListWidgets();
-    activateMix(targetIndex);
+    const onStop = () => {
+      if (signal.aborted) return;
+      if (audioSource !== 'orb') return;
+      if (activeMixIndex !== Number(orb.dataset.mixIndex)) return;
+      stopPlayback();
+    };
+
+    widget.bind(window.SC.Widget.Events.READY, () => {
+      if (signal.aborted) return;
+      widget.bind(window.SC.Widget.Events.PLAY, onPlay);
+      widget.bind(window.SC.Widget.Events.PAUSE, onStop);
+      widget.bind(window.SC.Widget.Events.FINISH, onStop);
+    });
   };
 
-  const onStop = () => {
-    if (signal.aborted) return;
-    if (pendingPlayIndex !== null) return;
-    if (audioSource !== 'master') return;
-
-    stopPlayback();
-  };
-
-  widget.bind(window.SC.Widget.Events.READY, () => {
-    if (signal.aborted) return;
-    masterReady = true;
-    widget.bind(window.SC.Widget.Events.PLAY, onPlay);
-    widget.bind(window.SC.Widget.Events.PAUSE, onStop);
-    widget.bind(window.SC.Widget.Events.FINISH, onStop);
-  });
+  player.addEventListener('load', attachWidget, { signal });
+  if (player.src) attachWidget();
 }
 
 function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
@@ -370,25 +321,13 @@ function bindListWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
   listWidgetsByIndex.set(mixIndexNum, widget);
 
   const onPlay = () => {
-    if (signal.aborted) return;
-    if (pendingPlayIndex !== null) return;
-
-    primeMasterAudio();
-    masterWidget?.pause();
-    listWidgetsByIndex.forEach((listWidget, index) => {
-      if (index !== mixIndexNum) listWidget.pause();
-    });
-
-    audioSource = 'list';
-    activateMix(mixIndexNum);
+    handleMixPlay(mixIndexNum, 'list', undefined, signal);
   };
 
   const onStop = () => {
     if (signal.aborted) return;
-    if (pendingPlayIndex !== null) return;
     if (audioSource !== 'list') return;
     if (activeMixIndex !== mixIndexNum) return;
-
     stopPlayback();
   };
 
@@ -405,12 +344,6 @@ function teardown() {
   activeController = null;
   activeMixIndex = null;
   audioSource = null;
-  loadTargetIndex = null;
-  masterAudioPrimed = false;
-  masterLoadedIndex = 0;
-  masterWidget = null;
-  masterReady = false;
-  clearPendingPlay();
   listWidgetsByIndex.clear();
   clearHideTimeout();
 
@@ -429,8 +362,7 @@ async function init() {
   teardown();
 
   const jukebox = getJukebox();
-  const masterIframe = document.getElementById('radio-master-player');
-  if (!jukebox || !(masterIframe instanceof HTMLIFrameElement)) return;
+  if (!jukebox) return;
 
   const iframes = document.querySelectorAll<HTMLIFrameElement>('.radio-player[data-artwork]');
   if (iframes.length === 0) return;
@@ -447,8 +379,12 @@ async function init() {
 
   if (signal.aborted) return;
 
-  bindMasterWidget(masterIframe, signal);
-  bindJukeboxOrbs(signal);
+  jukebox.querySelectorAll<HTMLElement>('.radio-jukebox__orb').forEach((orb) => {
+    if (orb.dataset.offset === '0') return;
+    bindOrbPlayer(orb, signal);
+  });
+
+  bindCenterOrb(signal);
   iframes.forEach((iframe) => bindListWidget(iframe, signal));
 }
 
