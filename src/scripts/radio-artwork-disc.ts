@@ -31,7 +31,9 @@ let activeIframe: HTMLIFrameElement | null = null;
 let activeMixIndex: number | null = null;
 let hideTimeout: number | null = null;
 let suppressStop = false;
-let suppressStopTimeout: number | null = null;
+let pendingPlayIndex: number | null = null;
+let pendingPlayTimeout: number | null = null;
+let lastOrbTapAt = 0;
 const widgetsByIndex = new Map<number, SoundCloudWidget>();
 
 function prefersReducedMotion() {
@@ -178,22 +180,28 @@ function hideJukebox() {
   }, FADE_MS);
 }
 
-function beginMixSwitch() {
+function beginMixSwitch(targetIndex: number) {
+  pendingPlayIndex = targetIndex;
   suppressStop = true;
-  if (suppressStopTimeout !== null) {
-    window.clearTimeout(suppressStopTimeout);
+
+  if (pendingPlayTimeout !== null) {
+    window.clearTimeout(pendingPlayTimeout);
   }
-  suppressStopTimeout = window.setTimeout(() => {
+
+  pendingPlayTimeout = window.setTimeout(() => {
+    pendingPlayIndex = null;
     suppressStop = false;
-    suppressStopTimeout = null;
-  }, 500);
+    pendingPlayTimeout = null;
+  }, 2000);
 }
 
 function endMixSwitch() {
+  pendingPlayIndex = null;
   suppressStop = false;
-  if (suppressStopTimeout !== null) {
-    window.clearTimeout(suppressStopTimeout);
-    suppressStopTimeout = null;
+
+  if (pendingPlayTimeout !== null) {
+    window.clearTimeout(pendingPlayTimeout);
+    pendingPlayTimeout = null;
   }
 }
 
@@ -202,11 +210,21 @@ function playMixAtIndex(index: number) {
   const iframe = getIframeByIndex(index);
   if (!widget || !iframe) return;
 
-  beginMixSwitch();
+  if (activeMixIndex === index) return;
+
+  const previousIndex = activeMixIndex;
+
+  beginMixSwitch(index);
   activeMixIndex = index;
   activeIframe = iframe;
-  pauseAllExcept(index);
-  widget.play();
+
+  if (previousIndex !== null && previousIndex !== index) {
+    widgetsByIndex.get(previousIndex)?.pause();
+  }
+
+  window.setTimeout(() => {
+    widget.play();
+  }, 50);
 }
 
 function pauseMixAtIndex(index: number) {
@@ -214,19 +232,26 @@ function pauseMixAtIndex(index: number) {
   widgetsByIndex.get(index)?.pause();
 }
 
-function handleJukeboxClick(event: Event) {
-  const target = event.target as Element;
+function handleJukeboxActivate(event: Event) {
+  const now = Date.now();
+  if (now - lastOrbTapAt < 350) return;
+  lastOrbTapAt = now;
+
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+
   const orb = target.closest<HTMLElement>('.radio-jukebox__orb');
   if (!orb?.dataset.mixIndex || orb.hasAttribute('hidden')) return;
 
   const mixIndex = Number(orb.dataset.mixIndex);
+  const isCenterOrb = orb.dataset.offset === '0';
 
-  if (orb.classList.contains('is-center')) {
+  if (isCenterOrb) {
     if (activeMixIndex === mixIndex) pauseMixAtIndex(mixIndex);
     return;
   }
 
-  event.preventDefault();
+  if (event.cancelable) event.preventDefault();
   playMixAtIndex(mixIndex);
 }
 
@@ -243,6 +268,7 @@ function bindWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
 
   const onPlay = () => {
     if (signal.aborted) return;
+    if (pendingPlayIndex !== null && mixIndexNum !== pendingPlayIndex) return;
     endMixSwitch();
     activeMixIndex = mixIndexNum;
     activeIframe = iframe;
@@ -251,7 +277,7 @@ function bindWidget(iframe: HTMLIFrameElement, signal: AbortSignal) {
   };
 
   const onStop = () => {
-    if (signal.aborted || suppressStop) return;
+    if (signal.aborted || suppressStop || pendingPlayIndex !== null) return;
     if (activeIframe !== iframe) return;
     activeMixIndex = null;
     activeIframe = null;
@@ -273,9 +299,10 @@ function teardown() {
   activeIframe = null;
   activeMixIndex = null;
   suppressStop = false;
-  if (suppressStopTimeout !== null) {
-    window.clearTimeout(suppressStopTimeout);
-    suppressStopTimeout = null;
+  pendingPlayIndex = null;
+  if (pendingPlayTimeout !== null) {
+    window.clearTimeout(pendingPlayTimeout);
+    pendingPlayTimeout = null;
   }
   widgetsByIndex.clear();
   clearHideTimeout();
@@ -312,7 +339,8 @@ async function init() {
 
   if (signal.aborted) return;
 
-  jukebox.addEventListener('click', handleJukeboxClick, { signal });
+  jukebox.addEventListener('pointerup', handleJukeboxActivate, { signal });
+  jukebox.addEventListener('click', handleJukeboxActivate, { signal });
 
   iframes.forEach((iframe) => bindWidget(iframe, signal));
 }
