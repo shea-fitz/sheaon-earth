@@ -16,7 +16,7 @@ const mixes = [...dated, ...undated];
 ---
 
 <ul class="radio-list">
-  {mixes.map((mix) => (
+  {mixes.map((mix, index) => (
     <li class="radio-item">
       <iframe
         class="radio-player"
@@ -28,6 +28,7 @@ const mixes = [...dated, ...undated];
         src={soundcloudPlayerSrc(mix.trackId, mix.color)}
         title={mix.title}
         data-track-id={mix.trackId}
+        data-mix-index={index}
         {...(mix.artwork ? { 'data-artwork': mix.artwork } : {})}
       />
       {mix.tracklist?.length > 0 && (
@@ -44,8 +45,27 @@ const mixes = [...dated, ...undated];
   ))}
 </ul>
 
-<div class="radio-artwork-disc" aria-hidden="true" hidden>
-  <div class="radio-artwork-disc__inner"></div>
+<div class="radio-jukebox" aria-hidden="true" hidden>
+  <button type="button" class="radio-jukebox__orb" data-offset="-2" hidden aria-label="Play mix">
+    <span class="radio-jukebox__orb-label"></span>
+    <span class="radio-jukebox__orb-inner"></span>
+  </button>
+  <button type="button" class="radio-jukebox__orb" data-offset="-1" hidden aria-label="Play mix">
+    <span class="radio-jukebox__orb-label"></span>
+    <span class="radio-jukebox__orb-inner"></span>
+  </button>
+  <button type="button" class="radio-jukebox__orb is-center" data-offset="0" hidden aria-label="Pause mix">
+    <span class="radio-jukebox__orb-label"></span>
+    <span class="radio-jukebox__orb-inner"></span>
+  </button>
+  <button type="button" class="radio-jukebox__orb" data-offset="1" hidden aria-label="Play mix">
+    <span class="radio-jukebox__orb-label"></span>
+    <span class="radio-jukebox__orb-inner"></span>
+  </button>
+  <button type="button" class="radio-jukebox__orb" data-offset="2" hidden aria-label="Play mix">
+    <span class="radio-jukebox__orb-label"></span>
+    <span class="radio-jukebox__orb-inner"></span>
+  </button>
 </div>
 
 <script>
@@ -60,6 +80,11 @@ const mixes = [...dated, ...undated];
     gap: 2rem;
     margin: 0;
     padding: 0;
+    --radio-jukebox-bottom: 2rem;
+    --radio-jukebox-orb-size: 140px;
+    padding-bottom: calc(
+      var(--radio-jukebox-bottom) + var(--radio-jukebox-orb-size) + 2.5rem
+    );
   }
 
   .radio-item {
@@ -128,27 +153,86 @@ const mixes = [...dated, ...undated];
     }
   }
 
-  .radio-artwork-disc {
+  .radio-jukebox {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: var(--radio-jukebox-bottom, 2rem);
+    left: 50%;
     z-index: 10;
-    width: 250px;
-    height: 250px;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
     pointer-events: none;
     opacity: 0;
+    transform: translateX(-50%);
     transition: opacity 0.8s ease;
   }
 
-  .radio-artwork-disc.is-visible {
+  .radio-jukebox.is-visible {
     opacity: 1;
   }
 
-  .radio-artwork-disc__inner {
+  .radio-jukebox.is-visible .radio-jukebox__orb:not([hidden]) {
+    pointer-events: auto;
+  }
+
+  .radio-jukebox__orb {
+    position: relative;
+    flex-shrink: 0;
+    display: block;
+    overflow: visible;
+    border-radius: 50%;
+    border: 0;
+    padding: 0;
+    background: none;
+    appearance: none;
+    line-height: 0;
+  }
+
+  .radio-jukebox__orb.is-clickable,
+  .radio-jukebox__orb.is-center {
+    cursor: pointer;
+  }
+
+  .radio-jukebox__orb-label {
+    position: absolute;
+    bottom: calc(100% + 0.625rem);
+    left: 50%;
+    z-index: 1;
+    max-width: 12rem;
+    padding: 0;
+    font-family: batangche, sans-serif;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .radio-jukebox__orb:hover .radio-jukebox__orb-label,
+  .radio-jukebox__orb:focus-visible .radio-jukebox__orb-label {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .radio-jukebox__orb.is-clickable:hover .radio-jukebox__orb-inner,
+  .radio-jukebox__orb.is-center:hover .radio-jukebox__orb-inner {
+    filter: brightness(1.08);
+  }
+
+  .radio-jukebox__orb-inner {
+    display: block;
     width: 100%;
     height: 100%;
+    overflow: hidden;
     border-radius: 50%;
-    border: .5px solid var(--color-accent);
+    border: 0.5px solid var(--color-accent);
     background-size: cover;
     background-position: center;
     box-shadow:
@@ -156,27 +240,63 @@ const mixes = [...dated, ...undated];
       0 0 96px 32px color-mix(in srgb, var(--color-accent) 5%, transparent);
   }
 
-  .radio-artwork-disc.is-spinning .radio-artwork-disc__inner {
-    animation: radio-disc-spin 24s linear infinite;
+  .radio-jukebox__orb[data-offset='-2'],
+  .radio-jukebox__orb[data-offset='2'] {
+    width: 56px;
+    height: 56px;
   }
 
-  @keyframes radio-disc-spin {
-    to {
-      transform: rotate(360deg);
+  .radio-jukebox__orb[data-offset='-1'],
+  .radio-jukebox__orb[data-offset='1'] {
+    width: 88px;
+    height: 88px;
+  }
+
+  .radio-jukebox__orb.is-center {
+    width: var(--radio-jukebox-orb-size, 140px);
+    height: var(--radio-jukebox-orb-size, 140px);
+  }
+
+  .radio-jukebox__orb.is-center.is-floating {
+    animation: radio-orb-float 4.5s ease-in-out infinite;
+  }
+
+  @keyframes radio-orb-float {
+    0%,
+    100% {
+      transform: translateY(0) scale(1);
+    }
+
+    50% {
+      transform: translateY(-14px) scale(1.03);
     }
   }
 
   @media (max-width: 768px) {
-    .radio-artwork-disc {
-      bottom: 1.25rem;
-      right: 1.25rem;
-      width: 150px;
-      height: 150px;
+    .radio-list {
+      --radio-jukebox-bottom: 1.25rem;
+      --radio-jukebox-orb-size: 100px;
+    }
+
+    .radio-jukebox {
+      gap: 0.75rem;
+    }
+
+    .radio-jukebox__orb[data-offset='-2'],
+    .radio-jukebox__orb[data-offset='2'] {
+      width: 40px;
+      height: 40px;
+    }
+
+    .radio-jukebox__orb[data-offset='-1'],
+    .radio-jukebox__orb[data-offset='1'] {
+      width: 64px;
+      height: 64px;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .radio-artwork-disc.is-spinning .radio-artwork-disc__inner {
+    .radio-jukebox__orb.is-center.is-floating {
       animation: none;
     }
   }

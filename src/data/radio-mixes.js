@@ -7,7 +7,7 @@
  * color — accent hex for the mini player
  * date — ISO date (YYYY-MM-DD), stored for sorting; not displayed yet
  * tracklist — optional array of tracks in the mix (shown in the "Track IDs" accordion)
- * artwork — path to square mix artwork (WebP), shown in the rotating disc on play
+ * artwork — path to square mix artwork (WebP), shown in the jukebox orb on play
  */
 export const radioMixes = [
   {
