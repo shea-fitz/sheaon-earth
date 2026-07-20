@@ -19,11 +19,16 @@ const {
 } = Astro.props;
 
 const sortedReleases = [...releases].sort(
-  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  (a, b) => parseReleaseDate(b.date).getTime() - parseReleaseDate(a.date).getTime()
 );
 
+function parseReleaseDate(date) {
+  const [year, month, day] = date.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
 function releaseYear(date) {
-  return new Date(date).getFullYear();
+  return parseReleaseDate(date).getFullYear();
 }
 
 function formatReleaseType(type) {
@@ -48,11 +53,11 @@ function startOfToday() {
 }
 
 function isUpcomingRelease(date) {
-  return new Date(date) > startOfToday();
+  return parseReleaseDate(date) > startOfToday();
 }
 
 function formatOutDate(date) {
-  return new Date(date).toLocaleDateString('en-US', {
+  return parseReleaseDate(date).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
   });
