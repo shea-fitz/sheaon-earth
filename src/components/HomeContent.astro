@@ -9,7 +9,7 @@ import '../styles/release-grid.css';
 
 <div class="home-content release-grid-context">
   <section class="home-section info">
-    <p class="bio">[a porous field]
+    <p class="bio"><a href="https://www.are.na/block/31038293" taget="_blank">[a porous field]</a>
     </p>
     <div class="stream-list">
       <a class="stream-link" href="https://sheaonair.bandcamp.com/" target="_blank">
@@ -29,9 +29,9 @@ import '../styles/release-grid.css';
       </a>
     </div>
     <div class="contact-list">
-      <div class="contact-link"><a href="https://www.instagram.com/sheafitz/" target="_blank">@sheafitz</a></div>
-      <div class="contact-link"><a href="mailto:sheaonair@gmail.com">sheaonair@gmail.com</a></div>
-      <div class="contact-link"><a href="https://www.are.na/shea/" target="_blank">are.na/shea</a></div>
+      <div class="contact-link ig"><a href="https://www.instagram.com/sheafitz/" target="_blank">@sheafitz</a></div>
+      <div class="contact-link email"><a href="mailto:sheaonair@gmail.com">sheaonair@gmail.com</a></div>
+      <div class="contact-link arena"><a href="https://www.are.na/shea/" target="_blank">are.na/shea</a></div>
     </div>
   </section>
 
@@ -160,6 +160,11 @@ import '../styles/release-grid.css';
     text-align: left;
   }
 
+  .info a {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .stream-list {
     display: flex;
     align-items: center;
@@ -196,6 +201,18 @@ import '../styles/release-grid.css';
     color: var(--text);
     text-decoration: none;
   }
+
+  .ig {
+    margin-left: 2rem;
+  }
+
+  .email {
+    margin-left: 5rem;
+  }
+
+.arena {
+  margin-left: 10rem;
+}
 
   .slogan {
     font-family: BatangChe;
@@ -254,6 +271,18 @@ import '../styles/release-grid.css';
       font-size: clamp(0.6rem, 4.6vw, 1rem);
       letter-spacing: 0.1rem;
     }
+
+    .ig {
+    margin-left: 0rem;
+  }
+
+  .email {
+    margin-left: 0rem;
+  }
+
+.arena {
+  margin-left: 0rem;
+}
   }
 
   .footer {
@@ -283,6 +312,7 @@ import '../styles/release-grid.css';
     height: 100%;
     border: 0;
   }
+
 
   .bio {
     font-family: BatangChe;
