@@ -21,7 +21,7 @@ I came up with this, which has corny sound design and no mix but I thought somet
 </div>
 
 
-The title "You Died In My Dream Last Night" is adapted from the a poem by Heather Christle, *[My Love You Died In My Dream Last Night](https://www.poetryfoundation.org/poetrymagazine/poems/1584143/my-love-you-died-in-my-dream-last-night)*.
+The title "You Died In My Dream Last Night" is adapted from a poem by Heather Christle, *[My Love You Died In My Dream Last Night](https://www.poetryfoundation.org/poetrymagazine/poems/1584143/my-love-you-died-in-my-dream-last-night)*.
 
 ## Two Perfumes
 Two Perfumes is an exploration of rituals of excess (like wearing two perfumes, which I do) and breaking the fourth wall. I crunched the flute with distortion to invoke signal processing as a form of adornment, which can sometimes feel like disguise (a friend thought the distorted flute was a synth). Two Perfumes “covers” the flute, then gives itself away – a voice sample of me outlining the drum beat before producing it shatters the illusion on purpose – a humbling & humorous transparency of the effort behind effortlessness. Two Perfumes also has a sapphic connotation, obviously, but that was secondary.
@@ -29,7 +29,7 @@ Two Perfumes is an exploration of rituals of excess (like wearing two perfumes, 
 The main percussive synth that the song opens with and plays throughout is a resampling of the flute stacks that enter at 0:33, which I recorded myself. I wanted the sense that you get flashes of something before becoming fully enveloped in it.
 
 ## Intimacy Gradient (Interlude)
-The concept of an intimacy gradient is an architectural principle from *[A Pattern Language](https://patternlanguage.cc/Patterns/Intimacy-Gradient-(127))* that states the spaces in a building should be sequenced from most to least private. I've never read *A Pattern Language* and I know it's totally overdone in certain spheres yeah yeah okay I'm a poser but a bunch of my friends are architects so I've absorbed the concept socially and ambiently on the internet and I like to also think of it as an interpersonal channel between two people. It felt like an appopriate name for an interlude, like a hallway that takes you from one room to the next.
+The concept of an intimacy gradient is an architectural principle from *[A Pattern Language](https://patternlanguage.cc/Patterns/Intimacy-Gradient-(127))* that states the spaces in a building should be sequenced from most to least private. I've never read *A Pattern Language* and I know it's totally overdone in certain spheres yeah yeah okay I'm a poser but a bunch of my friends are architects so I've absorbed the concept socially and ambiently on the internet and I like to also think of it as an interpersonal channel between two people. It felt like an appropriate name for an interlude, like a hallway that takes you from one room to the next.
 
 
 <figure>

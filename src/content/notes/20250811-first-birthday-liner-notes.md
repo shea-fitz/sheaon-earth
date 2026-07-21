@@ -39,9 +39,7 @@ Enjoy and wear earplugs xo
 
 <iframe style="border: 0; width: 100%; height: 42px;" src="https://bandcamp.com/EmbeddedPlayer/album=2107613924/size=small/bgcol=ffffff/linkcol=0687f5/track=1595110107/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/first-birthday-ep">First Birthday – EP by shea on air</a></iframe>
 
-Crush Bait isn't so much about crushes as it is about renewed optimism for the abundance of connection of all kinds and being reminded of my agency to pursue them. All the voice samples are from real moments in my life with my friends (but I've also heard that Crush Bait works as its name...)
-
-I'm extra proud of Crush Bait (it's my favorite on the EP) and it actually got radio play on [NTS](https://www.nts.live/shows/macca/episodes/macca-28th-march-2026) in a segment of supporter submissions. It was the first song played in the very first edition of the segment, despite like, a zillion people submitting stuff in a chaotic discord chat, so I thought that was cool.
+Crush Bait isn't so much about crushes as it is about renewed optimism for the abundance of connection of all kinds and being reminded of my agency to pursue them. All the voice samples are from real moments in my life with my friends (but I've also heard that Crush Bait works as its name...)ßß
 
 <figure>
   <img src="/images/notes/20250811-first-birthday-liner-notes/crush-bait.webp" />
