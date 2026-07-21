@@ -13,7 +13,7 @@ export const defaultReleasePlaceholder = '/images/bg/bg1.webp';
 export const releases = [
   {
     title: 'Two Perfumes',
-    date: '2026-08-28',
+    date: '2026-08-14',
     type: 'EP',
     bandcampUrl: 'https://sheaonair.bandcamp.com/',
     embed: '',
