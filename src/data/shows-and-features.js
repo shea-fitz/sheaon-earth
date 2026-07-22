@@ -6,7 +6,7 @@ export const showsAndFeatures = [
 
   {
     date: '2026-08-14',
-    title: 'Two Perfumes EP Release Party',
+    title: 'Two Perfumes EP Release',
     link: null,
     location: 'San Francisco, CA',
     status: 'upcoming',
