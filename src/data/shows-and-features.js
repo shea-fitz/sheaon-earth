@@ -5,6 +5,14 @@
 export const showsAndFeatures = [
 
   {
+    date: '2026-09-01',
+    title: 'Sleepwalk (with Dream Share)',
+    link: null,
+    location: 'Brooklyn, NY',
+    status: 'upcoming',
+  },
+
+  {
     date: '2026-08-14',
     title: 'Two Perfumes EP Release',
     link: null,
