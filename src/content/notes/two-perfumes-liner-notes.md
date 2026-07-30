@@ -34,7 +34,10 @@ The main percussive synth that the song opens with and plays throughout is a res
 
 The concept of an intimacy gradient is an architectural principle from *[A Pattern Language](https://patternlanguage.cc/Patterns/Intimacy-Gradient-(127))* that states the spaces in a building should be sequenced from most to least private. I've never read *A Pattern Language* and I know it's totally overdone in certain spheres yeah yeah okay I'm a poser but a bunch of my friends are architects so I've absorbed the concept socially and ambiently on the internet and it feels equally applicable as an interpersonal metaphor as well as the arc of a listening experience. It felt like an appropriate name for an interlude, like a hallway that takes you from one room to the next.
 
-The intimacy gradient illustrated in A Pattern Language
+<figure>
+  <img src="/images/notes/20260828-two-perfumes-liner-notes/intimacy-gradient.webp" />
+  <figcaption>The intimacy gradient illustrated in A Pattern Language</figcaption>
+</figure>
 
 ## Not Every Seagull is a Seagull
 
@@ -43,6 +46,16 @@ This title is pulled directly from a journal entry of mine recounting a day at [
 ***sun mar 8, 8:48pm, home***
 
 *first warm day of the year so hopped in A’s subaru and walked the beach almost end to end. J brought two sets of binoculars & i learned that not everything that looks like a seagull is a seagull. we picked up banh mi on the way and while walking another queer approached us and asked to borrow a phone. A offered their portable charger instead and we wound up hanging with this person and sharing our sandwiches with them until their friend (who was also their ex, ofc) showed up and we all hung out for a while. we noticed many thresholds on the beach of stark temperature shifts in the air, like stepping through the veil, and we determined it was because we were walking in and out of clouds (at one point we joked it was angels pissing in the air). the mist was low and the colors were saturated and the sky was stratified in a way i haven’t really seen, a straight blue line below the usual golden hour fare, no gradient. we had a lot of haunted encounters throughout the day with abandoned buildings and the whole group accompanied me (protectively & supportively) while i changed my tampon in a bush. everyone kept remarking that we were having a great day. i was so thirsty the whole time and my mouth got so salty from the mist. the beach was completely empty when we left and the light was hazy and A whispered, “did we die?” the car ride home had a perfect sky. i played hildegard’s jour 1596 and everyone loved it (M identified an FKA twigs sample i never noticed) and C texted me “are you seeing the sky!!”*
+
+<div class="note-figure-row">
+<figure>
+  <img src="/images/notes/20260828-two-perfumes-liner-notes/tilden.webp" />
+</figure>
+
+<figure>
+  <img src="/images/notes/20260828-two-perfumes-liner-notes/sunset.webp" />
+</figure>
+</div>
 
 ## Kite Scene
 
@@ -62,5 +75,4 @@ P.S. There's also really good [Purelink song called Kite Scene](https://www.yout
 
 ## Protector
 
-
-
+The voice in Protector is a missed call from my mom I got in 2016. In her voice I hear resignation to the fact that I'm the only person who could pull me out of the place I was in, and in the track I feel hypervigilant relief that I chose to. 

@@ -1,6 +1,6 @@
 ---
 title: First Birthday Liner Notes
-date: 2026-06-12
+date: 2025-08-12
 tags:
   - liner notes
   - first birthday

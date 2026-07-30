@@ -8,7 +8,7 @@
  * notesTag — optional note tag for release-specific notes (defaults to lowercase title)
  * credits — optional list of { role, name, url? } entries (shown on /releases only)
  */
-export const defaultReleasePlaceholder = '/images/bg/bg1.webp';
+export const defaultReleasePlaceholder = '/images/two-perfumes_1500.webp';
 
 export const releases = [
   {
