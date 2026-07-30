@@ -22,6 +22,6 @@ The single art was inspired by an image I found in a children’s craft book at 
   <img src="/images/notes/20251222-thought-loop-liner-notes/thought-loop.webp" />
 </figure>
 
-<figure>
+<!-- <figure>
   <img src="/images/notes/20251222-thought-loop-liner-notes/thought-loop_art.webp" />
-</figure>
+</figure> -->

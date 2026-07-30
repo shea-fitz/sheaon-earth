@@ -29,8 +29,7 @@ Enjoy and wear earplugs xo
 
 <div class="note-audio-player">
   <p class="note-audio-player__label">Fairy Frequency demo on the vocal processor, 5-13-2025</p>
-  <audio class="note-audio-player__audio" controls preload="metadata" src="/audio/notes/20250811-first-birthday-liner-notes/flute-stacks-vocal-processor.m4a">
-    <a href="/audio/notes/.../clip.mp3">Download audio</a>
+  <audio class="note-audio-player__audio" controls preload="metadata" src="/audio/notes/first-birthday-liner-notes/flute-stacks-vocal-processor.m4a">
   </audio>
 </div>
 

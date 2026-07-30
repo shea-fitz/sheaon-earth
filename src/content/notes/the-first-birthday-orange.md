@@ -13,7 +13,7 @@ The image with the orange is the second photo I took on film because I burned mo
 
 <figure>
   <img src="/images/notes/20250830-the-first-birthday-orange/og.webp" />
-  <figcaption>Unedited film photo used for the album art</figcaption>
+  <figcaption>Unedited film photo used for the EP art</figcaption>
 </figure>
 
 <figure>
