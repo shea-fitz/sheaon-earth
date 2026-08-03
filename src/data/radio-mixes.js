@@ -126,7 +126,7 @@ export const radioMixes = [
       'Nala, Nikki Nair – The World Is Always Ending',
       'Plaid – missing',
      'Flume – Jasper’s Song',
-      'Rsavoir – Illusion',
+      'Resavoir – Illusion',
     ],
   },
 

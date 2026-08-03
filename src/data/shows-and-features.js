@@ -7,7 +7,7 @@ export const showsAndFeatures = [
   {
     date: '2026-09-01',
     title: 'Sleepwalk (with Dream Share)',
-    link: null,
+    link: 'https://dice.fm/event/pyw7ow-bambi-is-a-sleepwalker-already-late-dream-share-1st-sep-sleepwalk-new-york-city-tickets?lng=en-US',
     location: 'Brooklyn, NY',
     status: 'upcoming',
   },
@@ -47,7 +47,7 @@ export const showsAndFeatures = [
   {
     date: '2025-10-17',
     title: 'Index Greenpoint Launch',
-    link: null,
+    link: 'https://www.instagram.com/p/DPw0tGAknz7/',
     location: 'Brooklyn, NY',
     status: 'past',
   },
