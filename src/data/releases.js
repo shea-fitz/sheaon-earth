@@ -13,10 +13,10 @@ export const defaultReleasePlaceholder = '/images/two-perfumes_1500.webp';
 export const releases = [
   {
     title: 'Two Perfumes',
-    date: '2026-08-14',
+    date: '2026-08-13',
     type: 'EP',
-    bandcampUrl: 'https://sheaonair.bandcamp.com/',
-    embed: '',
+    bandcampUrl: 'https://sheaonair.bandcamp.com/album/two-perfumes-ep',
+    embed: '<iframe style="border: 0; width: 350px; height: 350px;" src="https://bandcamp.com/EmbeddedPlayer/album=426226184/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/two-perfumes-ep">Two Perfumes – EP by shea on air</a></iframe>',
     themes:'olfactory impressions, rituals of excess, allure, adornment, leaving a passing trace of yourself, touching the veil',
     credits: [
       { role: 'Flute, production, mixing', name: 'Shea Fitzpatrick' },

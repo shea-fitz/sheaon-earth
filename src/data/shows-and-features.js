@@ -14,10 +14,10 @@ export const showsAndFeatures = [
 
   {
     date: '2026-08-13',
-    title: 'Two Perfumes EP Release',
+    title: 'Two Perfumes EP Release (listening party)',
     link: null,
     location: 'San Francisco, CA',
-    status: 'upcoming',
+    status: 'past',
   },
 
   {
