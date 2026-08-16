@@ -44,6 +44,16 @@ function revealElement(element: Element) {
   observer?.unobserve(element);
 }
 
+function shouldReveal(entry: IntersectionObserverEntry) {
+  if (!entry.isIntersecting) return false;
+
+  const viewportHeight = entry.rootBounds?.height ?? window.innerHeight;
+  // Tall targets can never reach a 12% ratio, so any visible slice is enough.
+  if (entry.boundingClientRect.height >= viewportHeight) return true;
+
+  return entry.intersectionRatio >= 0.12;
+}
+
 function clearPendingState(main: HTMLElement) {
   main.classList.remove('scroll-reveal-pending');
 }
@@ -102,12 +112,12 @@ function startObserving(elements: Element[], signal: AbortSignal) {
   observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
+        if (!shouldReveal(entry)) return;
         revealElement(entry.target);
       });
     },
     {
-      threshold: 0.12,
+      threshold: [0, 0.12],
       rootMargin: '0px 0px -8% 0px',
     }
   );
