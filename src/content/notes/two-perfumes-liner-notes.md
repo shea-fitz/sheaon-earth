@@ -80,7 +80,7 @@ This song was also a technical milestone for me because in January I worked thro
 I owe my relationship to kites to my friend AWS, who gifted me one of theirs after lending it to me for a solo trip to Berlin. I flew it in Tempelhofer at sunset, and it got so high that I could barely see it, but I noticed the wind made a faint whistling sound from the vibrations along the kite string, like an instrument. In that moment I felt very connected to my friend, who feels very connected to the wind, and our shared friends who are my family. I spent a day with said family in March that we jokingly called "demo day," because we all wound up spontaneously showing each other works-in-progress of various media, and I played this track for them.
 
 <figure>
-  <img src="/images/notes/20260828-two-perfumes-liner-notes/kite.JPG" />
+  <img src="/images/notes/20260828-two-perfumes-liner-notes/kite.webp" />
   <figcaption>Kite in the distance, Tempelhofer Feld, 2024</figcaption>
 </figure>
 
