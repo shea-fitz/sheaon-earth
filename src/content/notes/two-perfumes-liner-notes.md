@@ -73,11 +73,16 @@ This title is pulled directly from a journal entry of mine recounting a day at [
 
 <iframe style="border: 0; width: 100%; height: 42px;" src="https://bandcamp.com/EmbeddedPlayer/album=426226184/size=small/bgcol=ffffff/linkcol=0687f5/track=3762151489/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/two-perfumes-ep">Two Perfumes – EP by shea on air</a></iframe>
 
-Kite Scene started as a demo I made during a blizzard in January 2026, which was a Sunday afternoon that I decided to spend watching the entire *28 Days Later* franchise and playing the flute. This demo came together in about an hour, with 3 single-take improvisational flute lines layered on top of a synth loop. I wound up keeping basically the entire composition from those original takes and just beefed up the mix.
+Kite Scene started as a demo I made during a blizzard in January 2026, which was a Sunday afternoon that I decided to spend watching the entire *[28 Days Later](https://en.wikipedia.org/wiki/28_Days_Later_(film_series))* franchise and playing the flute. This demo came together in about an hour, with 3 single-take improvisational flute lines layered on top of a synth loop. I wound up keeping basically the entire composition from those original takes and just beefed up the mix.
 
 This song was also a technical milestone for me because in January I worked through an extremely robust [mixing and mastering course](https://courses.seedtostage.com/p/mixing-mastering-course) (like we're talking 50+ hours) and this is the first track I ever fully mixed myself to what I considered a release-ready extent.
 
 I owe my relationship to kites to my friend AWS, who gifted me one of theirs after lending it to me for a solo trip to Berlin. I flew it in Tempelhofer at sunset, and it got so high that I could barely see it, but I noticed the wind made a faint whistling sound from the vibrations along the kite string, like an instrument. In that moment I felt very connected to my friend, who feels very connected to the wind, and our shared friends who are my family. I spent a day with said family in March that we jokingly called "demo day," because we all wound up spontaneously showing each other works-in-progress of various media, and I played this track for them.
+
+<figure>
+  <img src="/images/notes/20260828-two-perfumes-liner-notes/kite.JPG" />
+  <figcaption>Kite in the distance, Tempelhofer Feld, 2024</figcaption>
+</figure>
 
 <div class="note-audio-player">
   <p class="note-audio-player__label">snow sketch, jan 25 2026</p>
@@ -93,7 +98,7 @@ P.S. There's also really good [Purelink song called Kite Scene](https://www.yout
 
 The voice in Protector is a missed call from my mom I got in 2016. In her voice I hear resignation to the fact that I'm the only person who could pull me out of the place I was in, and in the track I feel hypervigilant relief that I chose to. 
 
-A sound design hallmark of this EP is applying distortion to the flute, and on this track I really feel like it shines. I felt equally inspired by the guitar solo in [Balloons by Jasper van't Hof](https://www.youtube.com/watch?v=4Q7fJnYLAG8) (it comes in at 4:29) and frustrated that I don't play the guitar, so I spent a lot of this EP trying to "guitarify" my flute and give it the same kind of grit as this solo.
+A sound design hallmark of this EP is applying distortion to the flute, and on Protector I feel like it shines. I felt equally inspired by the guitar solo in [Balloons by Jasper van't Hof](https://www.youtube.com/watch?v=4Q7fJnYLAG8) (it comes in at 4:29) and frustrated that I don't play the guitar, so I spent a lot of this EP trying to "guitarify" my flute and give it the same kind of grit as this solo.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4Q7fJnYLAG8?si=53cL37k0hwFXzGwK&amp;start=269" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -106,7 +111,7 @@ My effect rack in Ableton to achieve the distorted flute tone at the end of Prot
 In other places on the EP, like in Two Perfumes, I use Multiband Dynamics to control the tone of the distortion, but I didn't need to do that here.
 
 <figure>
-  <img src="/images/notes/20260828-two-perfumes-liner-notes/effect-rack.png" />
+  <img src="/images/notes/20260828-two-perfumes-liner-notes/effect-rack.webp" />
 </figure>
 
 
