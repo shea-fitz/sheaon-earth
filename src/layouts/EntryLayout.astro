@@ -163,6 +163,19 @@ const isoDate = date instanceof Date ? date.toISOString().slice(0, 10) : date;
     margin-inline: auto;
   }
 
+  .entry-content :global(iframe) {
+    max-width: 100%;
+  }
+
+  .entry-content :global(iframe[src*="youtube.com"]),
+  .entry-content :global(iframe[src*="youtube-nocookie.com"]) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border: 0;
+  }
+
   .entry-content :global(figure) {
     margin: 1.5rem 0;
   }
