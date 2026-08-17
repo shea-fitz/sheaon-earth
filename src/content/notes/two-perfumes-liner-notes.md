@@ -8,7 +8,6 @@ hidden: false
 ---
 <iframe style="border: 0; width: 100%; height: 120px;" src="https://bandcamp.com/EmbeddedPlayer/album=426226184/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/" seamless><a href="https://sheaonair.bandcamp.com/album/two-perfumes-ep">Two Perfumes – EP by shea on air</a></iframe>
 
-Tracks that inspired me while making Two Perfumes:
 <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6LWdB3zjFvP5vdInOVNNVw?utm_source=generator&theme=0&si=adc09a117dd447aa" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
 ## You Died In My Dream Last Night
