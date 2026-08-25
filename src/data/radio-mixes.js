@@ -11,6 +11,30 @@
  */
 export const radioMixes = [
   {
+    title: 'shea on air on Evenings.fm – 8/25/26',
+    slug: 'shea-on-air-on-evenings',
+    trackId: '2388195819',
+    color: '#5c6c4c',
+    date: '2026-08-25',
+    tracklist: [
+      'shea on air – You Died In My Dream Last Night',
+      'Corey Mastrangelo – Contact',
+      'Lonelyspeck – Wishing',
+      'Photay – Airlock',
+      'shea on air – Two Perfumes',
+      'Shabaka – Those Of The Sky',
+      'Joel Ross & Gabrielle Garlo – chant',
+      'Finis Africae – El secreto de las 12',
+      'shea on air – Intimacy Gradient (interlude)',
+      'shea on air – Not Every Seagull Is A Seagull',
+      'broom – the rites that bind us',
+      'Box5ive – mushi',
+      'Zach Tenorio – Tomarillo Lullaby',
+      'shea on air – Protector]',
+    ],
+  },
+
+  {
     title: 'Flowers in Motion – no. 1',
     slug: 'flowers-in-motion-1',
     trackId: '1257100312',

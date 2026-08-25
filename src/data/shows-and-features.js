@@ -5,17 +5,17 @@
 export const showsAndFeatures = [
 
   {
-    date: '2026-09-01',
-    title: 'Sleepwalk (with Dream Share)',
-    link: 'https://dice.fm/event/pyw7ow-bambi-is-a-sleepwalker-already-late-dream-share-1st-sep-sleepwalk-new-york-city-tickets?lng=en-US',
-    location: 'Brooklyn, NY',
-    status: 'upcoming',
+    date: '2026-08-25',
+    title: 'Mix for Evenings.fm',
+    link: "https://evenings.fm/evenings/tracks/9367",
+    location: 'Evenings.fm',
+    status: 'past',
   },
 
   {
     date: '2026-08-13',
-    title: 'Two Perfumes EP Release (listening party)',
-    link: null,
+    title: 'Two Perfumes EP Release @ Bog House',
+    link: "https://www.flowercomputer.com/posts/bogathon-3/",
     location: 'San Francisco, CA',
     status: 'past',
   },
