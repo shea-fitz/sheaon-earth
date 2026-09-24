@@ -14,7 +14,7 @@ export const showsAndFeatures = [
 
   {
     date: '2026-08-29',
-    title: 'Selected for play on NTS Supporter Radio, again',
+    title: 'Selected for play on NTS Supporter Radio',
     link: 'https://www.nts.live/shows/macca/episodes/macca-29th-august-2026',
     location: 'NTS Radio',
     status: 'past',
