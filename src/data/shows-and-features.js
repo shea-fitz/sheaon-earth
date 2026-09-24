@@ -5,6 +5,14 @@
 export const showsAndFeatures = [
 
   {
+    date: '2026-12-11',
+    title: "Gold Sounds",
+    link: null,
+    location: 'Brooklyn, NY',
+    status: 'upcoming',
+  },
+
+  {
     date: '2026-08-25',
     title: 'Mix for Evenings.fm',
     link: "https://evenings.fm/evenings/tracks/9367",
