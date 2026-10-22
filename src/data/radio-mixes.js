@@ -30,7 +30,7 @@ export const radioMixes = [
       'broom – the rites that bind us',
       'Box5ive – mushi',
       'Zach Tenorio – Tomarillo Lullaby',
-      'shea on air – Protector]',
+      'shea on air – Protector',
     ],
   },
 
