@@ -6,10 +6,18 @@ export const showsAndFeatures = [
 
   {
     date: '2026-12-11',
-    title: "Gold Sounds",
-    link: null,
+    title: "Gold Sounds (solo + with Dream Share)",
+    link: 'https://dice.fm/event/3o87rg-halo3-en-plastic-dream-share-ep-release-shea-on-air-tembien-11th-dec-gold-sounds-new-york-tickets',
     location: 'Brooklyn, NY',
     status: 'upcoming',
+  },
+
+  {
+    date: '2026-11-03',
+    title: "Record House Live Session – Dream Share feat. shea on air",
+    link: 'https://www.youtube.com/watch?v=tzt4rVk4BoA',
+    location: 'Queens, NY',
+    status: 'past',
   },
 
   {
