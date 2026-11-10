@@ -13,6 +13,14 @@ export const showsAndFeatures = [
   },
 
   {
+    date: '2026-11-04',
+    title: 'Featured curriculum, Museum of Contemporary Art Arlington',
+    link: 'https://mocaarlington.org/classes/2026/10/creative-inspirations-musically-motivated-artists-ages-8-10/',
+    location: 'Arlington, VA',
+    status: 'past',
+  },
+
+  {
     date: '2026-11-03',
     title: "Record House Live Session – Dream Share feat. shea on air",
     link: 'https://www.youtube.com/watch?v=tzt4rVk4BoA',
@@ -31,7 +39,7 @@ export const showsAndFeatures = [
   {
     date: '2026-08-25',
     title: 'Mix for Evenings.fm',
-    link: "https://evenings.fm/evenings/tracks/9367",
+    link: "https://www.instagram.com/p/Dcd-mTrETNV/",
     location: 'Evenings.fm',
     status: 'past',
   },
@@ -81,14 +89,6 @@ export const showsAndFeatures = [
     title: 'First Birthday EP Release @ Flower Computer Company',
     link: null,
     location: 'Brooklyn, NY',
-    status: 'past',
-  },
-
-  {
-    date: '2025-05-26',
-    title: 'Guest mix on Cloud 9 with Mengze',
-    link: 'https://soundcloud.com/mengzemusic/cloud-nine-episode-3-with-shea-52625',
-    location: '8 Ball Radio',
     status: 'past',
   },
 ];
